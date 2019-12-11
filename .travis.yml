@@ -1,0 +1,27 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: 7.4
+  include:
+    - php: 7.3
+      env: XDEBUG_OFF="yes"
+    - php: 7.4
+      env: XDEBUG_OFF="yes"
+
+before_script:
+  - if [[ $XDEBUG_OFF = yes ]]; then phpenv config-rm xdebug.ini; fi;
+
+script:
+  - make
+  - make test-all
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls -v
