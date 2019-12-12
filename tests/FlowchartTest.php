@@ -19,7 +19,7 @@ use JBZoo\MermaidPHP\Link;
 use JBZoo\MermaidPHP\Node;
 
 /**
- * Class Flowchart
+ * Class FlowchartTest
  * @package JBZoo\PHPUnit
  */
 class FlowchartTest extends PHPUnit
@@ -27,19 +27,47 @@ class FlowchartTest extends PHPUnit
     public function testGraphRendering()
     {
         $graph = new Graph();
-        isSame(Graph::LEFT_RIGHT, $graph->getDirection());
-        isSame('graph LR;', (string)$graph);
 
-        isSame(Graph::LEFT_RIGHT, $graph->setDirection(Graph::LEFT_RIGHT)->getDirection());
-        isSame('graph LR;', (string)$graph);
-
-        isSame(Graph::TOP_BOTTOM, $graph->setDirection(Graph::TOP_BOTTOM)->getDirection());
+        isSame([
+            'abc_order' => false,
+            'title'     => 'Graph',
+            'direction' => 'TB',
+        ], $graph->getParams());
         isSame('graph TB;', (string)$graph);
 
-        isSame(Graph::RIGHT_LEFT, $graph->setDirection(Graph::RIGHT_LEFT)->getDirection());
+        isSame([
+            'abc_order' => false,
+            'title'     => 'Graph',
+            'direction' => 'LR',
+        ], $graph->setParams(['direction' => Graph::LEFT_RIGHT])->getParams());
+        isSame('graph LR;', (string)$graph);
+
+        isSame([
+            'abc_order' => false,
+            'title'     => 'Graph',
+            'direction' => 'TB',
+        ], $graph->setParams(['direction' => Graph::TOP_BOTTOM])->getParams());
+        isSame('graph TB;', (string)$graph);
+
+        isSame([
+            'abc_order' => false,
+            'title'     => 'Graph',
+            'direction' => 'TB',
+        ], $graph->setParams(['direction' => Graph::TOP_BOTTOM])->getParams());
+        isSame('graph TB;', (string)$graph);
+
+        isSame([
+            'abc_order' => false,
+            'title'     => 'Graph',
+            'direction' => 'RL',
+        ], $graph->setParams(['direction' => Graph::RIGHT_LEFT])->getParams());
         isSame('graph RL;', (string)$graph);
 
-        isSame(Graph::BOTTOM_TOP, $graph->setDirection(Graph::BOTTOM_TOP)->getDirection());
+        isSame([
+            'abc_order' => true,
+            'title'     => 'Graph',
+            'direction' => 'BT',
+        ], $graph->setParams(['direction' => Graph::BOTTOM_TOP, 'abc_order' => true])->getParams());
         isSame('graph BT;', (string)$graph);
     }
 
@@ -48,8 +76,8 @@ class FlowchartTest extends PHPUnit
         isSame('A;', (string)(new Node('A')));
         isSame('A', (new Node('A'))->getTitle());
         isSame('Title', (new Node('A'))->setTitle('Title')->getTitle());
-        isSame('("%s")', (new Node('A'))->getForm());
-        isSame('>"%s"]', (new Node('A'))->setForm(Node::ASYMMETRIC_SHAPE)->getForm());
+        isSame('(%s)', (new Node('A'))->getForm());
+        isSame('>%s]', (new Node('A'))->setForm(Node::ASYMMETRIC_SHAPE)->getForm());
         isSame('A("Node Name");', (string)(new Node('A', 'Node Name')));
         isSame('A("Node Name");', (string)(new Node('A', 'Node Name', Node::ROUND)));
         isSame('A{"Node Name"};', (string)(new Node('A', 'Node Name', Node::RHOMBUS)));
@@ -79,59 +107,79 @@ class FlowchartTest extends PHPUnit
         isSame('A-.->B;', (string)$link->setStyle(Link::DOTTED));
 
         $link->setText('This is the text');
-        isSame('A-->|This is the text|B;', (string)$link->setStyle(Link::ARROW));
-        isSame('A---|This is the text|B;', (string)$link->setStyle(Link::LINE));
-        isSame('A == This is the text ==> B;', (string)$link->setStyle(Link::THICK));
-        isSame('A-. This is the text .-> B;', (string)$link->setStyle(Link::DOTTED));
+        isSame('A-->|"This is the text"|B;', (string)$link->setStyle(Link::ARROW));
+        isSame('A---|"This is the text"|B;', (string)$link->setStyle(Link::LINE));
+        isSame('A == "This is the text" ==> B;', (string)$link->setStyle(Link::THICK));
+        isSame('A-. "This is the text" .-> B;', (string)$link->setStyle(Link::DOTTED));
     }
 
     public function testSimpleGraph()
     {
-        $graph = new Graph();
+        $graph = new Graph(['abc_order' => false]);
         $nodeA = new Node('A', 'Text', Node::CIRCLE);
         $nodeB = new Node('B', 'Another text', Node::ROUND);
-        $graph->addNode($nodeA);
         $graph->addNode($nodeB);
-        $graph->addLink(new Link($nodeA, $nodeB, '$250 000.00'));
+        $graph->addNode($nodeA);
         $graph->addLink(new Link($nodeB, $nodeA, '$150 000.00'));
+        $graph->addLink(new Link($nodeA, $nodeB, '$250 000.00'));
+
+        isCount(2, $graph->getNodes());
 
         is(implode(PHP_EOL, [
-            'graph LR;',
-            '    A(("Text"));',
+            'graph TB;',
             '    B("Another text");',
-            '    A-->|$250 000.00|B;',
-            '    B-->|$150 000.00|A;'
+            '    A(("Text"));',
+            '',
+            '    B-->|"$150 000.00"|A;',
+            '    A-->|"$250 000.00"|B;',
+            '',
         ]), (string)$graph);
     }
 
     public function testComplexGraph()
     {
-        $graph = (new Graph())
-            ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
-            ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
-            ->addNode($nodeC = new Node('C', 'Decision', Node::RHOMBUS))
-            ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
-            ->addNode($nodeE = new Node('E', 'Result two', Node::SQUARE))
-            ->addLink(new Link($nodeA, $nodeB, 'Link text'))
-            ->addLink(new Link($nodeB, $nodeC))
-            ->addLink(new Link($nodeC, $nodeD, 'One'))
-            ->addLink(new Link($nodeC, $nodeE, 'Two'))
+        $graph = (new Graph(['abc_order' => true]))
+            ->addSubGraph($subGraph1 = new Graph(['title' => 'Main workflow']))
+            ->addSubGraph($subGraph2 = new Graph(['title' => 'Problematic workflow']))
             ->addStyle('linkStyle default interpolate basis');
+
+        $subGraph1
+            ->addNode($nodeE = new Node('E', 'Result two', Node::SQUARE))
+            ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
+            ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
+            ->addNode($nodeC = new Node('C', 'Decision', Node::CIRCLE))
+            ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
+            ->addLink(new Link($nodeE, $nodeD))
+            ->addLink(new Link($nodeB, $nodeC))
+            ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
+            ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥'))
+            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\\!@#$%^&*()_+><\' " '));
+
+        $subGraph2
+            ->addNode($alone = new Node('alone', 'Alone'))
+            ->addLink(new Link($alone, $nodeC));
 
         $this->dumpHtml($graph);
 
         is(implode(PHP_EOL, [
-            'graph LR;',
-            '    A["Hard edge"];',
-            '    B("Round edge");',
-            '    C{"Decision"};',
-            '    D["Result one"];',
-            '    E["Result two"];',
-            '    A-->|Link text|B;',
-            '    B-->C;',
-            '    C-->|One|D;',
-            '    C-->|Two|E;',
-            'linkStyle default interpolate basis',
+            'graph TB;',
+            '    subgraph "Main workflow"',
+            '        E["Result two"];',
+            '        B("Round edge");',
+            '        A["Hard edge"];',
+            '        C(("Decision"));',
+            '        D["Result one"];',
+            '        E-->D;',
+            '        B-->C;',
+            '        C-->|"A double quote:#quot;"|D;',
+            '        C-->|"A dec char:#hearts;"|E;',
+            '        A-->|"Link text<br>/\!@#$%^#amp;*()_+><\' #quot;"|B;',
+            '    end',
+            '    subgraph "Problematic workflow"',
+            '        alone("Alone");',
+            '        alone-->C;',
+            '    end',
+            'linkStyle default interpolate basis;',
         ]), (string)$graph);
 
         $html = $graph->renderHtml();
@@ -139,11 +187,199 @@ class FlowchartTest extends PHPUnit
         isContain('<script>mermaid.initialize(', $html);
     }
 
+    public function testSimpleSubGraph()
+    {
+        $graphMain = new Graph();
+
+        $graphMain->addSubGraph($subOne = new Graph(['title' => 'one']));
+        $graphMain->addSubGraph($subTwo = new Graph(['title' => 'two']));
+        $graphMain->addSubGraph($subThree = new Graph(['title' => 'three']));
+
+        $subOne->addNode(new Node('a1'))
+            ->addNode($a2 = new Node('a2'))
+            ->addLinkByIds('a1', 'a2');
+
+        $subTwo->addNode(new Node('b1'))
+            ->addNode(new Node('b2'))
+            ->addLinkByIds('b1', 'b2');
+
+        $subThree->addNode($c1 = new Node('c1'))
+            ->addNode(new Node('c2'))
+            ->addLinkByIds('c1', 'c2');
+
+        $graphMain->addLink(new Link($c1, $a2));
+
+        $this->dumpHtml($graphMain);
+
+        is(implode(PHP_EOL, [
+            'graph TB;',
+            '    c1-->a2;',
+            '',
+            '    subgraph "one"',
+            '        a1;',
+            '        a2;',
+            '        a1-->a2;',
+            '    end',
+            '    subgraph "two"',
+            '        b1;',
+            '        b2;',
+            '        b1-->b2;',
+            '    end',
+            '    subgraph "three"',
+            '        c1;',
+            '        c2;',
+            '        c1-->c2;',
+            '    end',
+        ]), (string)$graphMain);
+    }
+
+    public function testBasicFlowchart()
+    {
+        $graph = (new Graph(['direction' => Graph::LEFT_RIGHT]))
+            ->addNode(new Node('A', 'Square Rect', Node::SQUARE))
+            ->addNode(new Node('B', 'Circle', Node::CIRCLE))
+            ->addNode(new Node('C', 'Round Rect'))
+            ->addNode(new Node('D', 'Rhombus', Node::RHOMBUS))
+            ->addLinkByIds('A', 'B', 'Link text')
+            ->addLinkByIds('A', 'C')
+            ->addLinkByIds('B', 'D')
+            ->addLinkByIds('C', 'D');
+
+        $this->dumpHtml($graph);
+
+        is(implode(PHP_EOL, [
+            'graph LR;',
+            '    A["Square Rect"];',
+            '    B(("Circle"));',
+            '    C("Round Rect");',
+            '    D{"Rhombus"};',
+            '',
+            '    A-->|"Link text"|B;',
+            '    A-->C;',
+            '    B-->D;',
+            '    C-->D;',
+            '',
+        ]), (string)$graph);
+    }
+
+    public function testLargerFlowchartWithSomeStyling()
+    {
+        $graph = (new Graph(['abc_order' => true]))
+            ->addNode(new Node('sq', 'Square shape', Node::SQUARE))
+            ->addNode(new Node('ci', 'Circle shape', Node::CIRCLE))
+            ->addLinkByIds('sq', 'ci');
+
+        $subgraphA = (new Graph(['title' => 'A', 'abc_order' => true]))
+            ->addNode(new Node('od', 'Odd shape', Node::ASYMMETRIC_SHAPE))
+            ->addNode(new Node('ro', 'Rounded<br>square<br>shape', Node::ROUND))
+            ->addNode(new Node('ro2', 'Rounded square shape', Node::ROUND))
+            ->addNode(new Node('di', 'Diamond with <br/> line break', Node::RHOMBUS))
+            ->addLinkByIds('od', 'ro', 'Two line<br/>edge comment')
+            ->addLinkByIds('di', 'ro', '', Link::DOTTED)
+            ->addLinkByIds('di', 'ro2', '', Link::THICK);
+        $graph->addSubGraph($subgraphA);
+
+        $graph->addStyle('classDef green fill:#9f6,stroke:#333,stroke-width:2px');
+        $graph->addStyle('classDef orange fill:#f96,stroke:#333,stroke-width:4px');
+        $graph->addStyle('class sq,e green');
+        $graph->addStyle('class di orange');
+
+        $graph
+            ->addNode(new Node('e', 'Inner / circle<br>and some odd <br>special characters', Node::CIRCLE))
+            ->addNode(new Node('od3', 'Really long text with linebreak<br>in an Odd shape', Node::CIRCLE))
+            ->addNode(new Node('cyr', 'Cyrillic', Node::SQUARE))
+            ->addNode(new Node('cyr2', 'Circle shape Начало', Node::CIRCLE))
+            ->addNode(new Node('f', ',.?!+-*ز'))
+            ->addLinkByIds('cyr', 'cyr2')
+            ->addLinkByIds('e', 'od3')
+            ->addLinkByIds('e', 'f');
+
+        $this->dumpHtml($graph);
+
+        is(implode(PHP_EOL, [
+            'graph TB;',
+            '    ci(("Circle shape"));',
+            '    cyr2(("Circle shape Начало"));',
+            '    cyr["Cyrillic"];',
+            '    e(("Inner / circle<br>and some odd <br>special characters"));',
+            '    f(",.?!+-*ز");',
+            '    od3(("Really long text with linebreak<br>in an Odd shape"));',
+            '    sq["Square shape"];',
+            '',
+            '    cyr-->cyr2;',
+            '    e-->f;',
+            '    e-->od3;',
+            '    sq-->ci;',
+            '',
+            '    subgraph "A"',
+            '        di{"Diamond with <br/> line break"};',
+            '        od>"Odd shape"];',
+            '        ro("Rounded<br>square<br>shape");',
+            '        ro2("Rounded square shape");',
+            '        di ==> ro2;',
+            '        di-.->ro;',
+            '        od-->|"Two line<br/>edge comment"|ro;',
+            '    end',
+            'classDef green fill:#9f6,stroke:#333,stroke-width:2px;',
+            'classDef orange fill:#f96,stroke:#333,stroke-width:4px;',
+            'class sq,e green;',
+            'class di orange;',
+        ]), (string)$graph);
+    }
+
+    public function testNestedGraph()
+    {
+        $graph = new Graph();
+        $graph->addSubGraph($globalGraph = new Graph(['title' => 'Global']));
+        $globalGraph->addNode($alone = new Node('Alone'));
+        $globalGraph->addLink(new Link($alone, $alone));
+        $globalGraph->addSubGraph($subGraph = new Graph(['title' => 'Sub Graph']));
+        $subGraph->addSubGraph($subSubGraph = new Graph(['title' => 'Sub Sub Graph']));
+
+        $subGraph->addNode($nodeA = new Node('A', 'State A'));
+        $subGraph->addNode($nodeB = new Node('B', 'State B'));
+        $subGraph->addLinkByIds('A', 'B');
+
+        $subSubGraph->addNode($nodeC = new Node('C', 'State C'));
+        $subSubGraph->addNode($nodeD = new Node('D', 'State D'));
+        $subSubGraph->addLinkByIds('C', 'D');
+
+        $globalGraph->addLink(new Link($nodeA, $nodeC));
+        $globalGraph->addLink(new Link($nodeA, $nodeD));
+        $globalGraph->addLink(new Link($nodeB, $nodeD));
+
+        $this->dumpHtml($graph);
+
+        is(implode(PHP_EOL, [
+            'graph TB;',
+            '    subgraph "Global"',
+            '        Alone;',
+            '        Alone-->Alone;',
+            '        A-->C;',
+            '        A-->D;',
+            '        B-->D;',
+            '        subgraph "Sub Graph"',
+            '            A("State A");',
+            '            B("State B");',
+            '            A-->B;',
+            '            subgraph "Sub Sub Graph"',
+            '                C("State C");',
+            '                D("State D");',
+            '                C-->D;',
+            '            end',
+            '        end',
+            '    end',
+        ]), (string)$graph);
+    }
+
     /**
      * @param Graph $graph
      */
     protected function dumpHtml(Graph $graph)
     {
-        file_put_contents(PATH_ROOT . '/build/index.html', $graph->renderHtml(true));
+        file_put_contents(
+            PATH_ROOT . '/build/index.html',
+            $graph->renderHtml(['debug' => true, 'title' => $this->getName()])
+        );
     }
 }

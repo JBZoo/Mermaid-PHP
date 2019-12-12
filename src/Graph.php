@@ -16,7 +16,7 @@ namespace JBZoo\MermaidPHP;
 
 /**
  * Class Graph
- * @package Item8\ZabbixSender\Mermaid
+ * @package JBZoo\MermaidPHP
  */
 class Graph
 {
@@ -26,9 +26,9 @@ class Graph
     public const RIGHT_LEFT = 'RL';
 
     /**
-     * @var string
+     * @var Graph[]
      */
-    protected $direction = self::LEFT_RIGHT;
+    protected $subGraphs = [];
 
     /**
      * @var Node[]
@@ -41,16 +41,25 @@ class Graph
     protected $links = [];
 
     /**
+     * @var mixed[]
+     */
+    protected $params = [
+        'abc_order' => false,
+        'title'     => 'Graph',
+        'direction' => self::TOP_BOTTOM,
+    ];
+
+    /**
      * @var String[]
      */
     protected $styles = [];
 
     /**
-     * @param string $direction
+     * @param mixed[] $params
      */
-    public function __construct($direction = self::LEFT_RIGHT)
+    public function __construct(array $params = [])
     {
-        $this->setDirection($direction);
+        $this->setParams($params);
     }
 
     /**
@@ -58,41 +67,70 @@ class Graph
      */
     public function __toString()
     {
-        $result = [
-            "graph {$this->direction};"
-        ];
+        return $this->render();
+    }
 
-        foreach ($this->nodes as $node) {
-            $result[] = "    {$node}";
+    /**
+     * @param bool $isMainGraph
+     * @param int  $shift
+     * @return string
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function render(bool $isMainGraph = true, int $shift = 0): string
+    {
+        $spaces = str_repeat(' ', $shift);
+        $spacesSub = str_repeat(' ', $shift + 4);
+
+        if ($isMainGraph) {
+            $result = ["graph {$this->params['direction']};"];
+        } else {
+            $result = ["{$spaces}subgraph " . Helper::escape($this->params['title'])];
         }
 
-        foreach ($this->links as $link) {
-            $result[] = "    {$link}";
+        if (count($this->nodes) > 0) {
+            $tmp = [];
+            foreach ($this->nodes as $node) {
+                $tmp[] = $spacesSub . $node;
+            }
+            if ($this->params['abc_order']) {
+                sort($tmp);
+            }
+            $result = array_merge($result, $tmp);
+            if ($isMainGraph) {
+                $result[] = '';
+            }
         }
 
-        foreach ($this->styles as $style) {
-            $result[] = $style;
+        if (count($this->links) > 0) {
+            $tmp = [];
+            foreach ($this->links as $link) {
+                $tmp[] = $spacesSub . $link;
+            }
+            if ($this->params['abc_order']) {
+                sort($tmp);
+            }
+            $result = array_merge($result, $tmp);
+            if ($isMainGraph) {
+                $result[] = '';
+            }
+        }
+
+        foreach ($this->subGraphs as $subGraph) {
+            $result[] = $subGraph->render(false, $shift + 4);
+        }
+
+        if ($isMainGraph && count($this->styles) > 0) {
+            foreach ($this->styles as $style) {
+                $result[] = $spaces . $style . ';';
+            }
+        }
+
+        if (!$isMainGraph) {
+            $result[] = "{$spaces}end";
         }
 
         return implode(PHP_EOL, $result);
-    }
-
-    /**
-     * @param string $newDirection
-     * @return $this
-     */
-    public function setDirection(string $newDirection): Graph
-    {
-        $this->direction = $newDirection;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDirection(): string
-    {
-        return $this->direction;
     }
 
     /**
@@ -116,6 +154,22 @@ class Graph
     }
 
     /**
+     * @param string $sourceNodeId
+     * @param string $targetNodeId
+     * @param string $text
+     * @param int    $style
+     * @return Graph
+     */
+    public function addLinkByIds(
+        string $sourceNodeId,
+        string $targetNodeId,
+        string $text = '',
+        int $style = Link::ARROW
+    ): Graph {
+        return $this->addLink(new Link($this->getNode($sourceNodeId), $this->getNode($targetNodeId), $text, $style));
+    }
+
+    /**
      * @param string $style
      * @return Graph
      */
@@ -126,52 +180,61 @@ class Graph
     }
 
     /**
-     * @param bool   $showCode
-     * @param string $version
+     * @param array<String> $params
      * @return string
      */
-    public function renderHtml(bool $showCode = false, string $version = '8.4.3'): string
+    public function renderHtml(array $params = []): string
     {
-        $scriptUrl = "https://unpkg.com/mermaid@{$version}/dist/mermaid.js";
-        $bootstrap = 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css';
+        return Helper::renderHtml($this, $params);
+    }
 
-        // @see https://mermaid-js.github.io/mermaid/#/mermaidAPI?id=loglevel
-        $params = \json_encode([
-            'startOnLoad'         => true,
-            'theme'               => 'neutral', // default, forest, dark, neutral
-            'loglevel'            => 'debug',
-            'securityLevel'       => 'loose',
-            'arrowMarkerAbsolute' => true,
-            'flowchart'           => [
-                'htmlLabels' => true,
-                'curve'      => 'basis',
-            ],
-        ], JSON_PRETTY_PRINT);
+    /**
+     * @param mixed[] $params
+     * @return Graph
+     */
+    public function setParams(array $params): Graph
+    {
+        $this->params = array_merge($this->params, $params);
+        return $this;
+    }
 
-        $code = '';
-        if ($showCode) {
-            $code .= "<pre><code>{$this}</code></pre>";
-            $code .= '<hr>';
-            $code .= "<pre><code>mermaid.initialize({$params})</code></pre>";
+    /**
+     * @return mixed[]
+     */
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    /**
+     * @param Graph $subGraph
+     * @return Graph
+     */
+    public function addSubGraph(Graph $subGraph): Graph
+    {
+        $this->subGraphs[] = $subGraph;
+        return $this;
+    }
+
+    /**
+     * @param string $nodeId
+     * @return Node
+     */
+    public function getNode(string $nodeId): Node
+    {
+        $node = $this->nodes[$nodeId] ?? null;
+        if (!$node) {
+            throw new Exception("Node with id={$nodeId} not found");
         }
 
-        return implode(PHP_EOL, [
-            '<!DOCTYPE html>',
-            '<html lang="en">',
-            '<head>',
-            '    <meta charset="utf-8">',
-            "    <link rel=\"stylesheet\" href=\"{$bootstrap}\">",
-            '</head>',
-            '<body>',
-            '    <main role="main" class="container">',
-            "    <div class=\"mermaid\">{$this}</div>",
-            $code,
-            '    </div>',
-            '</main>',
-            "    <script src=\"{$scriptUrl}\"></script>",
-            "    <script>mermaid.initialize({$params});</script>",
-            '</body>',
-            '</html>',
-        ]);
+        return $node;
+    }
+
+    /**
+     * @return Node[]
+     */
+    public function getNodes(): array
+    {
+        return $this->nodes;
     }
 }

@@ -11,17 +11,26 @@ use JBZoo\MermaidPHP\Node;
 
 require_once './vendor/autoload.php';
 
-$graph = (new Graph())
-    ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
-    ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
-    ->addNode($nodeC = new Node('C', 'Decision', Node::RHOMBUS))
-    ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
-    ->addNode($nodeE = new Node('E', 'Result two', Node::SQUARE))
-    ->addLink(new Link($nodeA, $nodeB, 'Link text'))
-    ->addLink(new Link($nodeB, $nodeC))
-    ->addLink(new Link($nodeC, $nodeD, 'One'))
-    ->addLink(new Link($nodeC, $nodeE, 'Two'))
+$graph = (new Graph(['abc_order' => true]))
+    ->addSubGraph($subGraph1 = new Graph(['title' => 'Main workflow']))
+    ->addSubGraph($subGraph2 = new Graph(['title' => 'Problematic workflow']))
     ->addStyle('linkStyle default interpolate basis');
+
+$subGraph1
+    ->addNode($nodeE = new Node('E', 'Result two', Node::SQUARE))
+    ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
+    ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
+    ->addNode($nodeC = new Node('C', 'Decision', Node::CIRCLE))
+    ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
+    ->addLink(new Link($nodeE, $nodeD))
+    ->addLink(new Link($nodeB, $nodeC))
+    ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
+    ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥'))
+    ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\\!@#$%^&*()_+><\' " '));
+
+$subGraph2
+    ->addNode($alone = new Node('alone', 'Alone'))
+    ->addLink(new Link($alone, $nodeC));
 
 echo $graph; // Get result as string (or $graph->__toString())
 $htmlCode = $graph->renderHtml(true, '8.4.3'); // Get result as HTML code for debugging 
@@ -29,20 +38,25 @@ $htmlCode = $graph->renderHtml(true, '8.4.3'); // Get result as HTML code for de
 
 ### Result
 
-[Mermaid Live Editor](https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtcIkhhcmQgZWRnZVwiXTtcbiAgICBCKFwiUm91bmQgZWRnZVwiKTtcbiAgICBDe1wiRGVjaXNpb25cIn07XG4gICAgRFtcIlJlc3VsdCBvbmVcIl07XG4gICAgRVtcIlJlc3VsdCB0d29cIl07XG4gICAgQS0tPnxMaW5rIHRleHR8QjtcbiAgICBCLS0-QztcbiAgICBDLS0-fE9uZXxEO1xuICAgIEMtLT58VHdvfEU7XG5saW5rU3R5bGUgZGVmYXVsdCBpbnRlcnBvbGF0ZSBiYXNpczsiLCJtZXJtYWlkIjp7InRoZW1lIjoiZm9yZXN0In19)
-
 ```
-graph LR;
-    A["Hard edge"];
-    B("Round edge");
-    C{"Decision"};
-    D["Result one"];
-    E["Result two"];
-    A-->|Link text|B;
-    B-->C;
-    C-->|One|D;
-    C-->|Two|E;
-linkStyle default interpolate basis
+graph TB;
+    subgraph "Main workflow"
+        E["Result two"];
+        B("Round edge");
+        A["Hard edge"];
+        C(("Decision"));
+        D["Result one"];
+        E-->D;
+        B-->C;
+        C-->|"A double quote:#quot;"|D;
+        C-->|"A dec char:#hearts;"|E;
+        A-->|"Link text<br>/\!@#$%^#amp;*()_+><' #quot;"|B;
+    end
+    subgraph "Problematic workflow"
+        alone("Alone");
+        alone-->C;
+    end
+linkStyle default interpolate basis;
 ```
 
 ### See also

@@ -20,16 +20,16 @@ namespace JBZoo\MermaidPHP;
  */
 class Node
 {
-    public const SQUARE            = '["%s"]';
-    public const ROUND             = '("%s")';
-    public const CIRCLE            = '(("%s"))';
-    public const ASYMMETRIC_SHAPE  = '>"%s"]';
-    public const RHOMBUS           = '{"%s"}';
-    public const HEXAGON           = '{{"%s"}}';
-    public const PARALLELOGRAM     = '[/"%s"/]';
-    public const PARALLELOGRAM_ALT = '[\"%s"\]';
-    public const TRAPEZOID         = '[/"%s"\]';
-    public const TRAPEZOID_ALT     = '[\"%s"/]';
+    public const SQUARE            = '[%s]';
+    public const ROUND             = '(%s)';
+    public const CIRCLE            = '((%s))';
+    public const ASYMMETRIC_SHAPE  = '>%s]';
+    public const RHOMBUS           = '{%s}';
+    public const HEXAGON           = '{{%s}}';
+    public const PARALLELOGRAM     = '[/%s/]';
+    public const PARALLELOGRAM_ALT = '[\%s\]';
+    public const TRAPEZOID         = '[/%s\]';
+    public const TRAPEZOID_ALT     = '[\%s/]';
 
     /**
      * @var string
@@ -54,7 +54,7 @@ class Node
      */
     public function __construct(string $identifier, string $title = '', string $form = self::ROUND)
     {
-        $this->identifier = $identifier;
+        $this->identifier = str_replace(' ', '', $identifier);
         $this->setTitle($title);
         $this->setForm($form);
     }
@@ -91,8 +91,7 @@ class Node
     public function __toString()
     {
         if ($this->title) {
-            $escaped = str_replace('&', '#', htmlentities($this->title));
-            return $this->identifier . sprintf($this->form, $escaped) . ';';
+            return $this->identifier . sprintf($this->form, Helper::escape($this->title)) . ';';
         }
 
         return "{$this->identifier};";

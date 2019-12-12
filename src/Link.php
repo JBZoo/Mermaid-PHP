@@ -91,12 +91,10 @@ class Link
      */
     public function __toString()
     {
-        $stylePattern = self::TEMPLATES[$this->style][0];
+        $line = self::TEMPLATES[$this->style][0];
         if ($this->text) {
-            $stylePattern = self::TEMPLATES[$this->style][1];
+            $line = sprintf(self::TEMPLATES[$this->style][1], Helper::escape($this->text));
         }
-
-        $line = sprintf($stylePattern, $this->text);
 
         return "{$this->sourceNode->getId()}{$line}{$this->targetNode->getId()};";
     }
