@@ -113,6 +113,13 @@ class FlowchartTest extends PHPUnit
         isSame('A-. "This is the text" .-> B;', (string)$link->setStyle(Link::DOTTED));
     }
 
+    public function testNotFoundNode()
+    {
+        $this->expectException(\JBZoo\MermaidPHP\Exception::class);
+        $graph = new Graph();
+        $graph->getNode('undefined');
+    }
+
     public function testSimpleGraph()
     {
         $graph = new Graph(['abc_order' => false]);

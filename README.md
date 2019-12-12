@@ -33,7 +33,11 @@ $subGraph2
     ->addLink(new Link($alone, $nodeC));
 
 echo $graph; // Get result as string (or $graph->__toString())
-$htmlCode = $graph->renderHtml(true, '8.4.3'); // Get result as HTML code for debugging 
+$htmlCode = $graph->renderHtml([
+    'debug'   => true,
+    'version' => '8.4.3',
+    'title'   => 'Example'
+]); // Get result as HTML code for debugging 
 ```
 
 ### Result
