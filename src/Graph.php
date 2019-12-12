@@ -41,7 +41,7 @@ class Graph
     protected $links = [];
 
     /**
-     * @var array
+     * @var String[]
      */
     protected $styles = [];
 
