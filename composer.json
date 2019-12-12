@@ -20,7 +20,7 @@
         "jbzoo/utils"                 : "^3.0",
         "php-coveralls/php-coveralls" : "^2.2",
         "phpstan/phpstan"             : "^0.12.2",
-        "symfony/var-dumper"          : "5.0.*"
+        "symfony/var-dumper"          : "^4.4"
     },
 
     "autoload"     : {
