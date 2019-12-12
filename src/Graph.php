@@ -138,7 +138,7 @@ class Graph
         // @see https://mermaid-js.github.io/mermaid/#/mermaidAPI?id=loglevel
         $params = \json_encode([
             'startOnLoad'         => true,
-            //'theme'               => 'forest',
+            'theme'               => 'neutral', // default, forest, dark, neutral
             'loglevel'            => 'debug',
             'securityLevel'       => 'loose',
             'arrowMarkerAbsolute' => true,
