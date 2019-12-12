@@ -126,21 +126,50 @@ class Graph
     }
 
     /**
+     * @param bool   $showCode
+     * @param string $version
      * @return string
      */
-    public function renderHtml(): string
+    public function renderHtml(bool $showCode = false, string $version = '8.4.3'): string
     {
-        $scriptUrl = 'https://unpkg.com/mermaid@8.4.3/dist/mermaid.min.js';
+        $scriptUrl = "https://unpkg.com/mermaid@{$version}/dist/mermaid.js";
+        $bootstrap = 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css';
+
+        // @see https://mermaid-js.github.io/mermaid/#/mermaidAPI?id=loglevel
+        $params = \json_encode([
+            'startOnLoad'         => true,
+            //'theme'               => 'forest',
+            'loglevel'            => 'debug',
+            'securityLevel'       => 'loose',
+            'arrowMarkerAbsolute' => true,
+            'flowchart'           => [
+                'htmlLabels' => true,
+                'curve'      => 'basis',
+            ],
+        ], JSON_PRETTY_PRINT);
+
+        $code = '';
+        if ($showCode) {
+            $code .= "<pre><code>{$this}</code></pre>";
+            $code .= '<hr>';
+            $code .= "<pre><code>mermaid.initialize({$params})</code></pre>";
+        }
+
         return implode(PHP_EOL, [
             '<!DOCTYPE html>',
             '<html lang="en">',
             '<head>',
             '    <meta charset="utf-8">',
+            "    <link rel=\"stylesheet\" href=\"{$bootstrap}\">",
             '</head>',
             '<body>',
+            '    <main role="main" class="container">',
             "    <div class=\"mermaid\">{$this}</div>",
+            $code,
+            '    </div>',
+            '</main>',
             "    <script src=\"{$scriptUrl}\"></script>",
-            '    <script>mermaid.initialize({startOnLoad:true});</script>',
+            "    <script>mermaid.initialize({$params});</script>",
             '</body>',
             '</html>',
         ]);

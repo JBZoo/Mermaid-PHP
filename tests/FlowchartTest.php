@@ -46,6 +46,10 @@ class FlowchartTest extends PHPUnit
     public function testNodeRendering()
     {
         isSame('A;', (string)(new Node('A')));
+        isSame('A', (new Node('A'))->getTitle());
+        isSame('Title', (new Node('A'))->setTitle('Title')->getTitle());
+        isSame('("%s")', (new Node('A'))->getForm());
+        isSame('>"%s"]', (new Node('A'))->setForm(Node::ASYMMETRIC_SHAPE)->getForm());
         isSame('A("Node Name");', (string)(new Node('A', 'Node Name')));
         isSame('A("Node Name");', (string)(new Node('A', 'Node Name', Node::ROUND)));
         isSame('A{"Node Name"};', (string)(new Node('A', 'Node Name', Node::RHOMBUS)));
@@ -115,6 +119,8 @@ class FlowchartTest extends PHPUnit
         $graph->addLink(new Link($nodeC, $nodeE, 'Two'));
         $graph->addStyle('linkStyle default interpolate basis');
 
+        $this->dumpHtml($graph);
+
         is(implode(PHP_EOL, [
             'graph LR;',
             '    A["Hard edge"];',
@@ -128,6 +134,10 @@ class FlowchartTest extends PHPUnit
             '    C-->|Two|E;',
             'linkStyle default interpolate basis',
         ]), (string)$graph);
+
+        $html = $graph->renderHtml();
+        isContain($graph, $html);
+        isContain('<script>mermaid.initialize(', $html);
     }
 
     /**
@@ -135,6 +145,6 @@ class FlowchartTest extends PHPUnit
      */
     protected function dumpHtml(Graph $graph)
     {
-        file_put_contents(PATH_ROOT . '/build/index.html', $graph->renderHtml());
+        file_put_contents(PATH_ROOT . '/build/index.html', $graph->renderHtml(true));
     }
 }
