@@ -106,18 +106,17 @@ class FlowchartTest extends PHPUnit
 
     public function testComplexGraph()
     {
-        $graph = new Graph();
-        $graph->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE));
-        $graph->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND));
-        $graph->addNode($nodeC = new Node('C', 'Decision', Node::RHOMBUS));
-        $graph->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE));
-        $graph->addNode($nodeE = new Node('E', 'Result two', Node::SQUARE));
-
-        $graph->addLink(new Link($nodeA, $nodeB, 'Link text'));
-        $graph->addLink(new Link($nodeB, $nodeC));
-        $graph->addLink(new Link($nodeC, $nodeD, 'One'));
-        $graph->addLink(new Link($nodeC, $nodeE, 'Two'));
-        $graph->addStyle('linkStyle default interpolate basis');
+        $graph = (new Graph())
+            ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
+            ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
+            ->addNode($nodeC = new Node('C', 'Decision', Node::RHOMBUS))
+            ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
+            ->addNode($nodeE = new Node('E', 'Result two', Node::SQUARE))
+            ->addLink(new Link($nodeA, $nodeB, 'Link text'))
+            ->addLink(new Link($nodeB, $nodeC))
+            ->addLink(new Link($nodeC, $nodeD, 'One'))
+            ->addLink(new Link($nodeC, $nodeE, 'Two'))
+            ->addStyle('linkStyle default interpolate basis');
 
         $this->dumpHtml($graph);
 
