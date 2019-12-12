@@ -1,4 +1,4 @@
-# JBZoo Mermaid-PHP  [![Build Status](https://travis-ci.org/JBZoo/Mermaid-PHP.svg?branch=master)](https://travis-ci.org/JBZoo/Mermaid-PHP) [![Coverage Status](https://coveralls.io/repos/JBZoo/Mermaid-PHP/badge.svg?branch=master&service=github)](https://coveralls.io/github/JBZoo/Mermaid-PHP?branch=master)
+# JBZoo Mermaid-PHP  [![Build Status](https://travis-ci.org/JBZoo/Mermaid-PHP.svg?branch=master)](https://travis-ci.org/JBZoo/Mermaid-PHP) [![Coverage Status](https://coveralls.io/repos/github/JBZoo/mermaid-php/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/mermaid-php?branch=master)
 
 Example
 
