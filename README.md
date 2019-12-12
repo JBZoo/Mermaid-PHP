@@ -1,4 +1,4 @@
-# JBZoo Mermaid-PHP  [![Build Status](https://travis-ci.org/JBZoo/mermaid-php.svg?branch=master)](https://travis-ci.org/JBZoo/mermaid-php) [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Mermaid-PHP/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Mermaid-PHP?branch=master)
+# JBZoo Mermaid-PHP  [![Latest Stable Version](https://poser.pugx.org/JBZoo/Mermaid-PHP/v/stable)](https://packagist.org/packages/JBZoo/Mermaid-PHP) [![License](https://poser.pugx.org/JBZoo/Mermaid-PHP/license)](https://packagist.org/packages/JBZoo/Mermaid-PHP) [![Build Status](https://travis-ci.org/JBZoo/Mermaid-PHP.svg?branch=master)](https://travis-ci.org/JBZoo/Mermaid-PHP) [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Mermaid-PHP/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Mermaid-PHP?branch=master)
 
 ### Usage
 
@@ -8,6 +8,8 @@
 use JBZoo\MermaidPHP\Graph;
 use JBZoo\MermaidPHP\Link;
 use JBZoo\MermaidPHP\Node;
+
+require_once './vendor/autoload.php';
 
 $graph = (new Graph())
     ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
@@ -21,8 +23,8 @@ $graph = (new Graph())
     ->addLink(new Link($nodeC, $nodeE, 'Two'))
     ->addStyle('linkStyle default interpolate basis');
 
-echo $graph; // Get result as string 
-$graph->renderHtml(true, '8.4.3'); // Get result as HTML code for debugging 
+echo $graph; // Get result as string (or $graph->__toString())
+$htmlCode = $graph->renderHtml(true, '8.4.3'); // Get result as HTML code for debugging 
 ```
 
 ### Result
