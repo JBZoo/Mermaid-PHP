@@ -35,7 +35,6 @@ class Helper
         $title = $params['title'] ?? '';
 
         $scriptUrl = "https://unpkg.com/mermaid@{$version}/dist/mermaid.js";
-        $bootstrap = 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css';
 
         // @see https://mermaid-js.github.io/mermaid/#/mermaidAPI?id=loglevel
         $mermaidParams = \json_encode([
@@ -56,13 +55,13 @@ class Helper
             ],
         ], JSON_PRETTY_PRINT);
 
-        $code = '';
+        $debugCode = '';
         if ($isDebug) {
-            $code .= '<hr>';
-            $code .= '<pre><code>' . htmlentities((string)$graph) . '</code></pre>';
-            $code .= '<hr>';
+            $debugCode .= '<hr>';
+            $debugCode .= '<pre><code>' . htmlentities((string)$graph) . '</code></pre>';
+            $debugCode .= '<hr>';
             $graphParams = \json_encode($graph->getParams(), JSON_PRETTY_PRINT);
-            $code .= "<pre><code>Params = {$graphParams}</code></pre>";
+            $debugCode .= "<pre><code>Params = {$graphParams}</code></pre>";
         }
 
         return implode(PHP_EOL, [
@@ -70,19 +69,23 @@ class Helper
             '<html lang="en">',
             '<head>',
             '    <meta charset="utf-8">',
-            "    <link rel=\"stylesheet\" href=\"{$bootstrap}\">",
+            '   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>',
+            "   <script src=\"{$scriptUrl}\"></script>",
             '</head>',
             '<body>',
-            '    <main role="main" class="container">',
             $title ? "<h1>{$title}</h1><hr>" : '',
-            '    <div class="mermaid" style="margin-top:20px;">',
-            (string)$graph,
-            '</div>',
-            $code,
-            '    </div>',
-            '</main>',
-            "    <script src=\"{$scriptUrl}\"></script>",
-            "    <script>mermaid.initialize({$mermaidParams});</script>",
+            '    <div class="mermaid" style="margin-top:20px;">' . $graph . '</div>',
+            '    <input type="button" class="btn btn-primary" id="zoom" value="Zoom In">',
+            $debugCode,
+            "    <script>
+                     mermaid.initialize({$mermaidParams});
+                     $(function () {
+                        $('#zoom').click(() => {
+                            $('.mermaid').removeAttr('data-processed');
+                            $('.mermaid').width($('.mermaid svg').css('max-width'));
+                        });
+                     });
+                </script>",
             '</body>',
             '</html>',
         ]);

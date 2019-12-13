@@ -191,7 +191,6 @@ class FlowchartTest extends PHPUnit
 
         $html = $graph->renderHtml();
         isContain($graph, $html);
-        isContain('<script>mermaid.initialize(', $html);
     }
 
     public function testSimpleSubGraph()
