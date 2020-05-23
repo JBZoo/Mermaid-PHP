@@ -1,14 +1,36 @@
+#
+# JBZoo Toolbox - MermaidPHP
+#
+# This file is part of the JBZoo Toolbox project.
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @package    MermaidPHP
+# @license    MIT
+# @copyright  Copyright (C) JBZoo.com, All rights reserved.
+# @link       https://github.com/JBZoo/MermaidPHP
+#
+
 language: php
+os: linux
+dist: xenial
 
 php:
-  - 7.1
   - 7.2
   - 7.3
   - 7.4
 
-script:
-  - make
-  - make test-all
+env:
+  matrix:
+    - JBZOO_COMPOSER_UPDATE_FLAGS="--prefer-lowest --prefer-stable"
+    - JBZOO_COMPOSER_UPDATE_FLAGS=""
 
-after_success:
-  - travis_retry php vendor/bin/php-coveralls -v
+before_script:
+  - composer self-update
+
+script:
+  - make update   --no-print-directory
+  - make test-all --no-print-directory
+
+after_script:
+  - make report-coveralls

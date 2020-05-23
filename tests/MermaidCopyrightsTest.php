@@ -13,15 +13,13 @@
  * @link       https://github.com/JBZoo/MermaidPHP
  */
 
-namespace JBZoo\MermaidPHP;
-
-use RuntimeException;
+namespace JBZoo\PHPUnit;
 
 /**
- * Class Exception
- * @package JBZoo\MermaidPHP
+ * Class MermaidCopyrightsTest
+ * @package JBZoo\PHPUnit
  */
-class Exception extends RuntimeException
+class MermaidCopyrightsTest extends AbstractCopyrightTest
 {
-
+    protected $packageName = 'MermaidPHP';
 }

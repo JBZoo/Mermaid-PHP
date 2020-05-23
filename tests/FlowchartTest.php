@@ -1,8 +1,9 @@
 <?php
+
 /**
- * JBZoo MermaidPHP
+ * JBZoo Toolbox - MermaidPHP
  *
- * This file is part of the JBZoo CCK package.
+ * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -294,7 +295,7 @@ class FlowchartTest extends PHPUnit
             ->addNode(new Node('e', 'Inner / circle<br>and some odd <br>special characters', Node::CIRCLE))
             ->addNode(new Node('od3', 'Really long text with linebreak<br>in an Odd shape', Node::CIRCLE))
             ->addNode(new Node('cyr', 'Cyrillic', Node::SQUARE))
-            ->addNode(new Node('cyr2', 'Circle shape Начало', Node::CIRCLE))
+            ->addNode(new Node('cyr2', 'Circle shape', Node::CIRCLE))
             ->addNode(new Node('f', ',.?!+-*ز'))
             ->addLinkByIds('cyr', 'cyr2')
             ->addLinkByIds('e', 'od3')
@@ -305,7 +306,7 @@ class FlowchartTest extends PHPUnit
         is(implode(PHP_EOL, [
             'graph TB;',
             '    ci(("Circle shape"));',
-            '    cyr2(("Circle shape Начало"));',
+            '    cyr2(("Circle shape"));',
             '    cyr["Cyrillic"];',
             '    e(("Inner / circle<br>and some odd <br>special characters"));',
             '    f(",.?!+-*ز");',
@@ -384,7 +385,7 @@ class FlowchartTest extends PHPUnit
     protected function dumpHtml(Graph $graph)
     {
         file_put_contents(
-            PATH_ROOT . '/build/index.html',
+            PROJECT_ROOT . '/build/index.html',
             $graph->renderHtml(['debug' => true, 'title' => $this->getName()])
         );
     }

@@ -17,11 +17,8 @@
     },
 
     "require-dev"  : {
-        "jbzoo/phpunit"               : "^3.0",
-        "jbzoo/utils"                 : "^3.0",
-        "php-coveralls/php-coveralls" : "^2.2",
-        "phpstan/phpstan"             : "^0.12.2",
-        "symfony/var-dumper"          : "^4.4"
+        "jbzoo/phpunit"   : "dev-master",
+        "jbzoo/codestyle" : "dev-master"
     },
 
     "autoload"     : {
@@ -32,13 +29,5 @@
 
     "autoload-dev" : {
         "classmap" : ["tests"]
-    },
-
-    "config"       : {
-        "optimize-autoloader" : true
-    },
-
-    "support"      : {
-        "issues" : "https://github.com/SmetDenis/Data/issues"
     }
 }

@@ -1,8 +1,9 @@
 <?php
+
 /**
- * JBZoo MermaidPHP
+ * JBZoo Toolbox - MermaidPHP
  *
- * This file is part of the JBZoo CCK package.
+ * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -91,7 +92,8 @@ class Node
     public function __toString()
     {
         if ($this->title) {
-            return $this->identifier . sprintf($this->form, Helper::escape($this->title)) . ';';
+            /* @phan-suppress-next-line PhanPluginPrintfVariableFormatString */
+            return $this->identifier . sprintf((string)$this->form, Helper::escape($this->title)) . ';';
         }
 
         return "{$this->identifier};";

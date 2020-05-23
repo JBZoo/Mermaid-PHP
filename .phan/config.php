@@ -13,15 +13,8 @@
  * @link       https://github.com/JBZoo/MermaidPHP
  */
 
-namespace JBZoo\MermaidPHP;
+$default = include __DIR__ . '/../vendor/jbzoo/codestyle/src/phan/default.php';
 
-use RuntimeException;
-
-/**
- * Class Exception
- * @package JBZoo\MermaidPHP
- */
-class Exception extends RuntimeException
-{
-
-}
+return array_merge($default, [
+    'directory_list' => ['src']
+]);
