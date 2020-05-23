@@ -6,8 +6,8 @@
     "keywords"     : ["mermaid", "mermaid-js", "diagrams", "flowcharts"],
     "authors"      : [
         {
-            "name"  : "SmetDenis",
-            "email" : "denis@jbzoo.com",
+            "name"  : "Denis Smetannikov",
+            "email" : "admin@jbzoo.com",
             "role"  : "lead"
         }
     ],
@@ -17,8 +17,9 @@
     },
 
     "require-dev"  : {
-        "jbzoo/phpunit"   : "dev-master",
-        "jbzoo/codestyle" : "dev-master"
+        "jbzoo/phpunit"             : "dev-master",
+        "jbzoo/codestyle"           : "dev-master",
+        "roave/security-advisories" : "dev-master"
     },
 
     "autoload"     : {
