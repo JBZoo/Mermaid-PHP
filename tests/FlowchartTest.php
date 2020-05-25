@@ -25,6 +25,14 @@ use JBZoo\MermaidPHP\Node;
  */
 class FlowchartTest extends PHPUnit
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->initVarDumper();
+
+        Node::safeMode(false);
+    }
+
     public function testGraphRendering()
     {
         $graph = new Graph();
@@ -74,7 +82,7 @@ class FlowchartTest extends PHPUnit
 
     public function testNodeRendering()
     {
-        isSame('A;', (string)(new Node('A')));
+        isSame('A("A");', (string)(new Node('A')));
         isSame('A', (new Node('A'))->getTitle());
         isSame('Title', (new Node('A'))->setTitle('Title')->getTitle());
         isSame('(%s)', (new Node('A'))->getForm());
@@ -89,6 +97,9 @@ class FlowchartTest extends PHPUnit
         isSame('A[\"Node Name"\];', (string)(new Node('A', 'Node Name', Node::PARALLELOGRAM_ALT)));
         isSame('A[/"Node Name"\];', (string)(new Node('A', 'Node Name', Node::TRAPEZOID)));
         isSame('A[\"Node Name"/];', (string)(new Node('A', 'Node Name', Node::TRAPEZOID_ALT)));
+        isSame('A[("Node Name")];', (string)(new Node('A', 'Node Name', Node::DATABASE)));
+        isSame('A(["Node Name"]);', (string)(new Node('A', 'Node Name', Node::STADIUM)));
+        isSame('A[["Node Name"]];', (string)(new Node('A', 'Node Name', Node::SUBROUTINE)));
 
         isSame('A("This is the (text) in the box");', (string)(new Node('A', 'This is the (text) in the box')));
         isSame('A("A double quote:#quot;");', (string)(new Node('A', 'A double quote:"')));
@@ -116,9 +127,8 @@ class FlowchartTest extends PHPUnit
 
     public function testNotFoundNode()
     {
-        $this->expectException(\JBZoo\MermaidPHP\Exception::class);
         $graph = new Graph();
-        $graph->getNode('undefined');
+        isSame(null, $graph->getNode('undefined'));
     }
 
     public function testSimpleGraph()
@@ -194,6 +204,59 @@ class FlowchartTest extends PHPUnit
         isContain($graph, $html);
     }
 
+    public function testComplexGraphSafeMode()
+    {
+        Node::safeMode(true);
+
+        $graph = (new Graph(['abc_order' => true]))
+            ->addSubGraph($subGraph1 = new Graph(['title' => 'Main workflow']))
+            ->addSubGraph($subGraph2 = new Graph(['title' => 'Problematic workflow']))
+            ->addStyle('linkStyle default interpolate basis');
+
+        $subGraph1
+            ->addNode($nodeE = new Node('E', 'Result two', Node::SQUARE))
+            ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
+            ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
+            ->addNode($nodeC = new Node('C', 'Decision', Node::CIRCLE))
+            ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
+            ->addLink(new Link($nodeE, $nodeD))
+            ->addLink(new Link($nodeB, $nodeC))
+            ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
+            ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥'))
+            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\\!@#$%^&*()_+><\' " '));
+
+        $subGraph2
+            ->addNode($alone = new Node('alone', 'Alone'))
+            ->addLink(new Link($alone, $nodeC));
+
+        $this->dumpHtml($graph);
+
+        is(implode(PHP_EOL, [
+            'graph TB;',
+            '    subgraph "Main workflow"',
+            '        3a3ea00cfc35332cedf6e5e9a32e94da["Result two"];',
+            '        9d5ed678fe57bcca610140957afab571("Round edge");',
+            '        7fc56270e7a70fa81a5935b72eacbe29["Hard edge"];',
+            '        0d61f8370cad1d412f80b84d143e1257(("Decision"));',
+            '        f623e75af30e62bbd73d6df5b50bb7b5["Result one"];',
+            '        3a3ea00cfc35332cedf6e5e9a32e94da-->f623e75af30e62bbd73d6df5b50bb7b5;',
+            '        9d5ed678fe57bcca610140957afab571-->0d61f8370cad1d412f80b84d143e1257;',
+            '        0d61f8370cad1d412f80b84d143e1257-->|"A double quote:#quot;"|f623e75af30e62bbd73d6df5b50bb7b5;',
+            '        0d61f8370cad1d412f80b84d143e1257-->|"A dec char:#hearts;"|3a3ea00cfc35332cedf6e5e9a32e94da;',
+            '        7fc56270e7a70fa81a5935b72eacbe29-->' .
+            '|"Link text<br>/\!@#$%^#amp;*()_+><\' #quot;"|9d5ed678fe57bcca610140957afab571;',
+            '    end',
+            '    subgraph "Problematic workflow"',
+            '        c42bbd90740264d115048a82c9a10214("Alone");',
+            '        c42bbd90740264d115048a82c9a10214-->0d61f8370cad1d412f80b84d143e1257;',
+            '    end',
+            'linkStyle default interpolate basis;',
+        ]), (string)$graph);
+
+        $html = $graph->renderHtml();
+        isContain($graph, $html);
+    }
+
     public function testSimpleSubGraph()
     {
         $graphMain = new Graph();
@@ -223,18 +286,18 @@ class FlowchartTest extends PHPUnit
             '    c1-->a2;',
             '',
             '    subgraph "one"',
-            '        a1;',
-            '        a2;',
+            '        a1("a1");',
+            '        a2("a2");',
             '        a1-->a2;',
             '    end',
             '    subgraph "two"',
-            '        b1;',
-            '        b2;',
+            '        b1("b1");',
+            '        b2("b2");',
             '        b1-->b2;',
             '    end',
             '    subgraph "three"',
-            '        c1;',
-            '        c2;',
+            '        c1("c1");',
+            '        c2("c2");',
             '        c1-->c2;',
             '    end',
         ]), (string)$graphMain);
@@ -276,7 +339,7 @@ class FlowchartTest extends PHPUnit
             ->addNode(new Node('ci', 'Circle shape', Node::CIRCLE))
             ->addLinkByIds('sq', 'ci');
 
-        $subgraphA = (new Graph(['title' => 'A', 'abc_order' => true]))
+        $subGraphA = (new Graph(['title' => 'A', 'abc_order' => true]))
             ->addNode(new Node('od', 'Odd shape', Node::ASYMMETRIC_SHAPE))
             ->addNode(new Node('ro', 'Rounded<br>square<br>shape', Node::ROUND))
             ->addNode(new Node('ro2', 'Rounded square shape', Node::ROUND))
@@ -284,7 +347,7 @@ class FlowchartTest extends PHPUnit
             ->addLinkByIds('od', 'ro', 'Two line<br/>edge comment')
             ->addLinkByIds('di', 'ro', '', Link::DOTTED)
             ->addLinkByIds('di', 'ro2', '', Link::THICK);
-        $graph->addSubGraph($subgraphA);
+        $graph->addSubGraph($subGraphA);
 
         $graph->addStyle('classDef green fill:#9f6,stroke:#333,stroke-width:2px');
         $graph->addStyle('classDef orange fill:#f96,stroke:#333,stroke-width:4px');
@@ -360,7 +423,7 @@ class FlowchartTest extends PHPUnit
         is(implode(PHP_EOL, [
             'graph TB;',
             '    subgraph "Global"',
-            '        Alone;',
+            '        Alone("Alone");',
             '        Alone-->Alone;',
             '        A-->C;',
             '        A-->D;',
@@ -377,6 +440,33 @@ class FlowchartTest extends PHPUnit
             '        end',
             '    end',
         ]), (string)$graph);
+    }
+
+    public function testCheckReadmeExample()
+    {
+        $graph = (new Graph(['abc_order' => true]))
+            ->addSubGraph($subGraph1 = new Graph(['title' => 'Main workflow']))
+            ->addSubGraph($subGraph2 = new Graph(['title' => 'Problematic workflow']))
+            ->addStyle('linkStyle default interpolate basis');
+
+        $subGraph1
+            ->addNode($nodeE = new Node('E', 'Result two', Node::SQUARE))
+            ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
+            ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
+            ->addNode($nodeC = new Node('C', 'Decision', Node::CIRCLE))
+            ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
+            ->addLink(new Link($nodeE, $nodeD))
+            ->addLink(new Link($nodeB, $nodeC))
+            ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
+            ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥'))
+            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\\!@#$%^&*()_+><\' " '));
+
+        $subGraph2
+            ->addNode($alone = new Node('alone', 'Alone'))
+            ->addLink(new Link($alone, $nodeC));
+
+        isContain((string)$graph, file_get_contents(PROJECT_ROOT . '/README.md'));
+        $this->dumpHtml($graph);
     }
 
     /**

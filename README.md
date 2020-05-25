@@ -34,9 +34,10 @@ $subGraph2
 
 echo $graph; // Get result as string (or $graph->__toString())
 $htmlCode = $graph->renderHtml([
-    'debug'   => true,
-    'version' => '8.4.3',
-    'title'   => 'Example'
+    'debug'      => true,
+    'version'   => '8.5.1',
+    'title'     => 'Example',
+    'show-zoom' => true
 ]); // Get result as HTML code for debugging 
 ```
 
@@ -67,9 +68,10 @@ linkStyle default interpolate basis;
  - [Mermaid on GitHub](https://github.com/knsv/mermaid)
  - [Mermaid Documentation](https://mermaidjs.github.io/)
 
+
 ## Unit tests and check code style
 ```sh
-make
+make update
 make test-all
 ```
 

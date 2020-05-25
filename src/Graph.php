@@ -86,7 +86,7 @@ class Graph
         if ($isMainGraph) {
             $result = ["graph {$this->params['direction']};"];
         } else {
-            $result = ["{$spaces}subgraph " . Helper::escape($this->params['title'])];
+            $result = ["{$spaces}subgraph " . Helper::escape((string)$this->params['title'])];
         }
 
         if (count($this->nodes) > 0) {
@@ -167,7 +167,17 @@ class Graph
         string $text = '',
         int $style = Link::ARROW
     ): Graph {
-        return $this->addLink(new Link($this->getNode($sourceNodeId), $this->getNode($targetNodeId), $text, $style));
+        $source = $this->getNode($sourceNodeId);
+        if (!$source) {
+            throw new Exception("Node id=\"{$sourceNodeId}\" not found");
+        }
+
+        $target = $this->getNode($targetNodeId);
+        if (!$target) {
+            throw new Exception("Node id=\"{$targetNodeId}\" not found");
+        }
+
+        return $this->addLink(new Link($source, $target, $text, $style));
     }
 
     /**
@@ -219,16 +229,11 @@ class Graph
 
     /**
      * @param string $nodeId
-     * @return Node
+     * @return Node|null
      */
-    public function getNode(string $nodeId): Node
+    public function getNode(string $nodeId): ?Node
     {
-        $node = $this->nodes[$nodeId] ?? null;
-        if (!$node) {
-            throw new Exception("Node with id={$nodeId} not found");
-        }
-
-        return $node;
+        return $this->nodes[$nodeId] ?? null;
     }
 
     /**

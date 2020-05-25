@@ -21,7 +21,7 @@ namespace JBZoo\MermaidPHP;
  */
 class Helper
 {
-    public const DEFAULT_VERSION = '8.4.3';
+    public const DEFAULT_VERSION = '8.5.1';
 
     /**
      * @param Graph         $graph
@@ -34,6 +34,8 @@ class Helper
         $version = $params['version'] ?? self::DEFAULT_VERSION;
         $isDebug = $params['debug'] ?? false;
         $title = $params['title'] ?? '';
+        $pageTitle = $title ?: 'JBZoo - Mermaid Graph';
+        $showZoom = $params['show-zoom'] ?? true;
 
         $scriptUrl = "https://unpkg.com/mermaid@{$version}/dist/mermaid.js";
 
@@ -42,9 +44,9 @@ class Helper
             'startOnLoad'         => true,
             'theme'               => 'forest', // default, forest, dark, neutral
             'themeCSS'            => implode(PHP_EOL, [
-                '.edgePath .path:hover{stroke-width: 2px}',
-                '.edgeLabel {border-radius: 4px}',
-                '.label { font-family: Source Sans Pro,Helvetica Neue,Arial,sans-serif; }',
+                '.edgePath .path:hover {stroke-width:4px; cursor:pointer}',
+                '.edgeLabel {border-radius:4px}',
+                '.label {font-family:Source Sans Pro,Helvetica Neue,Arial,sans-serif;}',
             ]),
             'loglevel'            => 'debug',
             'securityLevel'       => 'loose',
@@ -70,15 +72,20 @@ class Helper
             '<html lang="en">',
             '<head>',
             '    <meta charset="utf-8">',
+            "    <title>{$pageTitle}</title>",
             '   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>',
             "   <script src=\"{$scriptUrl}\"></script>",
             '</head>',
             '<body>',
+
             $title ? "<h1>{$title}</h1><hr>" : '',
             '    <div class="mermaid" style="margin-top:20px;">' . $graph . '</div>',
-            '    <input type="button" class="btn btn-primary" id="zoom" value="Zoom In">',
+
             $debugCode,
-            "    <script>
+
+            $showZoom ?
+                "<input type=\"button\" class=\"btn btn-primary\" id=\"zoom\" value=\"Zoom In\">
+                <script>
                      mermaid.initialize({$mermaidParams});
                      $(function () {
                         $('#zoom').click(() => {
@@ -86,7 +93,8 @@ class Helper
                             $('.mermaid').width($('.mermaid svg').css('max-width'));
                         });
                      });
-                </script>",
+                </script>"
+                : '',
             '</body>',
             '</html>',
         ]);
@@ -105,5 +113,14 @@ class Helper
         $text = str_replace(['&', '#lt;', '#gt;'], ['#', '<', '>'], $text);
 
         return "\"{$text}\"";
+    }
+
+    /**
+     * @param string $userFriendlyId
+     * @return string
+     */
+    public static function getId(string $userFriendlyId): string
+    {
+        return md5($userFriendlyId);
     }
 }

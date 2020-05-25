@@ -31,6 +31,14 @@ class Node
     public const PARALLELOGRAM_ALT = '[\%s\]';
     public const TRAPEZOID         = '[/%s\]';
     public const TRAPEZOID_ALT     = '[\%s/]';
+    public const DATABASE          = '[(%s)]';
+    public const SUBROUTINE        = '[[%s]]';
+    public const STADIUM           = '([%s])';
+
+    /**
+     * @var bool
+     */
+    private static $safeMode = false;
 
     /**
      * @var string
@@ -55,9 +63,17 @@ class Node
      */
     public function __construct(string $identifier, string $title = '', string $form = self::ROUND)
     {
-        $this->identifier = str_replace(' ', '', $identifier);
-        $this->setTitle($title);
+        $this->identifier = static::$safeMode ? Helper::getId($identifier) : $identifier;
+        $this->setTitle($title ?: $identifier);
         $this->setForm($form);
+    }
+
+    /**
+     * @param bool $safeMode
+     */
+    public static function safeMode(bool $safeMode): void
+    {
+        static::$safeMode = $safeMode;
     }
 
     /**
