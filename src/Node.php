@@ -77,6 +77,14 @@ class Node
     }
 
     /**
+     * @return bool
+     */
+    public static function isSafeMode(): bool
+    {
+        return static::$safeMode;
+    }
+
+    /**
      * @param string $title
      * @return $this
      */

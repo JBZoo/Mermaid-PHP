@@ -303,6 +303,54 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graphMain);
     }
 
+    public function testSimpleSubGraphSafeMode()
+    {
+        Node::safeMode(true);
+
+        $graphMain = new Graph();
+
+        $graphMain->addSubGraph($subOne = new Graph(['title' => 'one']));
+        $graphMain->addSubGraph($subTwo = new Graph(['title' => 'two']));
+        $graphMain->addSubGraph($subThree = new Graph(['title' => 'three']));
+
+        $subOne->addNode(new Node('a1'))
+            ->addNode($a2 = new Node('a2'))
+            ->addLinkByIds('a1', 'a2');
+
+        $subTwo->addNode(new Node('b1'))
+            ->addNode(new Node('b2'))
+            ->addLinkByIds('b1', 'b2');
+
+        $subThree->addNode($c1 = new Node('c1'))
+            ->addNode(new Node('c2'))
+            ->addLinkByIds('c1', 'c2');
+
+        $graphMain->addLink(new Link($c1, $a2));
+
+        $this->dumpHtml($graphMain);
+
+        is(implode(PHP_EOL, [
+            'graph TB;',
+            '    a9f7e97965d6cf799a529102a973b8b9-->693a9fdd4c2fd0700968fba0d07ff3c0;',
+            '',
+            '    subgraph "one"',
+            '        8a8bb7cd343aa2ad99b7d762030857a2("a1");',
+            '        693a9fdd4c2fd0700968fba0d07ff3c0("a2");',
+            '        8a8bb7cd343aa2ad99b7d762030857a2-->693a9fdd4c2fd0700968fba0d07ff3c0;',
+            '    end',
+            '    subgraph "two"',
+            '        edbab45572c72a5d9440b40bcc0500c0("b1");',
+            '        fbfba2e45c2045dc5cab22a5afe83d9d("b2");',
+            '        edbab45572c72a5d9440b40bcc0500c0-->fbfba2e45c2045dc5cab22a5afe83d9d;',
+            '    end',
+            '    subgraph "three"',
+            '        a9f7e97965d6cf799a529102a973b8b9("c1");',
+            '        9ab62b5ef34a985438bfdf7ee0102229("c2");',
+            '        a9f7e97965d6cf799a529102a973b8b9-->9ab62b5ef34a985438bfdf7ee0102229;',
+            '    end',
+        ]), (string)$graphMain);
+    }
+
     public function testBasicFlowchart()
     {
         $graph = (new Graph(['direction' => Graph::LEFT_RIGHT]))

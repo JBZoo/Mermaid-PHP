@@ -233,6 +233,10 @@ class Graph
      */
     public function getNode(string $nodeId): ?Node
     {
+        if (Node::isSafeMode()) {
+            $nodeId = Helper::getId($nodeId);
+        }
+
         return $this->nodes[$nodeId] ?? null;
     }
 
