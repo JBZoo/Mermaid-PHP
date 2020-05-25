@@ -200,12 +200,11 @@ class Graph
     }
 
     /**
-     * @param array<String> $params
      * @return string
      */
-    public function getLiveEditorUrl(array $params = []): string
+    public function getLiveEditorUrl(): string
     {
-        return Helper::getLiveEditorUrl($this, $params);
+        return Helper::getLiveEditorUrl($this);
     }
 
     /**
