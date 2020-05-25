@@ -126,8 +126,9 @@ class Helper
 
     /**
      * @param Graph $graph
+     * @return string
      */
-    public static function getLiveEditorUrl(Graph $graph)
+    public static function getLiveEditorUrl(Graph $graph): string
     {
         $params = base64_encode(json_encode([
             'code'    => (string)$graph,
