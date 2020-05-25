@@ -48,6 +48,7 @@ class Helper
                 '.edgeLabel {border-radius:4px}',
                 '.label {font-family:Source Sans Pro,Helvetica Neue,Arial,sans-serif;}',
             ]),
+            'maxTextSize'         => 1000000, // almost no size limitation
             'loglevel'            => 'debug',
             'securityLevel'       => 'loose',
             'arrowMarkerAbsolute' => true,

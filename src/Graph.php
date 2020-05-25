@@ -169,12 +169,12 @@ class Graph
     ): Graph {
         $source = $this->getNode($sourceNodeId);
         if (!$source) {
-            throw new Exception("Node id=\"{$sourceNodeId}\" not found");
+            throw new Exception("Source node id=\"{$sourceNodeId}\" not found");
         }
 
         $target = $this->getNode($targetNodeId);
         if (!$target) {
-            throw new Exception("Node id=\"{$targetNodeId}\" not found");
+            throw new Exception("Target node id=\"{$targetNodeId}\" not found");
         }
 
         return $this->addLink(new Link($source, $target, $text, $style));

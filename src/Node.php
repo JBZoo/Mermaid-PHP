@@ -63,7 +63,7 @@ class Node
      */
     public function __construct(string $identifier, string $title = '', string $form = self::ROUND)
     {
-        $this->identifier = static::$safeMode ? Helper::getId($identifier) : $identifier;
+        $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->setTitle($title ?: $identifier);
         $this->setForm($form);
     }
