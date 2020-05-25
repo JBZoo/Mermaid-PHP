@@ -515,6 +515,8 @@ class FlowchartTest extends PHPUnit
 
         isContain((string)$graph, file_get_contents(PROJECT_ROOT . '/README.md'));
         $this->dumpHtml($graph);
+
+        isContain($graph->getLiveEditorUrl(), file_get_contents(PROJECT_ROOT . '/README.md'));
     }
 
     /**

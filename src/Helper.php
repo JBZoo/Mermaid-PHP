@@ -123,4 +123,19 @@ class Helper
     {
         return md5($userFriendlyId);
     }
+
+    /**
+     * @param Graph $graph
+     */
+    public static function getLiveEditorUrl(Graph $graph)
+    {
+        $params = base64_encode(json_encode([
+            'code'    => (string)$graph,
+            'mermaid' => [
+                'theme' => 'forest'
+            ]
+        ]));
+
+        return "https://mermaid-js.github.io/mermaid-live-editor/#/edit/{$params}";
+    }
 }

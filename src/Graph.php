@@ -200,6 +200,15 @@ class Graph
     }
 
     /**
+     * @param array<String> $params
+     * @return string
+     */
+    public function getLiveEditorUrl(array $params = []): string
+    {
+        return Helper::getLiveEditorUrl($this, $params);
+    }
+
+    /**
      * @param mixed[] $params
      * @return Graph
      */

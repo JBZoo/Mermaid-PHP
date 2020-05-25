@@ -32,16 +32,19 @@ $subGraph2
     ->addNode($alone = new Node('alone', 'Alone'))
     ->addLink(new Link($alone, $nodeC));
 
-echo $graph; // Get result as string (or $graph->__toString())
+echo $graph; // Get result as string (or $graph->__toString(), or (string)$graph)
 $htmlCode = $graph->renderHtml([
     'debug'      => true,
     'version'   => '8.5.1',
     'title'     => 'Example',
     'show-zoom' => true
-]); // Get result as HTML code for debugging 
+]); // Get result as HTML code for debugging
+
+echo $graph->getLiveEditorUrl(); // Get link to live editor 
 ```
 
 ### Result
+[Open live editor](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVEI7XG4gICAgc3ViZ3JhcGggXCJNYWluIHdvcmtmbG93XCJcbiAgICAgICAgRVtcIlJlc3VsdCB0d29cIl07XG4gICAgICAgIEIoXCJSb3VuZCBlZGdlXCIpO1xuICAgICAgICBBW1wiSGFyZCBlZGdlXCJdO1xuICAgICAgICBDKChcIkRlY2lzaW9uXCIpKTtcbiAgICAgICAgRFtcIlJlc3VsdCBvbmVcIl07XG4gICAgICAgIEUtLT5EO1xuICAgICAgICBCLS0+QztcbiAgICAgICAgQy0tPnxcIkEgZG91YmxlIHF1b3RlOiNxdW90O1wifEQ7XG4gICAgICAgIEMtLT58XCJBIGRlYyBjaGFyOiNoZWFydHM7XCJ8RTtcbiAgICAgICAgQS0tPnxcIkxpbmsgdGV4dDxicj5cL1xcIUAjJCVeI2FtcDsqKClfKz48JyAjcXVvdDtcInxCO1xuICAgIGVuZFxuICAgIHN1YmdyYXBoIFwiUHJvYmxlbWF0aWMgd29ya2Zsb3dcIlxuICAgICAgICBhbG9uZShcIkFsb25lXCIpO1xuICAgICAgICBhbG9uZS0tPkM7XG4gICAgZW5kXG5saW5rU3R5bGUgZGVmYXVsdCBpbnRlcnBvbGF0ZSBiYXNpczsiLCJtZXJtYWlkIjp7InRoZW1lIjoiZm9yZXN0In19)
 
 ```
 graph TB;
@@ -63,6 +66,7 @@ graph TB;
     end
 linkStyle default interpolate basis;
 ```
+
 
 ### See also
  - [Mermaid on GitHub](https://github.com/knsv/mermaid)
