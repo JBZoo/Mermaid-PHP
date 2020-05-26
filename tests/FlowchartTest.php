@@ -28,9 +28,7 @@ class FlowchartTest extends PHPUnit
     protected function setUp(): void
     {
         parent::setUp();
-        $this->initVarDumper();
-
-        Node::safeMode(false);
+        Node::safeMode(false); // Set to default  value before each test case
     }
 
     public function testGraphRendering()
