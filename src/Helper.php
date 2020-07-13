@@ -21,7 +21,7 @@ namespace JBZoo\MermaidPHP;
  */
 class Helper
 {
-    public const DEFAULT_VERSION = '8.5.1';
+    public const DEFAULT_VERSION = '8.6.0';
 
     /**
      * @param Graph         $graph
