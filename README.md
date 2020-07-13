@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/JBZoo/Mermaid-PHP.svg?branch=master)](https://travis-ci.org/JBZoo/Mermaid-PHP)    [![Coverage Status](https://coveralls.io/repos/JBZoo/Mermaid-PHP/badge.svg)](https://coveralls.io/github/JBZoo/Mermaid-PHP?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Mermaid-PHP/coverage.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    
 [![Latest Stable Version](https://poser.pugx.org/JBZoo/Mermaid-PHP/v)](https://packagist.org/packages/JBZoo/Mermaid-PHP)    [![Latest Unstable Version](https://poser.pugx.org/JBZoo/Mermaid-PHP/v/unstable)](https://packagist.org/packages/JBZoo/Mermaid-PHP)    [![Dependents](https://poser.pugx.org/JBZoo/Mermaid-PHP/dependents)](https://packagist.org/packages/JBZoo/Mermaid-PHP/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/JBZoo/Mermaid-PHP)](https://github.com/JBZoo/Mermaid-PHP/issues)    [![Total Downloads](https://poser.pugx.org/JBZoo/Mermaid-PHP/downloads)](https://packagist.org/packages/JBZoo/Mermaid-PHP/stats)    [![GitHub License](https://img.shields.io/github/license/JBZoo/Mermaid-PHP)](https://github.com/JBZoo/Mermaid-PHP/blob/master/LICENSE)
 
+Generate diagrams and flowcharts as HTML which is based on [mermaid-js](https://mermaidjs.github.io/).
+
 
 ### Usage
 
