@@ -1,7 +1,9 @@
-# JBZoo / Mermaid-PHP 
- 
+# JBZoo / Mermaid-PHP
+
 [![Build Status](https://travis-ci.org/JBZoo/Mermaid-PHP.svg?branch=master)](https://travis-ci.org/JBZoo/Mermaid-PHP)    [![Coverage Status](https://coveralls.io/repos/JBZoo/Mermaid-PHP/badge.svg)](https://coveralls.io/github/JBZoo/Mermaid-PHP?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Mermaid-PHP/coverage.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    
-[![Latest Stable Version](https://poser.pugx.org/JBZoo/Mermaid-PHP/v)](https://packagist.org/packages/JBZoo/Mermaid-PHP)    [![Latest Unstable Version](https://poser.pugx.org/JBZoo/Mermaid-PHP/v/unstable)](https://packagist.org/packages/JBZoo/Mermaid-PHP)    [![Dependents](https://poser.pugx.org/JBZoo/Mermaid-PHP/dependents)](https://packagist.org/packages/JBZoo/Mermaid-PHP/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/JBZoo/Mermaid-PHP)](https://github.com/JBZoo/Mermaid-PHP/issues)    [![Total Downloads](https://poser.pugx.org/JBZoo/Mermaid-PHP/downloads)](https://packagist.org/packages/JBZoo/Mermaid-PHP/stats)    [![GitHub License](https://img.shields.io/github/license/JBZoo/Mermaid-PHP)](https://github.com/JBZoo/Mermaid-PHP/blob/master/LICENSE)
+[![Stable Version](https://poser.pugx.org/jbzoo/mermaid-php/version)](https://packagist.org/packages/jbzoo/mermaid-php)    [![Latest Unstable Version](https://poser.pugx.org/jbzoo/mermaid-php/v/unstable)](https://packagist.org/packages/jbzoo/mermaid-php)    [![Dependents](https://poser.pugx.org/jbzoo/mermaid-php/dependents)](https://packagist.org/packages/jbzoo/mermaid-php/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/issues)    [![Total Downloads](https://poser.pugx.org/jbzoo/mermaid-php/downloads)](https://packagist.org/packages/jbzoo/mermaid-php/stats)    [![GitHub License](https://img.shields.io/github/license/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/blob/master/LICENSE)
+
+
 
 Generate diagrams and flowcharts as HTML which is based on [mermaid-js](https://mermaidjs.github.io/).
 
@@ -14,8 +16,7 @@ Generate diagrams and flowcharts as HTML which is based on [mermaid-js](https://
 use JBZoo\MermaidPHP\Graph;
 use JBZoo\MermaidPHP\Link;
 use JBZoo\MermaidPHP\Node;
-
-require_once './vendor/autoload.php';
+use JBZoo\MermaidPHP\Render;
 
 $graph = (new Graph(['abc_order' => true]))
     ->addSubGraph($subGraph1 = new Graph(['title' => 'Main workflow']))
@@ -40,8 +41,9 @@ $subGraph2
 
 echo $graph; // Get result as string (or $graph->__toString(), or (string)$graph)
 $htmlCode = $graph->renderHtml([
-    'debug'      => true,
-    'version'   => '8.5.1',
+    'debug'     => true,
+    'version'   => '8.6.0',
+    'theme'     => Render::THEME_DARK,
     'title'     => 'Example',
     'show-zoom' => true
 ]); // Get result as HTML code for debugging

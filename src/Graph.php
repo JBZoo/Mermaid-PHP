@@ -196,7 +196,7 @@ class Graph
      */
     public function renderHtml(array $params = []): string
     {
-        return Helper::renderHtml($this, $params);
+        return Render::html($this, $params);
     }
 
     /**
