@@ -21,7 +21,7 @@ namespace JBZoo\MermaidPHP;
  */
 class Render
 {
-    public const DEFAULT_VERSION = '8.6.0';
+    public const DEFAULT_VERSION = '8.6.4';
 
     public const THEME_DEFAULT = 'default';
     public const THEME_FOREST  = 'forest';
