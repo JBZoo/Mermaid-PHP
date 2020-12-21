@@ -112,6 +112,7 @@ class Node
 
     /**
      * @return string
+     * @psalm-suppress RedundantCastGivenDocblockType
      */
     public function __toString()
     {
