@@ -104,6 +104,11 @@ class Render
                      });
                 </script>"
                 : '',
+            '<script>
+                $(document).on("click", "path", e => {
+                    e.currentTarget.style.stroke = e.currentTarget.style.stroke ? "" : "red";
+                });
+            </script>',
             '</body>',
             '</html>',
         ]);
