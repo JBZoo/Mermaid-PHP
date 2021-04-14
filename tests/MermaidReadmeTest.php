@@ -13,6 +13,8 @@
  * @link       https://github.com/JBZoo/Mermaid-PHP
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\PHPUnit;
 
 /**
@@ -23,4 +25,16 @@ namespace JBZoo\PHPUnit;
 class MermaidPhpReadmeTest extends AbstractReadmeTest
 {
     protected $packageName = 'Mermaid-PHP';
+
+    /**
+     * @inheritDoc
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->params['scrutinizer'] = true;
+        $this->params['codefactor'] = true;
+        $this->params['strict_types'] = true;
+    }
 }
