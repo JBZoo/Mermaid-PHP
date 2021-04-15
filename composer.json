@@ -17,8 +17,7 @@
     },
 
     "require-dev"       : {
-        "jbzoo/toolbox-dev"    : "^2.9.0",
-        "jbzoo/composer-graph" : "^1.1.0"
+        "jbzoo/toolbox-dev" : "^2.9.2"
     },
 
     "autoload"          : {
