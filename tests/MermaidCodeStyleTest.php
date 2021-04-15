@@ -13,6 +13,8 @@
  * @link       https://github.com/JBZoo/Mermaid-PHP
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\PHPUnit;
 
 /**

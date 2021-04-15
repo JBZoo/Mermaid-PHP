@@ -13,6 +13,8 @@
  * @link       https://github.com/JBZoo/Mermaid-PHP
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\PHPUnit;
 
 use JBZoo\MermaidPHP\Graph;
@@ -199,7 +201,7 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graph);
 
         $html = $graph->renderHtml();
-        isContain($graph, $html);
+        isContain((string)$graph, $html);
     }
 
     public function testComplexGraphSafeMode()
@@ -252,7 +254,7 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graph);
 
         $html = $graph->renderHtml();
-        isContain($graph, $html);
+        isContain((string)$graph, $html);
     }
 
     public function testSimpleSubGraph()
