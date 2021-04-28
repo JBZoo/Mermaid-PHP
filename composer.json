@@ -1,43 +1,40 @@
 {
-    "name"              : "jbzoo/mermaid-php",
-    "type"              : "library",
-    "description"       : "Generate diagrams and flowcharts with the help of the mermaid script language",
-    "license"           : "MIT",
-    "keywords"          : ["mermaid", "mermaid-js", "diagrams", "flowcharts"],
-    "authors"           : [
+    "name"         : "jbzoo/mermaid-php",
+    "type"         : "library",
+    "description"  : "Generate diagrams and flowcharts with the help of the mermaid script language",
+    "license"      : "MIT",
+    "keywords"     : ["mermaid", "mermaid-js", "diagrams", "flowcharts"],
+    "authors"      : [
         {
             "name"  : "Denis Smetannikov",
             "email" : "admin@jbzoo.com",
             "role"  : "lead"
         }
     ],
-    "require"           : {
+    "require"      : {
         "php"      : ">=7.2",
         "ext-json" : "*"
     },
 
-    "require-dev"       : {
-        "jbzoo/toolbox-dev" : "^2.9.2"
+    "require-dev"  : {
+        "jbzoo/toolbox-dev" : "^2.13.1"
     },
 
-    "autoload"          : {
+    "autoload"     : {
         "psr-4" : {
             "JBZoo\\MermaidPHP\\" : "src"
         }
     },
 
-    "autoload-dev"      : {
+    "autoload-dev" : {
         "classmap" : ["tests"]
     },
 
-    "minimum-stability" : "dev",
-    "prefer-stable"     : true,
-
-    "config"            : {
+    "config"       : {
         "optimize-autoloader" : true
     },
 
-    "extra"             : {
+    "extra"        : {
         "branch-alias" : {
             "dev-master" : "2.x-dev"
         }
