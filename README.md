@@ -28,7 +28,7 @@ $subGraph1
     ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
     ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
     ->addNode($nodeC = new Node('C', 'Decision', Node::CIRCLE))
-    ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
+    ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE, "https://mermaid-js.github.io/"))
     ->addLink(new Link($nodeE, $nodeD))
     ->addLink(new Link($nodeB, $nodeC))
     ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
