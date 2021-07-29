@@ -48,7 +48,7 @@ class Graph
      */
     protected $params = [
         'abc_order' => false,
-        'title' => 'Graph',
+        'title'     => 'Graph',
         'direction' => self::TOP_BOTTOM,
     ];
 
@@ -75,7 +75,7 @@ class Graph
 
     /**
      * @param bool $isMainGraph
-     * @param int $shift
+     * @param int  $shift
      * @return string
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -171,7 +171,7 @@ class Graph
      * @param string $sourceNodeId
      * @param string $targetNodeId
      * @param string $text
-     * @param int $style
+     * @param int    $style
      * @return Graph
      */
     public function addLinkByIds(
@@ -179,8 +179,7 @@ class Graph
         string $targetNodeId,
         string $text = '',
         int $style = Link::ARROW
-    ): Graph
-    {
+    ): Graph {
         $source = $this->getNode($sourceNodeId);
         if (!$source) {
             throw new Exception("Source node id=\"{$sourceNodeId}\" not found");

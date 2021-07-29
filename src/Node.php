@@ -67,6 +67,7 @@ class Node
      * @param string $identifier
      * @param string $title
      * @param string $form
+     * @param string|null $url
      */
     public function __construct(string $identifier, string $title = '', string $form = self::ROUND, string $url = null)
     {

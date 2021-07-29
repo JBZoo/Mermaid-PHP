@@ -23,16 +23,16 @@ namespace JBZoo\MermaidPHP;
  */
 class Link
 {
-    public const ARROW = 1;
-    public const LINE = 2;
+    public const ARROW  = 1;
+    public const LINE   = 2;
     public const DOTTED = 3;
-    public const THICK = 4;
+    public const THICK  = 4;
 
     protected const TEMPLATES = [
-        self::ARROW => ['-->', '-->|%s|'],
-        self::LINE => [' --- ', '---|%s|'],
+        self::ARROW  => ['-->', '-->|%s|'],
+        self::LINE   => [' --- ', '---|%s|'],
         self::DOTTED => ['-.->', '-. %s .-> '],
-        self::THICK => [' ==> ', ' == %s ==> '],
+        self::THICK  => [' ==> ', ' == %s ==> '],
     ];
 
     /**
@@ -66,10 +66,10 @@ class Link
     protected $index = null;
 
     /**
-     * @param Node $sourceNode
-     * @param Node $targetNode
+     * @param Node   $sourceNode
+     * @param Node   $targetNode
      * @param string $text
-     * @param int $type
+     * @param int    $type
      * @param string|null $style
      */
     public function __construct(Node $sourceNode, Node $targetNode, string $text = '', int $type = self::ARROW, ?string $style = null)
