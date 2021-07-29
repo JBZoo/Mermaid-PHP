@@ -48,7 +48,7 @@ class Graph
      */
     protected $params = [
         'abc_order' => false,
-        'title'     => 'Graph',
+        'title' => 'Graph',
         'direction' => self::TOP_BOTTOM,
     ];
 
@@ -75,7 +75,7 @@ class Graph
 
     /**
      * @param bool $isMainGraph
-     * @param int  $shift
+     * @param int $shift
      * @return string
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -107,8 +107,11 @@ class Graph
 
         if (count($this->links) > 0) {
             $tmp = [];
-            foreach ($this->links as $link) {
+            $i = 0;
+            foreach ($this->links as $idx => $link) {
                 $tmp[] = $spacesSub . $link;
+                $this->links[$idx]->setIndex($i);
+                $i++;
             }
             if ($this->params['abc_order']) {
                 sort($tmp);
@@ -126,6 +129,14 @@ class Graph
         if ($isMainGraph && count($this->styles) > 0) {
             foreach ($this->styles as $style) {
                 $result[] = $spaces . $style . ';';
+            }
+        }
+
+        if (count($this->links) > 0) {
+            foreach ($this->links as $link) {
+                if ($style = $link->getStyle()) {
+                    $result[] = $spaces . $style . ';';
+                }
             }
         }
 
@@ -160,7 +171,7 @@ class Graph
      * @param string $sourceNodeId
      * @param string $targetNodeId
      * @param string $text
-     * @param int    $style
+     * @param int $style
      * @return Graph
      */
     public function addLinkByIds(
@@ -168,7 +179,8 @@ class Graph
         string $targetNodeId,
         string $text = '',
         int $style = Link::ARROW
-    ): Graph {
+    ): Graph
+    {
         $source = $this->getNode($sourceNodeId);
         if (!$source) {
             throw new Exception("Source node id=\"{$sourceNodeId}\" not found");

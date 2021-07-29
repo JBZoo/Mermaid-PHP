@@ -113,16 +113,16 @@ class FlowchartTest extends PHPUnit
         $link = new Link($nodeA, $nodeB);
 
         isSame('A-->B;', (string)$link);
-        isSame('A-->B;', (string)$link->setStyle(Link::ARROW));
-        isSame('A --- B;', (string)$link->setStyle(Link::LINE));
-        isSame('A ==> B;', (string)$link->setStyle(Link::THICK));
-        isSame('A-.->B;', (string)$link->setStyle(Link::DOTTED));
+        isSame('A-->B;', (string)$link->setType(Link::ARROW));
+        isSame('A --- B;', (string)$link->setType(Link::LINE));
+        isSame('A ==> B;', (string)$link->setType(Link::THICK));
+        isSame('A-.->B;', (string)$link->setType(Link::DOTTED));
 
         $link->setText('This is the text');
-        isSame('A-->|"This is the text"|B;', (string)$link->setStyle(Link::ARROW));
-        isSame('A---|"This is the text"|B;', (string)$link->setStyle(Link::LINE));
-        isSame('A == "This is the text" ==> B;', (string)$link->setStyle(Link::THICK));
-        isSame('A-. "This is the text" .-> B;', (string)$link->setStyle(Link::DOTTED));
+        isSame('A-->|"This is the text"|B;', (string)$link->setType(Link::ARROW));
+        isSame('A---|"This is the text"|B;', (string)$link->setType(Link::LINE));
+        isSame('A == "This is the text" ==> B;', (string)$link->setType(Link::THICK));
+        isSame('A-. "This is the text" .-> B;', (string)$link->setType(Link::DOTTED));
     }
 
     public function testNotFoundNode()
