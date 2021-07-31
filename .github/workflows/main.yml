@@ -20,8 +20,8 @@ on:
   push:
     branches:
       - 'master'
-  schedule:
-    - cron: '20 */8 * * *'
+#  schedule:
+#    - cron: '20 */8 * * *'
 
 env:
   COLUMNS: 120
