@@ -58,16 +58,23 @@ class Node
     protected $form = self::ROUND;
 
     /**
+     * @var string|null
+     */
+    protected $url = null;
+
+    /**
      * Node constructor.
      * @param string $identifier
      * @param string $title
      * @param string $form
+     * @param string|null $url
      */
-    public function __construct(string $identifier, string $title = '', string $form = self::ROUND)
+    public function __construct(string $identifier, string $title = '', string $form = self::ROUND, string $url = null)
     {
         $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->setTitle($title ?: $identifier);
         $this->setForm($form);
+        $this->url = $url;
     }
 
     /**
@@ -118,12 +125,12 @@ class Node
      */
     public function __toString()
     {
+        $url = $this->url ? "click $this->identifier \" $this->url\";" : '';
         if ($this->title) {
             /* @phan-suppress-next-line PhanPluginPrintfVariableFormatString */
-            return $this->identifier . sprintf((string)$this->form, Helper::escape($this->title)) . ';';
+            return $this->identifier . sprintf((string)$this->form, Helper::escape($this->title)) . ";$url";
         }
-
-        return "{$this->identifier};";
+        return "{$this->identifier};$url";
     }
 
     /**

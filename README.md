@@ -1,6 +1,6 @@
 # JBZoo / Mermaid-PHP
 
-[![Build Status](https://travis-ci.org/JBZoo/Mermaid-PHP.svg?branch=master)](https://travis-ci.org/JBZoo/Mermaid-PHP)    [![Coverage Status](https://coveralls.io/repos/JBZoo/Mermaid-PHP/badge.svg)](https://coveralls.io/github/JBZoo/Mermaid-PHP)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Mermaid-PHP/coverage.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jbzoo/mermaid-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jbzoo/mermaid-php/?branch=master)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/badge)](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/issues)    [![PHP Strict Types](https://img.shields.io/badge/strict__types-%3D1-brightgreen)](https://www.php.net/manual/en/language.types.declarations.php#language.types.declarations.strict)    
+[![Build Status](https://travis-ci.org/JBZoo/Mermaid-PHP.svg?branch=master)](https://travis-ci.org/JBZoo/Mermaid-PHP)    [![Coverage Status](https://coveralls.io/repos/JBZoo/Mermaid-PHP/badge.svg)](https://coveralls.io/github/JBZoo/Mermaid-PHP)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Mermaid-PHP/coverage.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jbzoo/mermaid-php/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jbzoo/mermaid-php/?branch=master)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/badge)](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/issues)    [![PHP Strict Types](https://img.shields.io/badge/strict__types-%3D1-brightgreen)](https://www.php.net/manual/en/language.types.declarations.php#language.types.declarations.strict)
 [![Stable Version](https://poser.pugx.org/jbzoo/mermaid-php/version)](https://packagist.org/packages/jbzoo/mermaid-php)    [![Latest Unstable Version](https://poser.pugx.org/jbzoo/mermaid-php/v/unstable)](https://packagist.org/packages/jbzoo/mermaid-php)    [![Dependents](https://poser.pugx.org/jbzoo/mermaid-php/dependents)](https://packagist.org/packages/jbzoo/mermaid-php/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/issues)    [![Total Downloads](https://poser.pugx.org/jbzoo/mermaid-php/downloads)](https://packagist.org/packages/jbzoo/mermaid-php/stats)    [![GitHub License](https://img.shields.io/github/license/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/blob/master/LICENSE)
 
 
@@ -28,11 +28,11 @@ $subGraph1
     ->addNode($nodeB = new Node('B', 'Round edge', Node::ROUND))
     ->addNode($nodeA = new Node('A', 'Hard edge', Node::SQUARE))
     ->addNode($nodeC = new Node('C', 'Decision', Node::CIRCLE))
-    ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE))
+    ->addNode($nodeD = new Node('D', 'Result one', Node::SQUARE, "https://mermaid-js.github.io/"))
     ->addLink(new Link($nodeE, $nodeD))
     ->addLink(new Link($nodeB, $nodeC))
     ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
-    ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥'))
+    ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥', Link::ARROW, 'stroke:blue,stroke-width:4px'))
     ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\\!@#$%^&*()_+><\' " '));
 
 $subGraph2
@@ -48,7 +48,7 @@ $htmlCode = $graph->renderHtml([
     'show-zoom' => true
 ]); // Get result as HTML code for debugging
 
-echo $graph->getLiveEditorUrl(); // Get link to live editor 
+echo $graph->getLiveEditorUrl(); // Get link to live editor
 ```
 
 ### Result
@@ -73,6 +73,7 @@ graph TB;
         alone-->C;
     end
 linkStyle default interpolate basis;
+linkStyle 3 stroke:blue,stroke-width:4px;
 ```
 
 
@@ -100,6 +101,6 @@ MIT
 - [Composer-Graph](https://github.com/JBZoo/Composer-Graph) - Dependency graph visualization of composer.json based on mermaid-js.
 - [Utils](https://github.com/JBZoo/Utils) - Collection of useful PHP functions, mini-classes, and snippets for every day.
 - [Image](https://github.com/JBZoo/Image) - Package provides object-oriented way to manipulate with images as simple as possible.
-- [Data](https://github.com/JBZoo/Data) - Extended implementation of ArrayObject. Use files as config/array. 
+- [Data](https://github.com/JBZoo/Data) - Extended implementation of ArrayObject. Use files as config/array.
 - [Retry](https://github.com/JBZoo/Retry) - Tiny PHP library providing retry/backoff functionality with multiple backoff strategies and jitter support.
 - [SimpleTypes](https://github.com/JBZoo/SimpleTypes) - Converting any values and measures - money, weight, exchange rates, length, ...

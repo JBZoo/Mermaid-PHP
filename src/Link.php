@@ -48,7 +48,7 @@ class Link
     /**
      * @var int
      */
-    protected $style = self::ARROW;
+    protected $type = self::ARROW;
 
     /**
      * @var string
@@ -56,17 +56,29 @@ class Link
     protected $text = '';
 
     /**
+     * @var ?string
+     */
+    protected $style = '';
+
+    /**
+     * @var int|null
+     */
+    protected $index = null;
+
+    /**
      * @param Node   $sourceNode
      * @param Node   $targetNode
      * @param string $text
-     * @param int    $style
+     * @param int    $type
+     * @param string|null $style
      */
-    public function __construct(Node $sourceNode, Node $targetNode, string $text = '', int $style = self::ARROW)
+    public function __construct(Node $sourceNode, Node $targetNode, string $text = '', int $type = self::ARROW, ?string $style = null)
     {
         $this->sourceNode = $sourceNode;
         $this->targetNode = $targetNode;
+        $this->style = $style;
         $this->setText($text);
-        $this->setStyle($style);
+        $this->setType($type);
     }
 
     /**
@@ -80,12 +92,23 @@ class Link
     }
 
     /**
-     * @param int $style
+     * @param int $type
      * @return Link
      */
-    public function setStyle(int $style): Link
+    public function setType(int $type): Link
     {
-        $this->style = $style;
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * The link is assigned an index at render time, which is used in getStyle()
+     * @param int $index
+     * @return Link
+     */
+    public function setIndex(int $index): Link
+    {
+        $this->index = $index;
         return $this;
     }
 
@@ -94,11 +117,22 @@ class Link
      */
     public function __toString()
     {
-        $line = self::TEMPLATES[$this->style][0];
+        $line = self::TEMPLATES[$this->type][0];
         if ($this->text) {
-            $line = sprintf(self::TEMPLATES[$this->style][1], Helper::escape($this->text));
+            $line = sprintf(self::TEMPLATES[$this->type][1], Helper::escape($this->text));
         }
 
         return "{$this->sourceNode->getId()}{$line}{$this->targetNode->getId()};";
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStyle(): ?string
+    {
+        if (is_null($this->index) || is_null($this->style)) {
+            return null;
+        }
+        return "linkStyle $this->index $this->style";
     }
 }

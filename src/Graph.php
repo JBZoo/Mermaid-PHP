@@ -107,8 +107,11 @@ class Graph
 
         if (count($this->links) > 0) {
             $tmp = [];
-            foreach ($this->links as $link) {
+            $i = 0;
+            foreach ($this->links as $idx => $link) {
                 $tmp[] = $spacesSub . $link;
+                $this->links[$idx]->setIndex($i);
+                $i++;
             }
             if ($this->params['abc_order']) {
                 sort($tmp);
@@ -126,6 +129,14 @@ class Graph
         if ($isMainGraph && count($this->styles) > 0) {
             foreach ($this->styles as $style) {
                 $result[] = $spaces . $style . ';';
+            }
+        }
+
+        if (count($this->links) > 0) {
+            foreach ($this->links as $link) {
+                if ($style = $link->getStyle()) {
+                    $result[] = $spaces . $style . ';';
+                }
             }
         }
 
