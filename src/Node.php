@@ -75,7 +75,7 @@ class Node
      */
     public static function safeMode(bool $safeMode): void
     {
-        static::$safeMode = $safeMode;
+        self::$safeMode = $safeMode;
     }
 
     /**
@@ -83,7 +83,7 @@ class Node
      */
     public static function isSafeMode(): bool
     {
-        return static::$safeMode;
+        return self::$safeMode;
     }
 
     /**
