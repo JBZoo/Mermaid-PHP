@@ -71,14 +71,15 @@ class Render
 
         $debugCode = '';
         if ($isDebug) {
+            $graphParams = \json_encode($graph->getParams(), \JSON_PRETTY_PRINT);
+
             $debugCode .= '<hr>';
             $debugCode .= '<pre><code>' . \htmlentities((string)$graph) . '</code></pre>';
             $debugCode .= '<hr>';
-            $graphParams = \json_encode($graph->getParams(), \JSON_PRETTY_PRINT);
             $debugCode .= "<pre><code>Params = {$graphParams}</code></pre>";
         }
 
-        return \implode(\PHP_EOL, [
+        $html = [
             '<!DOCTYPE html>',
             '<html lang="en">',
             '<head>',
@@ -113,7 +114,9 @@ class Render
             </script>',
             '</body>',
             '</html>',
-        ]);
+        ];
+
+        return \implode(\PHP_EOL, $html);
     }
 
     /**
