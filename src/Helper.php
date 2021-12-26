@@ -29,11 +29,11 @@ class Helper
      */
     public static function escape(string $text): string
     {
-        $text = trim($text);
-        $text = htmlentities($text);
+        $text = \trim($text);
+        $text = \htmlentities($text);
 
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
-        $text = str_replace(['&', '#lt;', '#gt;'], ['#', '<', '>'], $text);
+        $text = \str_replace(['&', '#lt;', '#gt;'], ['#', '<', '>'], $text);
 
         return "\"{$text}\"";
     }
@@ -44,7 +44,7 @@ class Helper
      */
     public static function getId(string $userFriendlyId): string
     {
-        return md5($userFriendlyId);
+        return \md5($userFriendlyId);
     }
 
     /**
@@ -53,7 +53,7 @@ class Helper
      */
     public static function getLiveEditorUrl(Graph $graph): string
     {
-        $params = base64_encode((string)json_encode([
+        $params = \base64_encode((string)\json_encode([
             'code'    => (string)$graph,
             'mermaid' => [
                 'theme' => 'forest'

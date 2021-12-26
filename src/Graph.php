@@ -28,6 +28,8 @@ class Graph
     public const LEFT_RIGHT = 'LR';
     public const RIGHT_LEFT = 'RL';
 
+    private const RENDER_SHIFT = 4;
+
     /**
      * @var Graph[]
      */
@@ -82,8 +84,8 @@ class Graph
      */
     public function render(bool $isMainGraph = true, int $shift = 0): string
     {
-        $spaces = str_repeat(' ', $shift);
-        $spacesSub = str_repeat(' ', $shift + 4);
+        $spaces = \str_repeat(' ', $shift);
+        $spacesSub = \str_repeat(' ', $shift + self::RENDER_SHIFT);
 
         if ($isMainGraph) {
             $result = ["graph {$this->params['direction']};"];
@@ -91,29 +93,29 @@ class Graph
             $result = ["{$spaces}subgraph " . Helper::escape((string)$this->params['title'])];
         }
 
-        if (count($this->nodes) > 0) {
+        if (\count($this->nodes) > 0) {
             $tmp = [];
             foreach ($this->nodes as $node) {
                 $tmp[] = $spacesSub . $node;
             }
             if ($this->params['abc_order']) {
-                sort($tmp);
+                \sort($tmp);
             }
-            $result = array_merge($result, $tmp);
+            $result = \array_merge($result, $tmp);
             if ($isMainGraph) {
                 $result[] = '';
             }
         }
 
-        if (count($this->links) > 0) {
+        if (\count($this->links) > 0) {
             $tmp = [];
             foreach ($this->links as $link) {
                 $tmp[] = $spacesSub . $link;
             }
             if ($this->params['abc_order']) {
-                sort($tmp);
+                \sort($tmp);
             }
-            $result = array_merge($result, $tmp);
+            $result = \array_merge($result, $tmp);
             if ($isMainGraph) {
                 $result[] = '';
             }
@@ -123,7 +125,7 @@ class Graph
             $result[] = $subGraph->render(false, $shift + 4);
         }
 
-        if ($isMainGraph && count($this->styles) > 0) {
+        if ($isMainGraph && \count($this->styles) > 0) {
             foreach ($this->styles as $style) {
                 $result[] = $spaces . $style . ';';
             }
@@ -133,7 +135,7 @@ class Graph
             $result[] = "{$spaces}end";
         }
 
-        return implode(PHP_EOL, $result);
+        return \implode(\PHP_EOL, $result);
     }
 
     /**
@@ -215,7 +217,7 @@ class Graph
      */
     public function setParams(array $params): Graph
     {
-        $this->params = array_merge($this->params, $params);
+        $this->params = \array_merge($this->params, $params);
         return $this;
     }
 

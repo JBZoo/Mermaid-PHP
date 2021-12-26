@@ -120,7 +120,7 @@ class Node
     {
         if ($this->title) {
             /* @phan-suppress-next-line PhanPluginPrintfVariableFormatString */
-            return $this->identifier . sprintf((string)$this->form, Helper::escape($this->title)) . ';';
+            return $this->identifier . \sprintf((string)$this->form, Helper::escape($this->title)) . ';';
         }
 
         return "{$this->identifier};";

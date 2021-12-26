@@ -52,7 +52,7 @@ class Render
         $mermaidParams = \json_encode([
             'startOnLoad'         => true,
             'theme'               => $theme,
-            'themeCSS'            => implode(PHP_EOL, [
+            'themeCSS'            => \implode(\PHP_EOL, [
                 '.edgePath .path:hover {stroke-width:4px; cursor:pointer}',
                 '.edgeLabel {border-radius:4px}',
                 '.label {font-family:Source Sans Pro,Helvetica Neue,Arial,sans-serif;}',
@@ -67,18 +67,18 @@ class Render
                 'diagramPadding' => 12,
                 'curve'          => 'basis',
             ],
-        ], JSON_PRETTY_PRINT);
+        ], \JSON_PRETTY_PRINT);
 
         $debugCode = '';
         if ($isDebug) {
             $debugCode .= '<hr>';
-            $debugCode .= '<pre><code>' . htmlentities((string)$graph) . '</code></pre>';
+            $debugCode .= '<pre><code>' . \htmlentities((string)$graph) . '</code></pre>';
             $debugCode .= '<hr>';
-            $graphParams = \json_encode($graph->getParams(), JSON_PRETTY_PRINT);
+            $graphParams = \json_encode($graph->getParams(), \JSON_PRETTY_PRINT);
             $debugCode .= "<pre><code>Params = {$graphParams}</code></pre>";
         }
 
-        return implode(PHP_EOL, [
+        return \implode(\PHP_EOL, [
             '<!DOCTYPE html>',
             '<html lang="en">',
             '<head>',
@@ -122,11 +122,11 @@ class Render
      */
     public static function escape(string $text): string
     {
-        $text = trim($text);
-        $text = htmlentities($text);
+        $text = \trim($text);
+        $text = \htmlentities($text);
 
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
-        $text = str_replace(['&', '#lt;', '#gt;'], ['#', '<', '>'], $text);
+        $text = \str_replace(['&', '#lt;', '#gt;'], ['#', '<', '>'], $text);
 
         return "\"{$text}\"";
     }
@@ -137,7 +137,7 @@ class Render
      */
     public static function getId(string $userFriendlyId): string
     {
-        return md5($userFriendlyId);
+        return \md5($userFriendlyId);
     }
 
     /**
@@ -146,7 +146,7 @@ class Render
      */
     public static function getLiveEditorUrl(Graph $graph): string
     {
-        $params = base64_encode((string)json_encode([
+        $params = \base64_encode((string)\json_encode([
             'code'    => (string)$graph,
             'mermaid' => [
                 'theme' => 'forest'

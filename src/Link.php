@@ -96,7 +96,7 @@ class Link
     {
         $line = self::TEMPLATES[$this->style][0];
         if ($this->text) {
-            $line = sprintf(self::TEMPLATES[$this->style][1], Helper::escape($this->text));
+            $line = \sprintf(self::TEMPLATES[$this->style][1], Helper::escape($this->text));
         }
 
         return "{$this->sourceNode->getId()}{$line}{$this->targetNode->getId()};";
