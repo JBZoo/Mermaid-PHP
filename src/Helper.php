@@ -30,7 +30,7 @@ class Helper
     public static function escape(string $text): string
     {
         $text = \trim($text);
-        $text = \htmlentities($text, ENT_COMPAT);
+        $text = \htmlentities($text, \ENT_COMPAT);
 
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
         $text = \str_replace(['&', '#lt;', '#gt;'], ['#', '<', '>'], $text);
