@@ -24,17 +24,5 @@ namespace JBZoo\PHPUnit;
  */
 class MermaidReadmeTest extends AbstractReadmeTest
 {
-    protected $packageName = 'Mermaid-PHP';
-
-    /**
-     * @inheritDoc
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->params['codefactor'] = true;
-        $this->params['strict_types'] = true;
-        $this->params['travis'] = false;
-    }
+    protected string $packageName = 'Mermaid-PHP';
 }

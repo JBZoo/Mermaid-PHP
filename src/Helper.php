@@ -53,12 +53,12 @@ class Helper
      */
     public static function getLiveEditorUrl(Graph $graph): string
     {
-        $params = \base64_encode((string)\json_encode([
+        $params = \base64_encode(\json_encode([
             'code'    => (string)$graph,
             'mermaid' => [
                 'theme' => 'forest'
             ]
-        ]));
+        ], \JSON_THROW_ON_ERROR) ?: '');
 
         return "https://mermaid-js.github.io/mermaid-live-editor/#/edit/{$params}";
     }

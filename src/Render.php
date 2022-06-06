@@ -67,7 +67,7 @@ class Render
                 'diagramPadding' => 12,
                 'curve'          => 'basis',
             ],
-        ], \JSON_PRETTY_PRINT);
+        ], \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT);
 
         $debugCode = '';
         if ($isDebug) {
@@ -149,12 +149,12 @@ class Render
      */
     public static function getLiveEditorUrl(Graph $graph): string
     {
-        $params = \base64_encode((string)\json_encode([
+        $params = \base64_encode(\json_encode([
             'code'    => (string)$graph,
             'mermaid' => [
                 'theme' => 'forest'
             ]
-        ]));
+        ], \JSON_THROW_ON_ERROR) ?: '');
 
         return "https://mermaid-js.github.io/mermaid-live-editor/#/edit/{$params}";
     }
