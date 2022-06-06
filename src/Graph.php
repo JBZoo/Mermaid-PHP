@@ -33,22 +33,22 @@ class Graph
     /**
      * @var Graph[]
      */
-    protected $subGraphs = [];
+    protected array $subGraphs = [];
 
     /**
      * @var Node[]
      */
-    protected $nodes = [];
+    protected array $nodes = [];
 
     /**
      * @var Link[]
      */
-    protected $links = [];
+    protected array $links = [];
 
     /**
      * @var mixed[]
      */
-    protected $params = [
+    protected array $params = [
         'abc_order' => false,
         'title'     => 'Graph',
         'direction' => self::TOP_BOTTOM,
@@ -212,7 +212,7 @@ class Graph
     }
 
     /**
-     * @param mixed[] $params
+     * @param array $params
      * @return Graph
      */
     public function setParams(array $params): Graph
@@ -222,7 +222,7 @@ class Graph
     }
 
     /**
-     * @return mixed[]
+     * @return array
      */
     public function getParams(): array
     {

@@ -40,22 +40,22 @@ class Node
     /**
      * @var bool
      */
-    private static $safeMode = false;
+    private static bool $safeMode = false;
 
     /**
      * @var string
      */
-    protected $identifier = '';
+    protected string $identifier = '';
 
     /**
      * @var string
      */
-    protected $title = '';
+    protected string $title = '';
 
     /**
      * @var string
      */
-    protected $form = self::ROUND;
+    protected string $form = self::ROUND;
 
     /**
      * Node constructor.
@@ -114,13 +114,12 @@ class Node
 
     /**
      * @return string
-     * @psalm-suppress RedundantCastGivenDocblockType
      */
     public function __toString()
     {
         if ($this->title) {
             /* @phan-suppress-next-line PhanPluginPrintfVariableFormatString */
-            return $this->identifier . \sprintf((string)$this->form, Helper::escape($this->title)) . ';';
+            return $this->identifier . \sprintf($this->form, Helper::escape($this->title)) . ';';
         }
 
         return "{$this->identifier};";

@@ -38,22 +38,22 @@ class Link
     /**
      * @var Node
      */
-    protected $sourceNode;
+    protected Node $sourceNode;
 
     /**
      * @var Node
      */
-    protected $targetNode;
+    protected Node $targetNode;
 
     /**
      * @var int
      */
-    protected $style = self::ARROW;
+    protected int $style = self::ARROW;
 
     /**
      * @var string
      */
-    protected $text = '';
+    protected string $text = '';
 
     /**
      * @param Node   $sourceNode
