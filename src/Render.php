@@ -23,7 +23,7 @@ class Render
     public const THEME_DARK    = 'dark';
     public const THEME_NEUTRAL = 'neutral';
 
-    public const DEFAULT_MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaidAPI-f2dd6058.min.js';
+    public const DEFAULT_MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
     public static function html(Graph $graph, array $params = []): string
     {
@@ -73,7 +73,9 @@ class Render
             '    <meta charset="utf-8">',
             "    <title>{$pageTitle}</title>",
             '   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>',
-            "   <script src=\"{$scriptUrl}\"></script>",
+            '<script type="module">',
+            "        import mermaid from '{$scriptUrl}';",
+            '</script>',
             '</head>',
             '<body>',
 

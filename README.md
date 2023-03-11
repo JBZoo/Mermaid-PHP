@@ -5,7 +5,7 @@
 
 
 
-Generate diagrams and flowcharts as HTML which is based on [mermaid-js](https://mermaidjs.github.io/).
+Generate diagrams and flowcharts as HTML which is based on [mermaid-js](https://mermaid.js.org/).
 
 
 ### Usage
@@ -77,8 +77,8 @@ linkStyle default interpolate basis;
 
 
 ### See also
- - [Mermaid on GitHub](https://github.com/knsv/mermaid)
- - [Mermaid Documentation](https://mermaidjs.github.io/)
+ - [Mermaid on GitHub](https://github.com/mermaid-js/mermaid)
+ - [Mermaid Documentation](https://mermaid.js.org/)
 
 
 ## Unit tests and check code style
