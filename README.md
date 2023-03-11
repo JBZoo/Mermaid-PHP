@@ -41,11 +41,11 @@ $subGraph2
 
 echo $graph; // Get result as string (or $graph->__toString(), or (string)$graph)
 $htmlCode = $graph->renderHtml([
-    'debug'     => true,
-    'version'   => '8.6.0',
-    'theme'     => Render::THEME_DARK,
-    'title'     => 'Example',
-    'show-zoom' => true
+    'debug'       => true,
+    'theme'       => Render::THEME_DARK,
+    'title'       => 'Example',
+    'show-zoom'   => false,
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
 ]); // Get result as HTML code for debugging
 
 echo $graph->getLiveEditorUrl(); // Get link to live editor 
