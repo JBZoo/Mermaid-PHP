@@ -1,45 +1,50 @@
 {
-    "name"         : "jbzoo/mermaid-php",
-    "type"         : "library",
-    "description"  : "Generate diagrams and flowcharts with the help of the mermaid script language",
-    "license"      : "MIT",
-    "keywords"     : ["mermaid", "mermaid-js", "diagrams", "flowcharts"],
-    "authors"      : [
+    "name"              : "jbzoo/mermaid-php",
+    "type"              : "library",
+    "description"       : "Generate diagrams and flowcharts with the help of the mermaid script language",
+    "license"           : "MIT",
+    "keywords"          : [
+        "mermaid",
+        "mermaid-js",
+        "diagrams",
+        "flowcharts"
+    ],
+    "authors"           : [
         {
             "name"  : "Denis Smetannikov",
             "email" : "admin@jbzoo.com",
             "role"  : "lead"
         }
     ],
-    "require"      : {
-        "php"      : ">=7.4",
+
+    "minimum-stability" : "dev",
+    "prefer-stable"     : true,
+
+    "require"           : {
+        "php"      : "^8.1",
         "ext-json" : "*"
     },
 
-    "require-dev"  : {
-        "jbzoo/toolbox-dev" : "^4.0.1"
+    "require-dev"       : {
+        "jbzoo/toolbox-dev" : "7.x-dev"
     },
 
-    "autoload"     : {
-        "psr-4" : {
-            "JBZoo\\MermaidPHP\\" : "src"
-        }
+    "autoload"          : {
+        "psr-4" : {"JBZoo\\MermaidPHP\\" : "src"}
     },
 
-    "autoload-dev" : {
-        "classmap" : ["tests"]
+    "autoload-dev"      : {
+        "psr-4" : {"JBZoo\\PHPUnit\\" : "tests"}
     },
 
-    "config"       : {
+    "config"            : {
         "optimize-autoloader" : true,
-        "allow-plugins"       : {
-            "composer/package-versions-deprecated" : true
-        }
+        "allow-plugins"       : {"composer/package-versions-deprecated" : true}
     },
 
-    "extra"        : {
+    "extra"             : {
         "branch-alias" : {
-            "dev-master" : "2.x-dev"
+            "dev-master" : "7.x-dev"
         }
     }
 }
