@@ -1,58 +1,45 @@
 <?php
 
 /**
- * JBZoo Toolbox - Mermaid-PHP
+ * JBZoo Toolbox - Mermaid-PHP.
  *
  * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package    Mermaid-PHP
  * @license    MIT
  * @copyright  Copyright (C) JBZoo.com, All rights reserved.
- * @link       https://github.com/JBZoo/Mermaid-PHP
+ * @see        https://github.com/JBZoo/Mermaid-PHP
  */
 
 declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-/**
- * Class Render
- * @package JBZoo\MermaidPHP
- */
 class Render
 {
-    public const DEFAULT_VERSION = '8.6.4';
-
     public const THEME_DEFAULT = 'default';
     public const THEME_FOREST  = 'forest';
     public const THEME_DARK    = 'dark';
     public const THEME_NEUTRAL = 'neutral';
 
-    /**
-     * @param Graph         $graph
-     * @param array<String> $params
-     * @return string
-     */
+    public const DEFAULT_MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
     public static function html(Graph $graph, array $params = []): string
     {
-        //bool $showCode = false, string $version =
-        $version = $params['version'] ?? self::DEFAULT_VERSION;
-        $isDebug = $params['debug'] ?? false;
-        $title = $params['title'] ?? '';
-        $theme = $params['theme'] ?? self::THEME_FOREST;
+        $theme     = (string)($params['theme'] ?? self::THEME_FOREST);
+        $scriptUrl = (string)($params['mermaid_url'] ?? self::DEFAULT_MERMAID_URL);
+        $showZoom  = (bool)($params['show-zoom'] ?? true);
+        $isDebug   = (bool)($params['debug'] ?? false);
 
-        $pageTitle = $title ?: 'JBZoo - Mermaid Graph';
-        $showZoom = $params['show-zoom'] ?? true;
+        $title     = (string)($params['title'] ?? '');
+        $pageTitle = $title === '' ? $title : 'JBZoo - Mermaid Graph';
 
-        $scriptUrl = "https://unpkg.com/mermaid@{$version}/dist/mermaid.js";
-
-        // @see https://mermaid-js.github.io/mermaid/#/mermaidAPI?id=loglevel
+        /** @see https://mermaid-js.github.io/mermaid/#/mermaidAPI?id=loglevel */
         $mermaidParams = \json_encode([
-            'startOnLoad'         => true,
-            'theme'               => $theme,
-            'themeCSS'            => \implode(\PHP_EOL, [
+            'startOnLoad' => true,
+            'theme'       => $theme,
+            'themeCSS'    => \implode(\PHP_EOL, [
                 '.edgePath .path:hover {stroke-width:4px; cursor:pointer}',
                 '.edgeLabel {border-radius:4px}',
                 '.label {font-family:Source Sans Pro,Helvetica Neue,Arial,sans-serif;}',
@@ -71,7 +58,7 @@ class Render
 
         $debugCode = '';
         if ($isDebug) {
-            $graphParams = \json_encode($graph->getParams(), \JSON_PRETTY_PRINT);
+            $graphParams = \json_encode($graph->getParams(), \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT);
 
             $debugCode .= '<hr>';
             $debugCode .= '<pre><code>' . \htmlentities((string)$graph) . '</code></pre>';
@@ -86,11 +73,14 @@ class Render
             '    <meta charset="utf-8">',
             "    <title>{$pageTitle}</title>",
             '   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>',
-            "   <script src=\"{$scriptUrl}\"></script>",
+            '<script type="module">',
+            "        import mermaid from '{$scriptUrl}';",
+            '</script>',
             '</head>',
             '<body>',
 
-            $title ? "<h1>{$title}</h1><hr>" : '',
+            $title !== '' ? "<h1>{$title}</h1><hr>" : '',
+
             '    <div class="mermaid" style="margin-top:20px;">' . $graph . '</div>',
 
             $debugCode,
@@ -119,42 +109,33 @@ class Render
         return \implode(\PHP_EOL, $html);
     }
 
-    /**
-     * @param string $text
-     * @return string
-     */
     public static function escape(string $text): string
     {
         $text = \trim($text);
         $text = \htmlentities($text);
 
-        /** @noinspection CallableParameterUseCaseInTypeContextInspection */
         $text = \str_replace(['&', '#lt;', '#gt;'], ['#', '<', '>'], $text);
 
         return "\"{$text}\"";
     }
 
-    /**
-     * @param string $userFriendlyId
-     * @return string
-     */
     public static function getId(string $userFriendlyId): string
     {
         return \md5($userFriendlyId);
     }
 
-    /**
-     * @param Graph $graph
-     * @return string
-     */
     public static function getLiveEditorUrl(Graph $graph): string
     {
-        $params = \base64_encode(\json_encode([
+        $json = \json_encode([
             'code'    => (string)$graph,
-            'mermaid' => [
-                'theme' => 'forest'
-            ]
-        ], \JSON_THROW_ON_ERROR) ?: '');
+            'mermaid' => ['theme' => 'forest'],
+        ]);
+
+        if ($json === false) {
+            throw new \RuntimeException('Can\'t encode JSON');
+        }
+
+        $params = \base64_encode($json);
 
         return "https://mermaid-js.github.io/mermaid-live-editor/#/edit/{$params}";
     }

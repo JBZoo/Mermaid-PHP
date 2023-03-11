@@ -1,11 +1,11 @@
 # JBZoo / Mermaid-PHP
 
-[![Coverage Status](https://coveralls.io/repos/JBZoo/Mermaid-PHP/badge.svg)](https://coveralls.io/github/JBZoo/Mermaid-PHP)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Mermaid-PHP/coverage.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/badge)](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/issues)    [![PHP Strict Types](https://img.shields.io/badge/strict__types-%3D1-brightgreen)](https://www.php.net/manual/en/language.types.declarations.php#language.types.declarations.strict)    
-[![Stable Version](https://poser.pugx.org/jbzoo/mermaid-php/version)](https://packagist.org/packages/jbzoo/mermaid-php)    [![Latest Unstable Version](https://poser.pugx.org/jbzoo/mermaid-php/v/unstable)](https://packagist.org/packages/jbzoo/mermaid-php)    [![Dependents](https://poser.pugx.org/jbzoo/mermaid-php/dependents)](https://packagist.org/packages/jbzoo/mermaid-php/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/issues)    [![Total Downloads](https://poser.pugx.org/jbzoo/mermaid-php/downloads)](https://packagist.org/packages/jbzoo/mermaid-php/stats)    [![GitHub License](https://img.shields.io/github/license/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/blob/master/LICENSE)
+[![CI](https://github.com/JBZoo/Mermaid-PHP/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/JBZoo/Mermaid-PHP/actions/workflows/main.yml?query=branch%3Amaster)    [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Mermaid-PHP/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Mermaid-PHP?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Mermaid-PHP/coverage.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![Psalm Level](https://shepherd.dev/github/JBZoo/Mermaid-PHP/level.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/badge)](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/issues)    
+[![Stable Version](https://poser.pugx.org/jbzoo/mermaid-php/version)](https://packagist.org/packages/jbzoo/mermaid-php/)    [![Total Downloads](https://poser.pugx.org/jbzoo/mermaid-php/downloads)](https://packagist.org/packages/jbzoo/mermaid-php/stats)    [![Dependents](https://poser.pugx.org/jbzoo/mermaid-php/dependents)](https://packagist.org/packages/jbzoo/mermaid-php/dependents?order_by=downloads)    [![Visitors](https://visitor-badge.glitch.me/badge?page_id=jbzoo.mermaid-php)]()    [![GitHub License](https://img.shields.io/github/license/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/blob/master/LICENSE)
 
 
 
-Generate diagrams and flowcharts as HTML which is based on [mermaid-js](https://mermaidjs.github.io/).
+Generate diagrams and flowcharts as HTML which is based on [mermaid-js](https://mermaid.js.org/).
 
 
 ### Usage
@@ -41,11 +41,11 @@ $subGraph2
 
 echo $graph; // Get result as string (or $graph->__toString(), or (string)$graph)
 $htmlCode = $graph->renderHtml([
-    'debug'     => true,
-    'version'   => '8.6.0',
-    'theme'     => Render::THEME_DARK,
-    'title'     => 'Example',
-    'show-zoom' => true
+    'debug'       => true,
+    'theme'       => Render::THEME_DARK,
+    'title'       => 'Example',
+    'show-zoom'   => false,
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
 ]); // Get result as HTML code for debugging
 
 echo $graph->getLiveEditorUrl(); // Get link to live editor 
@@ -77,8 +77,8 @@ linkStyle default interpolate basis;
 
 
 ### See also
- - [Mermaid on GitHub](https://github.com/knsv/mermaid)
- - [Mermaid Documentation](https://mermaidjs.github.io/)
+ - [Mermaid on GitHub](https://github.com/mermaid-js/mermaid)
+ - [Mermaid Documentation](https://mermaid.js.org/)
 
 
 ## Unit tests and check code style

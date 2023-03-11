@@ -1,16 +1,15 @@
 <?php
 
 /**
- * JBZoo Toolbox - Mermaid-PHP
+ * JBZoo Toolbox - Mermaid-PHP.
  *
  * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package    Mermaid-PHP
  * @license    MIT
  * @copyright  Copyright (C) JBZoo.com, All rights reserved.
- * @link       https://github.com/JBZoo/Mermaid-PHP
+ * @see        https://github.com/JBZoo/Mermaid-PHP
  */
 
 declare(strict_types=1);
@@ -21,11 +20,7 @@ use JBZoo\MermaidPHP\Graph;
 use JBZoo\MermaidPHP\Link;
 use JBZoo\MermaidPHP\Node;
 
-/**
- * Class FlowchartTest
- * @package JBZoo\PHPUnit
- */
-class FlowchartTest extends PHPUnit
+final class FlowchartTest extends PHPUnit
 {
     protected function setUp(): void
     {
@@ -33,7 +28,7 @@ class FlowchartTest extends PHPUnit
         Node::safeMode(false); // Set to default  value before each test case
     }
 
-    public function testGraphRendering()
+    public function testGraphRendering(): void
     {
         $graph = new Graph();
 
@@ -80,7 +75,7 @@ class FlowchartTest extends PHPUnit
         isSame('graph BT;', (string)$graph);
     }
 
-    public function testNodeRendering()
+    public function testNodeRendering(): void
     {
         isSame('A("A");', (string)(new Node('A')));
         isSame('A', (new Node('A'))->getTitle());
@@ -106,11 +101,11 @@ class FlowchartTest extends PHPUnit
         isSame('A("A dec char:#hearts;");', (string)(new Node('A', 'A dec char:♥')));
     }
 
-    public function testLinkRendering()
+    public function testLinkRendering(): void
     {
         $nodeA = new Node('A');
         $nodeB = new Node('B');
-        $link = new Link($nodeA, $nodeB);
+        $link  = new Link($nodeA, $nodeB);
 
         isSame('A-->B;', (string)$link);
         isSame('A-->B;', (string)$link->setStyle(Link::ARROW));
@@ -125,13 +120,13 @@ class FlowchartTest extends PHPUnit
         isSame('A-. "This is the text" .-> B;', (string)$link->setStyle(Link::DOTTED));
     }
 
-    public function testNotFoundNode()
+    public function testNotFoundNode(): void
     {
         $graph = new Graph();
         isSame(null, $graph->getNode('undefined'));
     }
 
-    public function testSimpleGraph()
+    public function testSimpleGraph(): void
     {
         $graph = new Graph(['abc_order' => false]);
         $nodeA = new Node('A', 'Text', Node::CIRCLE);
@@ -143,7 +138,7 @@ class FlowchartTest extends PHPUnit
 
         isCount(2, $graph->getNodes());
 
-        is(implode(PHP_EOL, [
+        is(\implode(\PHP_EOL, [
             'graph TB;',
             '    B("Another text");',
             '    A(("Text"));',
@@ -154,7 +149,7 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graph);
     }
 
-    public function testComplexGraph()
+    public function testComplexGraph(): void
     {
         $graph = (new Graph(['abc_order' => true]))
             ->addSubGraph($subGraph1 = new Graph(['title' => 'Main workflow']))
@@ -179,7 +174,7 @@ class FlowchartTest extends PHPUnit
 
         $this->dumpHtml($graph);
 
-        is(implode(PHP_EOL, [
+        is(\implode(\PHP_EOL, [
             'graph TB;',
             '    subgraph "Main workflow"',
             '        E["Result two"];',
@@ -204,7 +199,7 @@ class FlowchartTest extends PHPUnit
         isContain((string)$graph, $html);
     }
 
-    public function testComplexGraphSafeMode()
+    public function testComplexGraphSafeMode(): void
     {
         Node::safeMode(true);
 
@@ -231,7 +226,7 @@ class FlowchartTest extends PHPUnit
 
         $this->dumpHtml($graph);
 
-        is(implode(PHP_EOL, [
+        is(\implode(\PHP_EOL, [
             'graph TB;',
             '    subgraph "Main workflow"',
             '        3a3ea00cfc35332cedf6e5e9a32e94da["Result two"];',
@@ -257,7 +252,7 @@ class FlowchartTest extends PHPUnit
         isContain((string)$graph, $html);
     }
 
-    public function testSimpleSubGraph()
+    public function testSimpleSubGraph(): void
     {
         $graphMain = new Graph();
 
@@ -281,7 +276,7 @@ class FlowchartTest extends PHPUnit
 
         $this->dumpHtml($graphMain);
 
-        is(implode(PHP_EOL, [
+        is(\implode(\PHP_EOL, [
             'graph TB;',
             '    c1-->a2;',
             '',
@@ -303,7 +298,7 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graphMain);
     }
 
-    public function testSimpleSubGraphSafeMode()
+    public function testSimpleSubGraphSafeMode(): void
     {
         Node::safeMode(true);
 
@@ -329,7 +324,7 @@ class FlowchartTest extends PHPUnit
 
         $this->dumpHtml($graphMain);
 
-        is(implode(PHP_EOL, [
+        is(\implode(\PHP_EOL, [
             'graph TB;',
             '    a9f7e97965d6cf799a529102a973b8b9-->693a9fdd4c2fd0700968fba0d07ff3c0;',
             '',
@@ -351,7 +346,7 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graphMain);
     }
 
-    public function testBasicFlowchart()
+    public function testBasicFlowchart(): void
     {
         $graph = (new Graph(['direction' => Graph::LEFT_RIGHT]))
             ->addNode(new Node('A', 'Square Rect', Node::SQUARE))
@@ -365,7 +360,7 @@ class FlowchartTest extends PHPUnit
 
         $this->dumpHtml($graph);
 
-        is(implode(PHP_EOL, [
+        is(\implode(\PHP_EOL, [
             'graph LR;',
             '    A["Square Rect"];',
             '    B(("Circle"));',
@@ -380,7 +375,7 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graph);
     }
 
-    public function testLargerFlowchartWithSomeStyling()
+    public function testLargerFlowchartWithSomeStyling(): void
     {
         $graph = (new Graph(['abc_order' => true]))
             ->addNode(new Node('sq', 'Square shape', Node::SQUARE))
@@ -414,7 +409,7 @@ class FlowchartTest extends PHPUnit
 
         $this->dumpHtml($graph);
 
-        is(implode(PHP_EOL, [
+        is(\implode(\PHP_EOL, [
             'graph TB;',
             '    ci(("Circle shape"));',
             '    cyr2(("Circle shape"));',
@@ -445,7 +440,7 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graph);
     }
 
-    public function testNestedGraph()
+    public function testNestedGraph(): void
     {
         $graph = new Graph();
         $graph->addSubGraph($globalGraph = new Graph(['title' => 'Global']));
@@ -468,7 +463,7 @@ class FlowchartTest extends PHPUnit
 
         $this->dumpHtml($graph);
 
-        is(implode(PHP_EOL, [
+        is(\implode(\PHP_EOL, [
             'graph TB;',
             '    subgraph "Global"',
             '        Alone("Alone");',
@@ -490,7 +485,7 @@ class FlowchartTest extends PHPUnit
         ]), (string)$graph);
     }
 
-    public function testCheckReadmeExample()
+    public function testCheckReadmeExample(): void
     {
         $graph = (new Graph(['abc_order' => true]))
             ->addSubGraph($subGraph1 = new Graph(['title' => 'Main workflow']))
@@ -513,20 +508,17 @@ class FlowchartTest extends PHPUnit
             ->addNode($alone = new Node('alone', 'Alone'))
             ->addLink(new Link($alone, $nodeC));
 
-        isContain((string)$graph, file_get_contents(PROJECT_ROOT . '/README.md'));
+        isContain((string)$graph, \file_get_contents(PROJECT_ROOT . '/README.md'));
         $this->dumpHtml($graph);
 
-        isContain($graph->getLiveEditorUrl(), file_get_contents(PROJECT_ROOT . '/README.md'));
+        isContain($graph->getLiveEditorUrl(), \file_get_contents(PROJECT_ROOT . '/README.md'));
     }
 
-    /**
-     * @param Graph $graph
-     */
-    protected function dumpHtml(Graph $graph)
+    protected function dumpHtml(Graph $graph): void
     {
-        file_put_contents(
+        \file_put_contents(
             PROJECT_ROOT . '/build/index.html',
-            $graph->renderHtml(['debug' => true, 'title' => $this->getName()])
+            $graph->renderHtml(['debug' => true, 'title' => $this->getName()]),
         );
     }
 }
