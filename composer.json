@@ -26,7 +26,7 @@
     },
 
     "require-dev"       : {
-        "jbzoo/toolbox-dev" : "7.x-dev"
+        "jbzoo/toolbox-dev" : "^7.0"
     },
 
     "autoload"          : {
