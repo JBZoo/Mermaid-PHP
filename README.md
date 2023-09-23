@@ -76,6 +76,58 @@ linkStyle default interpolate basis;
 ```
 
 
+### Usage of an ERDiagram
+
+```php
+<?php
+
+use JBZoo\MermaidPHP\ERDiagram\Entity;
+use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
+use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToMany;
+use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToOne;
+use JBZoo\MermaidPHP\ERDiagram\Relation\OneToMany;
+use JBZoo\MermaidPHP\ERDiagram\Relation\OneToOne;
+use JBZoo\MermaidPHP\ERDiagram\Relation\Relation;
+use JBZoo\MermaidPHP\Render;
+
+$diagram = (new ERDiagram(['title' => 'Order Example']));
+
+$diagram
+    ->addEntity($customerEntity = new Entity('C', 'Customer'))
+    ->addEntity($orderEntity = new Entity('O', 'Order'))
+    ->addEntity($lineItemEntity = new Entity('LI', 'Line-Item'))
+    ->addEntity($deliveryAddressEntity = new Entity('DA', 'Delivery-Address'))
+    ->addEntity($creditCardEntity = new Entity('CC', 'Credit-Card'))
+    ->addRelation(new OneToMany($customerEntity, $orderEntity, 'places', Relation::ONE_OR_MORE))
+    ->addRelation(new ManyToOne($lineItemEntity, $orderEntity, 'belongs', Relation::ZERO_OR_MORE))
+    ->addRelation(new ManyToMany($customerEntity, $deliveryAddressEntity, 'uses', Relation::ONE_OR_MORE))
+    ->addRelation(new OneToOne($customerEntity, $creditCardEntity, 'has', Relation::ONE_OR_MORE))
+    ;
+//header('Content-Type: text/plain');
+//echo $diagram; // Get result as string (or $graph->__toString(), or (string)$graph)
+$htmlCode = $diagram->renderHtml([
+    'debug'       => true,
+    'theme'       => Render::THEME_DARK,
+    'title'       => 'Example',
+    'show-zoom'   => false,
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
+]); // Get result as HTML code for debugging
+
+echo $diagram->getLiveEditorUrl(); // Get link to live editor
+```
+
+### Result
+[Open live editor](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiLS0tXG50aXRsZTogT3JkZXIgRXhhbXBsZVxuLS0tXG5lckRpYWdyYW1cbiAgICBcIkN1c3RvbWVyXCIgfHwtLXx7IFwiT3JkZXJcIiA6IHBsYWNlc1xuICAgIFwiTGluZS1JdGVtXCIgfW8tLXx8IFwiT3JkZXJcIiA6IGJlbG9uZ3NcbiAgICBcIkN1c3RvbWVyXCIgfW8tLXx7IFwiRGVsaXZlcnktQWRkcmVzc1wiIDogdXNlc1xuICAgIFwiQ3VzdG9tZXJcIiB8fC0tfHwgXCJDcmVkaXQtQ2FyZFwiIDogaGFzXG4iLCJtZXJtYWlkIjp7InRoZW1lIjoiZm9yZXN0In19)
+
+```
+erDiagram
+    "Customer" ||--|{ "Order" : places
+    "Line-Item" }o--|| "Order" : belongs
+    "Customer" }o--|{ "Delivery-Address" : uses
+    "Customer" ||--|| "Credit-Card" : has
+```
+
+
 ### See also
  - [Mermaid on GitHub](https://github.com/mermaid-js/mermaid)
  - [Mermaid Documentation](https://mermaid.js.org/)
