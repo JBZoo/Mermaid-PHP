@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ERDiagram\Relation;
 
-use JBZoo\MermaidPHP\ERDiagram\Entity;
+use JBZoo\MermaidPHP\ERDiagram\Entity\Entity;
 use JBZoo\MermaidPHP\Helper;
 
 abstract class Relation

@@ -81,7 +81,7 @@ linkStyle default interpolate basis;
 ```php
 <?php
 
-use JBZoo\MermaidPHP\ERDiagram\Entity;
+use JBZoo\MermaidPHP\ERDiagram\Entity\Entity;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
 use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToMany;
 use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToOne;
@@ -93,7 +93,10 @@ use JBZoo\MermaidPHP\Render;
 $diagram = (new ERDiagram(['title' => 'Order Example']));
 
 $diagram
-    ->addEntity($customerEntity = new Entity('C', 'Customer'))
+    ->addEntity($customerEntity = new Entity('C', 'Customer', props: [
+        new EntityProperty('id', 'int', [EntityProperty::PRIMARY_KEY], 'ID of user'),
+        new EntityProperty('cash', 'float'),
+    ]))
     ->addEntity($orderEntity = new Entity('O', 'Order'))
     ->addEntity($lineItemEntity = new Entity('LI', 'Line-Item'))
     ->addEntity($deliveryAddressEntity = new Entity('DA', 'Delivery-Address'))
@@ -102,7 +105,7 @@ $diagram
     ->addRelation(new ManyToOne($lineItemEntity, $orderEntity, 'belongs', Relation::ZERO_OR_MORE))
     ->addRelation(new ManyToMany($customerEntity, $deliveryAddressEntity, 'uses', Relation::ONE_OR_MORE))
     ->addRelation(new OneToOne($customerEntity, $creditCardEntity, 'has', Relation::ONE_OR_MORE))
-    ;
+;
 //header('Content-Type: text/plain');
 //echo $diagram; // Get result as string (or $graph->__toString(), or (string)$graph)
 $htmlCode = $diagram->renderHtml([
@@ -117,7 +120,7 @@ echo $diagram->getLiveEditorUrl(); // Get link to live editor
 ```
 
 ### Result
-[Open live editor](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiLS0tXG50aXRsZTogT3JkZXIgRXhhbXBsZVxuLS0tXG5lckRpYWdyYW1cbiAgICBcIkN1c3RvbWVyXCIgfHwtLXx7IFwiT3JkZXJcIiA6IHBsYWNlc1xuICAgIFwiTGluZS1JdGVtXCIgfW8tLXx8IFwiT3JkZXJcIiA6IGJlbG9uZ3NcbiAgICBcIkN1c3RvbWVyXCIgfW8tLXx7IFwiRGVsaXZlcnktQWRkcmVzc1wiIDogdXNlc1xuICAgIFwiQ3VzdG9tZXJcIiB8fC0tfHwgXCJDcmVkaXQtQ2FyZFwiIDogaGFzXG4iLCJtZXJtYWlkIjp7InRoZW1lIjoiZm9yZXN0In19)
+[Open live editor](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNp1kE1qxDAMha9itB5fILuSdDG00EK33qixMjH4J9hK6ZDk7qM4U0phqpV4-vSe0AJ9sgQNaK1NZMeeGvWWLWX1_I1h8mRiHVHuHF4yBhOVlIF2LpwCZQNqXbVeF9HqogiNmjz2VH7YVxdJn5mCzLYk8PoH_iSf4qU8cK7w7tyRd1-Ur_rJ2kyl1L25UPnvnD2hzWQd6xazrfyIj_Dl0PZykZWz6v1FiHOn0rBHCPNLDD4hqx7LeGibiXACMQrorLyxmhngkQIZaKQdktzLu8cmJM6cPq6xh4bzTCeYJ4tM99ce4nYDIeuBCQ)
 
 ```
 erDiagram

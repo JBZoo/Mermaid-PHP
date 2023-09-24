@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ERDiagram;
 
+use JBZoo\MermaidPHP\ERDiagram\Entity\Entity;
 use JBZoo\MermaidPHP\ERDiagram\Relation\Relation;
 use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;

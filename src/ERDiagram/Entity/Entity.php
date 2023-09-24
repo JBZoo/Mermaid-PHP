@@ -14,9 +14,8 @@
 
 declare(strict_types=1);
 
-namespace JBZoo\MermaidPHP\ERDiagram;
+namespace JBZoo\MermaidPHP\ERDiagram\Entity;
 
-use JBZoo\MermaidPHP\ERDiagram\Entity\EntityProperty;
 use JBZoo\MermaidPHP\Helper;
 
 class Entity

@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\PHPUnit;
 
-use JBZoo\MermaidPHP\ERDiagram\Entity;
+use JBZoo\MermaidPHP\ERDiagram\Entity\Entity;
 use JBZoo\MermaidPHP\ERDiagram\Entity\EntityProperty;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
 use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToMany;
