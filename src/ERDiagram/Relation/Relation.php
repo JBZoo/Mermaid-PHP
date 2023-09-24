@@ -29,13 +29,13 @@ abstract class Relation
     protected Entity    $firstEntity;
     protected Entity    $secondEntity;
     protected string    $identifier = '';
-    protected string    $action      = '';
+    protected ?string    $action      = '';
     protected ?string    $cardinality      = null;
     protected bool      $identifying      = true;
 
     abstract public function getLink(): string;
 
-    public function __construct(Entity $firstEntity, Entity $secondEntity, string $action = '', string $cardinality = null, bool $identifying = true)
+    public function __construct(Entity $firstEntity, Entity $secondEntity, string $action = null, string $cardinality = null, bool $identifying = true)
     {
         $identifier = $firstEntity . $secondEntity;
         $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
@@ -49,9 +49,10 @@ abstract class Relation
     public function __toString(): string
     {
         $action = $this->getAction();
-        if ($action !== '') {
-            $action = ' : ' . $action;
+        if (null === $action || '' === $action) {
+            $action = '""';
         }
+        $action = ' : ' . $action;
         return sprintf('%s %s %s%s', $this->firstEntity, static::getLink(), $this->secondEntity, $action);
     }
 
@@ -60,12 +61,12 @@ abstract class Relation
         return $this->identifier;
     }
 
-    public function getAction(): string
+    public function getAction(): ?string
     {
         return $this->action;
     }
 
-    public function setAction(string $action): void
+    public function setAction(?string $action): void
     {
         $this->action = $action;
     }

@@ -476,6 +476,24 @@ final class ERDiagramTest extends PHPUnit
         ]), (string)$diagram);
     }
 
+    public function testRelationWithNoLabels(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new OneToOne($a, $b))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" ||--|| "B" : ""',
+            '',
+        ]), (string)$diagram);
+    }
+
     protected function dumpHtml(ERDiagram $diagram): void
     {
         \file_put_contents(
