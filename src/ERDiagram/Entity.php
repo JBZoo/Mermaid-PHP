@@ -25,10 +25,15 @@ class Entity
     protected string    $identifier = '';
     protected string    $title      = '';
 
-    public function __construct(string $identifier, string $title = '')
+    /** @var array<string, string>|array<empty>  */
+    protected array      $classProperties      = [];
+
+    /** @param array<string, string>|array<empty> $classProperties */
+    public function __construct(string $identifier, string $title = '', array $classProperties = [])
     {
         $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->setTitle($title === '' ? $identifier : $title);
+        $this->setClassProperties($classProperties);
     }
 
     public function __toString(): string
@@ -51,6 +56,34 @@ class Entity
     public function getTitle(): string
     {
         return $this->title === '' ? $this->getId() : $this->title;
+    }
+
+    /** @return array<string, string>|array<empty> */
+    public function getClassProperties(): array
+    {
+        return $this->classProperties;
+    }
+
+    /** @param array<string, string>|array<empty> $classProperties */
+    public function setClassProperties(array $classProperties): void
+    {
+        $this->classProperties = $classProperties;
+    }
+
+    public function renderClassProperties(): ?string
+    {
+        $spaces    = \str_repeat(' ', 4);
+
+        $classProps = $this->getClassProperties();
+        if (!empty($classProps)) {
+            $output = $this . ' {' . \PHP_EOL;
+            foreach ($classProps as $name => $type) {
+                $output .= sprintf('%s%s %s', $spaces . $spaces, $type, $name) . \PHP_EOL;
+            }
+            return $output . $spaces . '}';
+        }
+
+        return null;
     }
 
     public function getId(): string

@@ -349,6 +349,56 @@ final class ERDiagramTest extends PHPUnit
         ]), (string)$diagram);
     }
 
+    public function testRelationWithClass(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A', classProperties: ['foo' => 'string', 'bar' => 'int']))
+            ->addEntity($b = new Entity('B', classProperties: ['foo' => 'float', 'bar' => 'datetime']))
+            ->addRelation(new OneToOne($a, $b, 'has'))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" ||--|| "B" : has',
+            '    "A" {',
+            '        string foo',
+            '        int bar',
+            '    }',
+            '    "B" {',
+            '        float foo',
+            '        datetime bar',
+            '    }',
+            '',
+        ]), (string)$diagram);
+    }
+
+    public function testEntitiesNoRelationWithClass(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A', classProperties: ['foo' => 'string', 'bar' => 'int']))
+            ->addEntity($b = new Entity('B', classProperties: ['foo' => 'float', 'bar' => 'datetime']))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" {',
+            '        string foo',
+            '        int bar',
+            '    }',
+            '    "B" {',
+            '        float foo',
+            '        datetime bar',
+            '    }',
+            '',
+        ]), (string)$diagram);
+    }
+
     protected function dumpHtml(ERDiagram $diagram): void
     {
         \file_put_contents(

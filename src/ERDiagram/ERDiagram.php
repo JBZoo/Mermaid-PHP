@@ -100,9 +100,30 @@ class ERDiagram
             }
 
             $result = \array_merge($result, $tmp);
-            $result[] = '';
         }
 
+        $entitiesWithClassProperties = array_filter($this->entities, function(Entity $entity) {
+            return !empty($entity->getClassProperties());
+        });
+
+        if (\count($entitiesWithClassProperties) > 0) {
+            $tmp = [];
+
+            foreach ($entitiesWithClassProperties as $entity) {
+                $classEntity = $entity->renderClassProperties();
+                if ($classEntity) {
+                    $tmp[] = $spacesSub . $classEntity;
+                }
+            }
+
+            if ($this->params['abc_order'] === true) {
+                \sort($tmp);
+            }
+
+            $result = \array_merge($result, $tmp);
+        }
+
+        $result[] = '';
         return \implode(\PHP_EOL, $result);
     }
 
