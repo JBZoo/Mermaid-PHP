@@ -102,15 +102,15 @@ class ERDiagram
             $result = \array_merge($result, $tmp);
         }
 
-        $entitiesWithClassProperties = array_filter($this->entities, function(Entity $entity) {
-            return !empty($entity->getClassProperties());
+        $entitiesWithProps = array_filter($this->entities, function(Entity $entity) {
+            return !empty($entity->getProps());
         });
 
-        if (\count($entitiesWithClassProperties) > 0) {
+        if (\count($entitiesWithProps) > 0) {
             $tmp = [];
 
-            foreach ($entitiesWithClassProperties as $entity) {
-                $classEntity = $entity->renderClassProperties();
+            foreach ($entitiesWithProps as $entity) {
+                $classEntity = $entity->renderProps();
                 if ($classEntity) {
                     $tmp[] = $spacesSub . $classEntity;
                 }

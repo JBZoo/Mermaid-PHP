@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ERDiagram;
 
+use JBZoo\MermaidPHP\ERDiagram\Entity\EntityProperty;
 use JBZoo\MermaidPHP\Helper;
 
 class Entity
@@ -25,15 +26,15 @@ class Entity
     protected string    $identifier = '';
     protected string    $title      = '';
 
-    /** @var array<string, string>|array<empty>  */
-    protected array      $classProperties      = [];
+    /** @var EntityProperty[]  */
+    protected array      $props      = [];
 
-    /** @param array<string, string>|array<empty> $classProperties */
-    public function __construct(string $identifier, string $title = '', array $classProperties = [])
+    /** @param EntityProperty[] $props */
+    public function __construct(string $identifier, string $title = '', array $props = [])
     {
         $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->setTitle($title === '' ? $identifier : $title);
-        $this->setClassProperties($classProperties);
+        $this->setProps($props);
     }
 
     public function __toString(): string
@@ -58,27 +59,27 @@ class Entity
         return $this->title === '' ? $this->getId() : $this->title;
     }
 
-    /** @return array<string, string>|array<empty> */
-    public function getClassProperties(): array
+    /** @return EntityProperty[]|array<empty> */
+    public function getProps(): array
     {
-        return $this->classProperties;
+        return $this->props;
     }
 
-    /** @param array<string, string>|array<empty> $classProperties */
-    public function setClassProperties(array $classProperties): void
+    /** @param EntityProperty[]|array<empty> $props */
+    public function setProps(array $props): void
     {
-        $this->classProperties = $classProperties;
+        $this->props = $props;
     }
 
-    public function renderClassProperties(): ?string
+    public function renderProps(): ?string
     {
         $spaces    = \str_repeat(' ', 4);
 
-        $classProps = $this->getClassProperties();
-        if (!empty($classProps)) {
+        $props = $this->getProps();
+        if (!empty($props)) {
             $output = $this . ' {' . \PHP_EOL;
-            foreach ($classProps as $name => $type) {
-                $output .= sprintf('%s%s %s', $spaces . $spaces, $type, $name) . \PHP_EOL;
+            foreach ($props as $prop) {
+                $output .= $spaces . $spaces . $prop . \PHP_EOL;
             }
             return $output . $spaces . '}';
         }
