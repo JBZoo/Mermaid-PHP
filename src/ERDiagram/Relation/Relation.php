@@ -30,11 +30,12 @@ abstract class Relation
     protected Entity    $secondEntity;
     protected string    $identifier = '';
     protected string    $action      = '';
-    protected string    $cardinality      = '';
+    protected ?string    $cardinality      = null;
+    protected bool      $identifying      = true;
 
     abstract public function getLink(): string;
 
-    public function __construct(Entity $firstEntity, Entity $secondEntity, string $action = '', string $cardinality = '')
+    public function __construct(Entity $firstEntity, Entity $secondEntity, string $action = '', string $cardinality = null, bool $identifying = true)
     {
         $identifier = $firstEntity . $secondEntity;
         $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
@@ -42,6 +43,7 @@ abstract class Relation
         $this->secondEntity = $secondEntity;
         $this->action = $action;
         $this->cardinality = $cardinality;
+        $this->identifying = $identifying;
     }
 
     public function __toString(): string
@@ -68,14 +70,33 @@ abstract class Relation
         $this->action = $action;
     }
 
-    public function getCardinality(): string
+    public function getCardinality(): ?string
     {
         return $this->cardinality;
     }
 
-    public function setCardinality(string $cardinality): void
+    public function setCardinality(?string $cardinality): void
     {
         $this->cardinality = $cardinality;
+    }
+
+    public function isIdentifying(): bool
+    {
+        return $this->identifying;
+    }
+
+    public function setIdentifying(bool $identifying): void
+    {
+        $this->identifying = $identifying;
+    }
+
+    public function getIdentification(): string
+    {
+        if (!$this->isIdentifying()) {
+            return '..';
+        }
+
+        return '--';
     }
 
     public static function isSafeMode(): bool

@@ -97,6 +97,42 @@ final class ERDiagramTest extends PHPUnit
         ]), (string)$diagram);
     }
 
+    public function testRelationOneToOneNonIdentifying(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new OneToOne($a, $b, 'has', identifying: false))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" ||..|| "B" : has',
+            '',
+        ]), (string)$diagram);
+    }
+
+    public function testRelationOneToOneWithCardinalityNonIdentifying(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new OneToOne($a, $b, 'has', Relation::ZERO_OR_ONE, false))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" ||..o| "B" : has',
+            '',
+        ]), (string)$diagram);
+    }
+
     public function testRelationOneToMany(): void
     {
         $diagram = (new ERDiagram());
@@ -129,6 +165,42 @@ final class ERDiagramTest extends PHPUnit
         is(\implode(\PHP_EOL, [
             'erDiagram',
             '    "A" ||--o{ "B" : has',
+            '',
+        ]), (string)$diagram);
+    }
+
+    public function testRelationOneToManyNonIdentifying(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new OneToMany($a, $b, 'has', identifying: false))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" ||..|{ "B" : has',
+            '',
+        ]), (string)$diagram);
+    }
+
+    public function testRelationOneToManyWithCardinalityNonIdentifying(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new OneToMany($a, $b, 'has', Relation::ZERO_OR_MORE, false))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" ||..o{ "B" : has',
             '',
         ]), (string)$diagram);
     }
@@ -169,6 +241,42 @@ final class ERDiagramTest extends PHPUnit
         ]), (string)$diagram);
     }
 
+    public function testRelationManyToOneNonIdentifying(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new ManyToOne($a, $b, 'has', identifying: false))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" }o..|| "B" : has',
+            '',
+        ]), (string)$diagram);
+    }
+
+    public function testRelationManyToOneWithCardinalityNonIdentifying(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new ManyToOne($a, $b, 'has', Relation::ZERO_OR_ONE, false))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" }o..o| "B" : has',
+            '',
+        ]), (string)$diagram);
+    }
+
     public function testRelationManyToMany(): void
     {
         $diagram = (new ERDiagram());
@@ -201,6 +309,42 @@ final class ERDiagramTest extends PHPUnit
         is(\implode(\PHP_EOL, [
             'erDiagram',
             '    "A" }o--|{ "B" : has',
+            '',
+        ]), (string)$diagram);
+    }
+
+    public function testRelationManyToManyNonIdentifying(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new ManyToMany($a, $b, 'has', identifying: false))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" }o..o{ "B" : has',
+            '',
+        ]), (string)$diagram);
+    }
+
+    public function testRelationManyToManyWithCardinalityNonIdentifying(): void
+    {
+        $diagram = (new ERDiagram());
+        $diagram
+            ->addEntity($a = new Entity('A'))
+            ->addEntity($b = new Entity('B'))
+            ->addRelation(new ManyToMany($a, $b, 'has', Relation::ONE_OR_MORE, false))
+        ;
+
+        $this->dumpHtml($diagram);
+
+        is(\implode(\PHP_EOL, [
+            'erDiagram',
+            '    "A" }o..|{ "B" : has',
             '',
         ]), (string)$diagram);
     }

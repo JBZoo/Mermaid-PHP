@@ -21,9 +21,9 @@ class OneToOne extends Relation
     public function getLink(): string
     {
         if ($this->cardinality === self::ZERO_OR_ONE) {
-            return '||--o|';
+            return sprintf('%s%s%s', '||', $this->getIdentification(), 'o|');
         }
 
-        return '||--||';
+        return sprintf('%s%s%s', '||', $this->getIdentification(), '||');
     }
 }

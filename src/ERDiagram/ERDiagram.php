@@ -82,7 +82,7 @@ class ERDiagram
         $result = [];
         $params = $this->getParams();
 
-        if (isset($params['title']) && !empty($params['title'])) {
+        if (!empty($params['title'])) {
             $result[] = sprintf('---%s---', \PHP_EOL . "title: " . $params['title'] . \PHP_EOL);
         }
 
