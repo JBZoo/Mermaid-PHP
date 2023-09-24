@@ -123,11 +123,18 @@ echo $diagram->getLiveEditorUrl(); // Get link to live editor
 [Open live editor](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNp1kE1qxDAMha9itB5fILuSdDG00EK33qixMjH4J9hK6ZDk7qM4U0phqpV4-vSe0AJ9sgQNaK1NZMeeGvWWLWX1_I1h8mRiHVHuHF4yBhOVlIF2LpwCZQNqXbVeF9HqogiNmjz2VH7YVxdJn5mCzLYk8PoH_iSf4qU8cK7w7tyRd1-Ur_rJ2kyl1L25UPnvnD2hzWQd6xazrfyIj_Dl0PZykZWz6v1FiHOn0rBHCPNLDD4hqx7LeGibiXACMQrorLyxmhngkQIZaKQdktzLu8cmJM6cPq6xh4bzTCeYJ4tM99ce4nYDIeuBCQ)
 
 ```
+---
+title: Order Example
+---
 erDiagram
     "Customer" ||--|{ "Order" : places
     "Line-Item" }o--|| "Order" : belongs
     "Customer" }o--|{ "Delivery-Address" : uses
     "Customer" ||--|| "Credit-Card" : has
+    "Customer" {
+        int id PK "ID of user"
+        float cash
+    }
 ```
 
 
