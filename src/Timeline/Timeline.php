@@ -16,21 +16,22 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\Timeline;
 
-use JBZoo\MermaidPHP\Timeline\Marker;
-use JBZoo\MermaidPHP\Timeline\Event;
 use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;
+use JBZoo\MermaidPHP\Timeline\Exception\SectionHasNoTitleException;
 
 class Timeline
 {
     private const RENDER_SHIFT = 4;
+
+    /** @var Timeline[] */
+    protected array $sections = [];
 
     /** @var Marker[] */
     protected array $markers = [];
 
     /** @var mixed[] */
     protected array $params = [
-        'abc_order' => false,
         'title'     => '',
     ];
 
@@ -40,6 +41,19 @@ class Timeline
     public function __construct(array $params = [])
     {
         $this->setParams($params);
+    }
+
+    /**
+     * @throws \JBZoo\MermaidPHP\Timeline\Exception\SectionHasNoTitleException
+     */
+    public function addSection(self $section): self
+    {
+        if ($section->getParams()['title'] === '') {
+            throw new SectionHasNoTitleException();
+        }
+        $this->sections[] = $section;
+
+        return $this;
     }
 
     public function addMarker(Marker $marker): self
@@ -65,18 +79,25 @@ class Timeline
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function render(int $shift = 0): string
+    public function render(bool $isMainTimeline = true, int $shift = 0): string
     {
         $spaces    = \str_repeat(' ', $shift);
         $spacesSub = \str_repeat(' ', $shift + self::RENDER_SHIFT);
 
-        $result = [];
         $params = $this->getParams();
 
-        $result[] = "timeline";
+        if ($isMainTimeline) {
+            $result = ["timeline"];
 
-        if (!empty($params['title'])) {
-            $result[] = $spacesSub . "title " . $params['title'];
+            if (!empty($params['title'])) {
+                $result[] = $spacesSub . "title " . $params['title'];
+            }
+        } else {
+            $result = ["{$spaces}section " . Helper::escape((string)$params['title'])];
+        }
+
+        foreach ($this->sections as $section) {
+            $result[] = $section->render(false, $shift + 4);
         }
 
         if (\count($this->markers) > 0) {
@@ -95,15 +116,12 @@ class Timeline
                 $tmp[] = implode(' : ', $tmpMarker);
             }
 
-
-            if ($this->params['abc_order'] === true) {
-                \sort($tmp);
-            }
-
             $result = \array_merge($result, $tmp);
         }
 
-        $result[] = '';
+        if ($isMainTimeline) {
+            $result[] = '';
+        }
         return \implode(\PHP_EOL, $result);
     }
 
