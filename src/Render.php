@@ -16,6 +16,8 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
+use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
+
 class Render
 {
     public const THEME_DEFAULT = 'default';
@@ -25,7 +27,7 @@ class Render
 
     public const DEFAULT_MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
-    public static function html(Graph $graph, array $params = []): string
+    public static function html(Graph|ERDiagram $graph, array $params = []): string
     {
         $theme     = (string)($params['theme'] ?? self::THEME_FOREST);
         $scriptUrl = (string)($params['mermaid_url'] ?? self::DEFAULT_MERMAID_URL);
@@ -124,7 +126,7 @@ class Render
         return \md5($userFriendlyId);
     }
 
-    public static function getLiveEditorUrl(Graph $graph): string
+    public static function getLiveEditorUrl(Graph|ERDiagram $graph): string
     {
         $json = \json_encode([
             'code'    => (string)$graph,

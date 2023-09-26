@@ -16,6 +16,8 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
+use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
+
 class Helper
 {
     public static function escape(string $text): string
@@ -32,10 +34,10 @@ class Helper
         return \md5($userFriendlyId);
     }
 
-    public static function getLiveEditorUrl(Graph $graph): string
+    public static function getLiveEditorUrl(Graph|ERDiagram $mermaid): string
     {
         $json = \json_encode([
-            'code'    => (string)$graph,
+            'code'    => (string)$mermaid,
             'mermaid' => [
                 'theme' => 'forest',
             ],
