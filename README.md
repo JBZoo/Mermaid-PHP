@@ -138,6 +138,65 @@ erDiagram
 ```
 
 
+### Usage of an Timeline
+
+```php
+<?php
+
+use JBZoo\MermaidPHP\Timeline\Timeline;
+use JBZoo\MermaidPHP\Timeline\Marker;
+use JBZoo\MermaidPHP\Timeline\Event;
+
+$timeline = (new Timeline(['title' => 'History of Social Media Platform']))
+    ->addSection(
+        (new Timeline(['title' => 'Subsection 1']))
+            ->addMarker(new Marker('2002', [
+                new Event('Linkedin')
+            ]))
+    )
+    ->addSection(
+        (new Timeline(['title' => 'Subsection 2']))
+            ->addMarker(new Marker('2004', [
+                new Event('Facebook'),
+                new Event('Google'),
+            ]))
+            ->addMarker(new Marker('2005', [
+                new Event('Youtube'),
+            ]))
+            ->addMarker(new Marker('2006', [
+                new Event('Twitter'),
+            ]))
+    )
+;
+//header('Content-Type: text/plain');
+//echo $diagram; // Get result as string (or $timeline->__toString(), or (string)$timeline)
+$htmlCode = $timeline->renderHtml([
+    'debug'       => true,
+    'theme'       => Render::THEME_DARK,
+    'title'       => 'Example',
+    'show-zoom'   => false,
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
+]); // Get result as HTML code for debugging
+
+echo $diagram->getLiveEditorUrl(); // Get link to live editor
+```
+
+### Result
+[Open live editor](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoidGltZWxpbmVcbiAgICB0aXRsZSBIaXN0b3J5IG9mIFNvY2lhbCBNZWRpYSBQbGF0Zm9ybVxuICAgIHNlY3Rpb24gXCJTdWJzZWN0aW9uIDFcIlxuICAgICAgICAyMDAyIDogTGlua2VkaW5cbiAgICBzZWN0aW9uIFwiU3Vic2VjdGlvbiAyXCJcbiAgICAgICAgMjAwNCA6IEZhY2Vib29rIDogR29vZ2xlXG4gICAgICAgIDIwMDUgOiBZb3V0dWJlXG4gICAgICAgIDIwMDYgOiBUd2l0dGVyXG4iLCJtZXJtYWlkIjp7InRoZW1lIjoiZm9yZXN0In19)
+
+```
+timeline
+    title History of Social Media Platform
+    section "Subsection 1"
+        2002 : Linkedin
+    section "Subsection 2"
+        2004 : Facebook : Google
+        2005 : Youtube
+        2006 : Twitter
+
+```
+
+
 ### See also
  - [Mermaid on GitHub](https://github.com/mermaid-js/mermaid)
  - [Mermaid Documentation](https://mermaid.js.org/)
