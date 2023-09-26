@@ -16,19 +16,19 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\Timeline;
 
-use JBZoo\MermaidPHP\Timeline\Marker\EntityProperty;
 use JBZoo\MermaidPHP\Helper;
-use JBZoo\MermaidPHP\Timeline\Event;
 
 class Marker
 {
     private static bool $safeMode   = false;
     protected string    $identifier = '';
 
-    /** @var Event[]  */
-    protected array      $events      = [];
+    /** @var Event[] */
+    protected array      $events = [];
 
-    /** @param Event[] $events */
+    /**
+     * @param Event[] $events
+     */
     public function __construct(string $identifier, array $events = [])
     {
         $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
@@ -40,13 +40,17 @@ class Marker
         return "{$this->identifier}";
     }
 
-    /** @return Event[] */
+    /**
+     * @return Event[]
+     */
     public function getEvents(): array
     {
         return $this->events;
     }
 
-    /** @param Event[]| $events */
+    /**
+     * @param Event[] $events
+     */
     public function setEvents(array $events): void
     {
         $this->events = $events;
@@ -61,5 +65,4 @@ class Marker
     {
         return self::$safeMode;
     }
-
 }

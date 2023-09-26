@@ -19,10 +19,10 @@ require __DIR__ . '/vendor/autoload.php';
 use JBZoo\MermaidPHP\ERDiagram\Entity\Entity;
 use JBZoo\MermaidPHP\ERDiagram\Entity\EntityProperty;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
-use JBZoo\MermaidPHP\ERDiagram\Relation\OneToOne;
-use JBZoo\MermaidPHP\ERDiagram\Relation\OneToMany;
-use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToOne;
 use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToMany;
+use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToOne;
+use JBZoo\MermaidPHP\ERDiagram\Relation\OneToMany;
+use JBZoo\MermaidPHP\ERDiagram\Relation\OneToOne;
 use JBZoo\MermaidPHP\ERDiagram\Relation\Relation;
 
 $diagram = (new ERDiagram(['title' => 'Order Example']));
@@ -39,10 +39,9 @@ $diagram
     ->addRelation(new OneToMany($customerEntity, $orderEntity, 'places', Relation::ONE_OR_MORE))
     ->addRelation(new ManyToOne($lineItemEntity, $orderEntity, 'belongs', Relation::ZERO_OR_MORE))
     ->addRelation(new ManyToMany($customerEntity, $deliveryAddressEntity, 'uses', Relation::ONE_OR_MORE))
-    ->addRelation(new OneToOne($customerEntity, $creditCardEntity, 'has', Relation::ONE_OR_MORE))
-;
-//header('Content-Type: text/plain');
-//echo $diagram; // Get result as string (or $graph->__toString(), or (string)$graph)
+    ->addRelation(new OneToOne($customerEntity, $creditCardEntity, 'has', Relation::ONE_OR_MORE));
+// header('Content-Type: text/plain');
+// echo $diagram; // Get result as string (or $graph->__toString(), or (string)$graph)
 $htmlCode = $diagram->renderHtml([
     'debug'       => true,
     'theme'       => \JBZoo\MermaidPHP\Render::THEME_DARK,

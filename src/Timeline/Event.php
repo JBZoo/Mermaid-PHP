@@ -42,5 +42,4 @@ class Event
     {
         return self::$safeMode;
     }
-
 }

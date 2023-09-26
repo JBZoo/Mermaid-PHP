@@ -32,7 +32,7 @@ class Timeline
 
     /** @var mixed[] */
     protected array $params = [
-        'title'     => '',
+        'title' => '',
     ];
 
     /**
@@ -41,6 +41,11 @@ class Timeline
     public function __construct(array $params = [])
     {
         $this->setParams($params);
+    }
+
+    public function __toString(): string
+    {
+        return $this->render();
     }
 
     /**
@@ -87,10 +92,10 @@ class Timeline
         $params = $this->getParams();
 
         if ($isMainTimeline) {
-            $result = ["timeline"];
+            $result = ['timeline'];
 
-            if (!empty($params['title'])) {
-                $result[] = $spacesSub . "title " . $params['title'];
+            if (isset($params['title']) && $params['title'] !== '') {
+                $result[] = $spacesSub . 'title ' . $params['title'];
             }
         } else {
             $result = ["{$spaces}section " . Helper::escape((string)$params['title'])];
@@ -104,16 +109,16 @@ class Timeline
             $tmp = [];
 
             foreach ($this->markers as $marker) {
-                $tmpMarker = [];
+                $tmpMarker   = [];
                 $tmpMarker[] = $spacesSub . $marker;
 
                 $events = $marker->getEvents();
-                if (!empty($events)) {
+                if ([] != $events) {
                     foreach ($events as $event) {
                         $tmpMarker[] = $event;
                     }
                 }
-                $tmp[] = implode(' : ', $tmpMarker);
+                $tmp[] = \implode(' : ', $tmpMarker);
             }
 
             $result = \array_merge($result, $tmp);
@@ -122,6 +127,7 @@ class Timeline
         if ($isMainTimeline) {
             $result[] = '';
         }
+
         return \implode(\PHP_EOL, $result);
     }
 
@@ -137,10 +143,4 @@ class Timeline
     {
         return Helper::getLiveEditorUrl($this);
     }
-
-    public function __toString(): string
-    {
-        return $this->render();
-    }
-
 }
