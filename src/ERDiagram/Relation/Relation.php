@@ -21,39 +21,48 @@ use JBZoo\MermaidPHP\Helper;
 
 abstract class Relation
 {
-    public const ZERO_OR_ONE = '?';
+    public const ZERO_OR_ONE  = '?';
     public const ZERO_OR_MORE = '*';
-    public const ONE_OR_MORE = '+';
+    public const ONE_OR_MORE  = '+';
 
-    protected static bool $safeMode   = false;
+    protected static bool $safeMode = false;
     protected Entity    $firstEntity;
     protected Entity    $secondEntity;
-    protected string    $identifier = '';
+    protected string    $identifier   = '';
     protected ?string    $action      = '';
-    protected ?string    $cardinality      = null;
-    protected bool      $identifying      = true;
+    protected ?string    $cardinality = null;
+    protected bool      $identifying  = true;
 
     abstract public function getLink(): string;
 
-    public function __construct(Entity $firstEntity, Entity $secondEntity, string $action = null, string $cardinality = null, bool $identifying = true)
+    /**
+     * @codingStandardsIgnoreStart
+     */
+    public function __construct(Entity $firstEntity, Entity $secondEntity, ?string $action = null, ?string $cardinality = null, bool $identifying = true)
     {
-        $identifier = $firstEntity . $secondEntity;
-        $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
-        $this->firstEntity = $firstEntity;
+        /** @codingStandardsIgnoreEnd  */
+        $identifier         = $firstEntity . $secondEntity;
+        $this->identifier   = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
+        $this->firstEntity  = $firstEntity;
         $this->secondEntity = $secondEntity;
-        $this->action = $action;
-        $this->cardinality = $cardinality;
-        $this->identifying = $identifying;
+        $this->action       = $action;
+        $this->cardinality  = $cardinality;
+        $this->identifying  = $identifying;
     }
 
     public function __toString(): string
     {
         $action = $this->getAction();
-        if (null === $action || '' === $action) {
+        if ($action === null || $action === '') {
             $action = '""';
         }
         $action = ' : ' . $action;
-        return sprintf('%s %s %s%s', $this->firstEntity, static::getLink(), $this->secondEntity, $action);
+
+        $firstEntity = (string)$this->firstEntity;
+
+        $secondEntity = (string)$this->secondEntity;
+
+        return \sprintf('%s %s %s%s', $firstEntity, static::getLink(), $secondEntity, $action);
     }
 
     public function getId(): string
@@ -104,5 +113,4 @@ abstract class Relation
     {
         return self::$safeMode;
     }
-
 }

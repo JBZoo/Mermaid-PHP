@@ -44,8 +44,7 @@ final class ERDiagramTest extends PHPUnit
             ->addRelation(new OneToMany($customerEntity, $orderEntity, 'places', Relation::ONE_OR_MORE))
             ->addRelation(new ManyToOne($lineItemEntity, $orderEntity, 'belongs', Relation::ZERO_OR_MORE))
             ->addRelation(new ManyToMany($customerEntity, $deliveryAddressEntity, 'uses', Relation::ONE_OR_MORE))
-            ->addRelation(new OneToOne($customerEntity, $creditCardEntity, 'has', Relation::ONE_OR_MORE))
-        ;
+            ->addRelation(new OneToOne($customerEntity, $creditCardEntity, 'has', Relation::ONE_OR_MORE));
 
         $this->dumpHtml($diagram);
 
@@ -68,8 +67,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToOne($a, $b, 'has'))
-        ;
+            ->addRelation(new OneToOne($a, $b, 'has'));
 
         $this->dumpHtml($diagram);
 
@@ -86,8 +84,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToOne($a, $b, 'has', Relation::ZERO_OR_ONE))
-        ;
+            ->addRelation(new OneToOne($a, $b, 'has', Relation::ZERO_OR_ONE));
 
         $this->dumpHtml($diagram);
 
@@ -104,8 +101,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToOne($a, $b, 'has', identifying: false))
-        ;
+            ->addRelation(new OneToOne($a, $b, 'has', identifying: false));
 
         $this->dumpHtml($diagram);
 
@@ -122,8 +118,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToOne($a, $b, 'has', Relation::ZERO_OR_ONE, false))
-        ;
+            ->addRelation(new OneToOne($a, $b, 'has', Relation::ZERO_OR_ONE, false));
 
         $this->dumpHtml($diagram);
 
@@ -140,8 +135,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToMany($a, $b, 'has'))
-        ;
+            ->addRelation(new OneToMany($a, $b, 'has'));
 
         $this->dumpHtml($diagram);
 
@@ -158,8 +152,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToMany($a, $b, 'has', Relation::ZERO_OR_MORE))
-        ;
+            ->addRelation(new OneToMany($a, $b, 'has', Relation::ZERO_OR_MORE));
 
         $this->dumpHtml($diagram);
 
@@ -176,8 +169,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToMany($a, $b, 'has', identifying: false))
-        ;
+            ->addRelation(new OneToMany($a, $b, 'has', identifying: false));
 
         $this->dumpHtml($diagram);
 
@@ -194,8 +186,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToMany($a, $b, 'has', Relation::ZERO_OR_MORE, false))
-        ;
+            ->addRelation(new OneToMany($a, $b, 'has', Relation::ZERO_OR_MORE, false));
 
         $this->dumpHtml($diagram);
 
@@ -212,8 +203,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new ManyToOne($a, $b, 'has'))
-        ;
+            ->addRelation(new ManyToOne($a, $b, 'has'));
 
         $this->dumpHtml($diagram);
 
@@ -230,8 +220,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new ManyToOne($a, $b, 'has', Relation::ZERO_OR_ONE))
-        ;
+            ->addRelation(new ManyToOne($a, $b, 'has', Relation::ZERO_OR_ONE));
 
         $this->dumpHtml($diagram);
 
@@ -248,8 +237,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new ManyToOne($a, $b, 'has', identifying: false))
-        ;
+            ->addRelation(new ManyToOne($a, $b, 'has', identifying: false));
 
         $this->dumpHtml($diagram);
 
@@ -266,8 +254,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new ManyToOne($a, $b, 'has', Relation::ZERO_OR_ONE, false))
-        ;
+            ->addRelation(new ManyToOne($a, $b, 'has', Relation::ZERO_OR_ONE, false));
 
         $this->dumpHtml($diagram);
 
@@ -284,8 +271,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new ManyToMany($a, $b, 'has'))
-        ;
+            ->addRelation(new ManyToMany($a, $b, 'has'));
 
         $this->dumpHtml($diagram);
 
@@ -302,8 +288,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new ManyToMany($a, $b, 'has', Relation::ONE_OR_MORE))
-        ;
+            ->addRelation(new ManyToMany($a, $b, 'has', Relation::ONE_OR_MORE));
 
         $this->dumpHtml($diagram);
 
@@ -320,8 +305,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new ManyToMany($a, $b, 'has', identifying: false))
-        ;
+            ->addRelation(new ManyToMany($a, $b, 'has', identifying: false));
 
         $this->dumpHtml($diagram);
 
@@ -338,8 +322,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new ManyToMany($a, $b, 'has', Relation::ONE_OR_MORE, false))
-        ;
+            ->addRelation(new ManyToMany($a, $b, 'has', Relation::ONE_OR_MORE, false));
 
         $this->dumpHtml($diagram);
 
@@ -362,8 +345,7 @@ final class ERDiagramTest extends PHPUnit
                 new EntityProperty('foo', 'float'),
                 new EntityProperty('bar', 'datetime'),
             ]))
-            ->addRelation(new OneToOne($a, $b, 'has'))
-        ;
+            ->addRelation(new OneToOne($a, $b, 'has'));
 
         $this->dumpHtml($diagram);
 
@@ -393,8 +375,7 @@ final class ERDiagramTest extends PHPUnit
             ->addEntity($b = new Entity('B', props: [
                 new EntityProperty('foo', 'float'),
                 new EntityProperty('bar', 'datetime'),
-            ]))
-        ;
+            ]));
 
         $this->dumpHtml($diagram);
 
@@ -424,8 +405,7 @@ final class ERDiagramTest extends PHPUnit
                 new EntityProperty('foo', 'float', [EntityProperty::PRIMARY_KEY, EntityProperty::FOREIGN_KEY, EntityProperty::UNIQUE_KEY]),
                 new EntityProperty('bar', 'datetime', []),
             ]))
-            ->addRelation(new OneToOne($a, $b, 'has'))
-        ;
+            ->addRelation(new OneToOne($a, $b, 'has'));
 
         $this->dumpHtml($diagram);
 
@@ -456,8 +436,7 @@ final class ERDiagramTest extends PHPUnit
                 new EntityProperty('foo', 'float', [EntityProperty::PRIMARY_KEY, EntityProperty::FOREIGN_KEY, EntityProperty::UNIQUE_KEY], 'comment3'),
                 new EntityProperty('bar', 'datetime', [], 'comment4'),
             ]))
-            ->addRelation(new OneToOne($a, $b, 'has'))
-        ;
+            ->addRelation(new OneToOne($a, $b, 'has'));
 
         $this->dumpHtml($diagram);
 
@@ -482,8 +461,7 @@ final class ERDiagramTest extends PHPUnit
         $diagram
             ->addEntity($a = new Entity('A'))
             ->addEntity($b = new Entity('B'))
-            ->addRelation(new OneToOne($a, $b))
-        ;
+            ->addRelation(new OneToOne($a, $b));
 
         $this->dumpHtml($diagram);
 

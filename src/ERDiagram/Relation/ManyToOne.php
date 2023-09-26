@@ -21,10 +21,9 @@ class ManyToOne extends Relation
     public function getLink(): string
     {
         if ($this->cardinality === self::ZERO_OR_ONE) {
-            return sprintf('%s%s%s', '}o', $this->getIdentification(), 'o|');
+            return \sprintf('%s%s%s', '}o', $this->getIdentification(), 'o|');
         }
 
-        return sprintf('%s%s%s', '}o', $this->getIdentification(), '||');
+        return \sprintf('%s%s%s', '}o', $this->getIdentification(), '||');
     }
-
 }

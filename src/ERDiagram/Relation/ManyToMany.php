@@ -21,10 +21,9 @@ class ManyToMany extends Relation
     public function getLink(): string
     {
         if ($this->cardinality === self::ONE_OR_MORE) {
-            return sprintf('%s%s%s', '}o', $this->getIdentification(), '|{');
+            return \sprintf('%s%s%s', '}o', $this->getIdentification(), '|{');
         }
 
-        return sprintf('%s%s%s', '}o', $this->getIdentification(), 'o{');
+        return \sprintf('%s%s%s', '}o', $this->getIdentification(), 'o{');
     }
-
 }

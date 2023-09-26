@@ -45,6 +45,11 @@ class ERDiagram
         $this->setParams($params);
     }
 
+    public function __toString(): string
+    {
+        return $this->render();
+    }
+
     public function addEntity(Entity $entity): self
     {
         $this->entities[$entity->getId()] = $entity;
@@ -77,17 +82,16 @@ class ERDiagram
      */
     public function render(int $shift = 0): string
     {
-        $spaces    = \str_repeat(' ', $shift);
         $spacesSub = \str_repeat(' ', $shift + self::RENDER_SHIFT);
 
         $result = [];
         $params = $this->getParams();
 
-        if (!empty($params['title'])) {
-            $result[] = sprintf('---%s---', \PHP_EOL . "title: " . $params['title'] . \PHP_EOL);
+        if (isset($params['title']) && $params['title'] !== '') {
+            $result[] = \sprintf('---%s---', \PHP_EOL . 'title: ' . $params['title'] . \PHP_EOL);
         }
 
-        $result[] = "erDiagram";
+        $result[] = 'erDiagram';
 
         if (\count($this->relations) > 0) {
             $tmp = [];
@@ -103,16 +107,14 @@ class ERDiagram
             $result = \array_merge($result, $tmp);
         }
 
-        $entitiesWithProps = array_filter($this->entities, function(Entity $entity) {
-            return !empty($entity->getProps());
-        });
+        $entitiesWithProps = \array_filter($this->entities, static fn (Entity $entity) => $entity->getProps() !== []);
 
         if (\count($entitiesWithProps) > 0) {
             $tmp = [];
 
             foreach ($entitiesWithProps as $entity) {
                 $classEntity = $entity->renderProps();
-                if ($classEntity) {
+                if ($classEntity !== null) {
                     $tmp[] = $spacesSub . $classEntity;
                 }
             }
@@ -125,6 +127,7 @@ class ERDiagram
         }
 
         $result[] = '';
+
         return \implode(\PHP_EOL, $result);
     }
 
@@ -140,10 +143,4 @@ class ERDiagram
     {
         return Helper::getLiveEditorUrl($this);
     }
-
-    public function __toString(): string
-    {
-        return $this->render();
-    }
-
 }

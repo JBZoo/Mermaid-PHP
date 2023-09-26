@@ -21,9 +21,9 @@ class OneToMany extends Relation
     public function getLink(): string
     {
         if ($this->cardinality === self::ZERO_OR_MORE) {
-            return sprintf('%s%s%s', '||', $this->getIdentification(), 'o{');
+            return \sprintf('%s%s%s', '||', $this->getIdentification(), 'o{');
         }
 
-        return sprintf('%s%s%s', '||', $this->getIdentification(), '|{');
+        return \sprintf('%s%s%s', '||', $this->getIdentification(), '|{');
     }
 }

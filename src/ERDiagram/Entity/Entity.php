@@ -20,15 +20,16 @@ use JBZoo\MermaidPHP\Helper;
 
 class Entity
 {
-
     private static bool $safeMode   = false;
     protected string    $identifier = '';
     protected string    $title      = '';
 
-    /** @var EntityProperty[]  */
-    protected array      $props      = [];
+    /** @var EntityProperty[] */
+    protected array      $props = [];
 
-    /** @param EntityProperty[] $props */
+    /**
+     * @param EntityProperty[] $props
+     */
     public function __construct(string $identifier, string $title = '', array $props = [])
     {
         $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
@@ -39,7 +40,6 @@ class Entity
     public function __toString(): string
     {
         if ($this->title !== '') {
-            // @phan-suppress-next-line PhanPluginPrintfVariableFormatString
             return Helper::escape($this->title);
         }
 
@@ -58,13 +58,17 @@ class Entity
         return $this->title === '' ? $this->getId() : $this->title;
     }
 
-    /** @return EntityProperty[]|array<empty> */
+    /**
+     * @return EntityProperty[]
+     */
     public function getProps(): array
     {
         return $this->props;
     }
 
-    /** @param EntityProperty[]|array<empty> $props */
+    /**
+     * @param EntityProperty[] $props
+     */
     public function setProps(array $props): void
     {
         $this->props = $props;
@@ -72,14 +76,17 @@ class Entity
 
     public function renderProps(): ?string
     {
-        $spaces    = \str_repeat(' ', 4);
+        $spaces = \str_repeat(' ', 4);
 
         $props = $this->getProps();
-        if (!empty($props)) {
+        if ($props !== []) {
             $output = $this . ' {' . \PHP_EOL;
+
             foreach ($props as $prop) {
+                /** @var \JBZoo\MermaidPHP\ERDiagram\Entity\EntityProperty $prop */
                 $output .= $spaces . $spaces . $prop . \PHP_EOL;
             }
+
             return $output . $spaces . '}';
         }
 
@@ -95,5 +102,4 @@ class Entity
     {
         return self::$safeMode;
     }
-
 }
