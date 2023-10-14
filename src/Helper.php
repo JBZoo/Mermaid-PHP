@@ -35,7 +35,7 @@ class Helper
         return \md5($userFriendlyId);
     }
 
-    public static function getLiveEditorUrl(Graph|ERDiagram|Timeline $mermaid): string
+    public static function getLiveEditorUrl(ERDiagram|Graph|Timeline $mermaid): string
     {
         $json = \json_encode([
             'code'    => (string)$mermaid,
