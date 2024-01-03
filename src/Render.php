@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
+use JBZoo\MermaidPHP\ClassDiagram\ClassDiagram;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
 use JBZoo\MermaidPHP\Timeline\Timeline;
 
@@ -28,7 +29,7 @@ class Render
 
     public const DEFAULT_MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
-    public static function html(ERDiagram|Graph|Timeline $graph, array $params = []): string
+    public static function html(ClassDiagram|ERDiagram|Graph|Timeline $graph, array $params = []): string
     {
         $theme     = (string)($params['theme'] ?? self::THEME_FOREST);
         $scriptUrl = (string)($params['mermaid_url'] ?? self::DEFAULT_MERMAID_URL);
