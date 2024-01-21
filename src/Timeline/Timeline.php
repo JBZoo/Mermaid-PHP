@@ -49,7 +49,7 @@ class Timeline
     }
 
     /**
-     * @throws \JBZoo\MermaidPHP\Timeline\Exception\SectionHasNoTitleException
+     * @throws SectionHasNoTitleException
      */
     public function addSection(self $section): self
     {
