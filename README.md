@@ -1,6 +1,6 @@
 # JBZoo / Mermaid-PHP
 
-[![CI](https://github.com/JBZoo/Mermaid-PHP/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/JBZoo/Mermaid-PHP/actions/workflows/main.yml?query=branch%3Amaster)    [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Mermaid-PHP/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Mermaid-PHP?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Mermaid-PHP/coverage.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![Psalm Level](https://shepherd.dev/github/JBZoo/Mermaid-PHP/level.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/badge)](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/issues)    
+[![CI](https://github.com/JBZoo/Mermaid-PHP/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/JBZoo/Mermaid-PHP/actions/workflows/main.yml?query=branch%3Amaster)    [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Mermaid-PHP/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Mermaid-PHP?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Mermaid-PHP/coverage.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![Psalm Level](https://shepherd.dev/github/JBZoo/Mermaid-PHP/level.svg)](https://shepherd.dev/github/JBZoo/Mermaid-PHP)    [![CodeFactor](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/badge)](https://www.codefactor.io/repository/github/jbzoo/mermaid-php/issues)
 [![Stable Version](https://poser.pugx.org/jbzoo/mermaid-php/version)](https://packagist.org/packages/jbzoo/mermaid-php/)    [![Total Downloads](https://poser.pugx.org/jbzoo/mermaid-php/downloads)](https://packagist.org/packages/jbzoo/mermaid-php/stats)    [![Dependents](https://poser.pugx.org/jbzoo/mermaid-php/dependents)](https://packagist.org/packages/jbzoo/mermaid-php/dependents?order_by=downloads)    [![GitHub License](https://img.shields.io/github/license/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/blob/master/LICENSE)
 
 
@@ -48,7 +48,7 @@ $htmlCode = $graph->renderHtml([
     'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
 ]); // Get result as HTML code for debugging
 
-echo $graph->getLiveEditorUrl(); // Get link to live editor 
+echo $graph->getLiveEditorUrl(); // Get link to live editor
 ```
 
 ### Result
@@ -196,6 +196,79 @@ timeline
 
 ```
 
+### Usage of a Class Diagram
+
+```php
+<?php
+
+use JBZoo\MermaidPHP\ClassDiagram\ClassDiagram;
+use JBZoo\MermaidPHP\ClassDiagram\Concept\Concept;
+use JBZoo\MermaidPHP\ClassDiagram\Concept\Attribute;
+use JBZoo\MermaidPHP\ClassDiagram\Concept\Visibility;
+use JBZoo\MermaidPHP\ClassDiagram\Concept\Method;
+use JBZoo\MermaidPHP\ClassDiagram\Relationship\Relationship;
+use JBZoo\MermaidPHP\ClassDiagram\Relationship\RelationType;
+use JBZoo\MermaidPHP\Render;
+
+$diagram = (new ClassDiagram())
+    ->setTitle('Animal example')
+    ->setDirection(\JBZoo\MermaidPHP\Direction::TOP_TO_BOTTOM)
+    ->addClass($animalClass = new Concept(
+        identifier: 'Animal',
+        attributes: [
+            new Attribute('age', 'int', Visibility::PUBLIC),
+            new Attribute('gender', 'String', Visibility::PUBLIC),
+        ],
+        annotation: 'abstract'
+    ))
+    ->addClass($duckClass = new Concept(
+        identifier: 'Duck',
+        attributes: [
+            new Attribute('beakColor', 'String', Visibility::PUBLIC),
+        ],
+        methods: [
+            new Method('swim')
+        ],
+    ))
+    ->addRelationship(new Relationship(
+        classA: $duckClass,
+        classB: $animalClass,
+        relationType: RelationType::REALIZATION
+    ))
+;
+//header('Content-Type: text/plain');
+//echo $diagram; // Get result as string (or $diagram->__toString(), or (string) $diagram)
+$htmlCode = $diagram->renderHtml([
+    'debug'       => true,
+    'theme'       => Render::THEME_DARK,
+    'title'       => 'Example',
+    'show-zoom'   => false,
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
+]); // Get result as HTML code for debugging
+
+echo $diagram->getLiveEditorUrl(); // Get link to live editor
+```
+
+### Result
+[Open live editor](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNo1kMFugzAMhl8l8mnTEIIS0IoqpG297tSdplzcxGVRSVKFoK1jvPtSCr7E_vz7T-IRpFMENcgO-36vsfVohFXakwzaWfbxKuzcYy9WG-zYKCyLsdvhsQ8eZWiaO3nSNjBsaakOwWvbspasIi_stNrsB3leTVbRkfD85jrn77j_1ubhcZ6Z1Wn61yzXCwsJGPIGtYqvnn0EhC8yJKCO6cl56oOAOB2VOAR3uFoJdfADJTBcFAZavgn1Cbs-0gvaT-fMKool1CP8QJ1znj7zbV5URbkpi21WJXCNOCtTzivO86rMbnQzJfA7O2RpmQApHZx_XxZ7O6Z_kFxzOQ)
+
+```
+---
+title: Animal example
+---
+classDiagram
+direction TB
+class Animal {
+    <<abstract>>
+    +int age
+    +String gender
+}
+class Duck {
+    +String beakColor
+    swim()
+}
+Duck ..|> Animal
+```
 
 ### See also
  - [Mermaid on GitHub](https://github.com/mermaid-js/mermaid)
@@ -221,6 +294,6 @@ MIT
 - [Composer-Graph](https://github.com/JBZoo/Composer-Graph) - Dependency graph visualization of composer.json based on mermaid-js.
 - [Utils](https://github.com/JBZoo/Utils) - Collection of useful PHP functions, mini-classes, and snippets for every day.
 - [Image](https://github.com/JBZoo/Image) - Package provides object-oriented way to manipulate with images as simple as possible.
-- [Data](https://github.com/JBZoo/Data) - Extended implementation of ArrayObject. Use files as config/array. 
+- [Data](https://github.com/JBZoo/Data) - Extended implementation of ArrayObject. Use files as config/array.
 - [Retry](https://github.com/JBZoo/Retry) - Tiny PHP library providing retry/backoff functionality with multiple backoff strategies and jitter support.
 - [SimpleTypes](https://github.com/JBZoo/SimpleTypes) - Converting any values and measures - money, weight, exchange rates, length, ...
