@@ -35,6 +35,9 @@ enum RelationType
         };
     }
 
+    /**
+     * @psalm-suppress PossiblyNullOperand
+     */
     public function renderRelation(Link $link, ?RelationType $inverse): string
     {
         return match ($this) {

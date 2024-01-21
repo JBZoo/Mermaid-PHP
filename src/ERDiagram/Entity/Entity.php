@@ -83,7 +83,7 @@ class Entity
             $output = $this . ' {' . \PHP_EOL;
 
             foreach ($props as $prop) {
-                /** @var \JBZoo\MermaidPHP\ERDiagram\Entity\EntityProperty $prop */
+                /** @var EntityProperty $prop */
                 $output .= $spaces . $spaces . $prop . \PHP_EOL;
             }
 

@@ -55,6 +55,10 @@ class Relationship
 
     private function renderRelation(): string
     {
+        if ($this->link === null) {
+            return '';
+        }
+
         return $this->relationType->renderRelation($this->link, $this->inverseRelationType);
     }
 
