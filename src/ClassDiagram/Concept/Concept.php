@@ -84,6 +84,21 @@ class Concept
         return $this->identifier;
     }
 
+    public function addAttribute(Attribute $attribute): void
+    {
+        $this->attributes[] = $attribute;
+    }
+
+    public function addMethod(Method $method): void
+    {
+        $this->methods[] = $method;
+    }
+
+    public function setAnnotation(string $annotation): void
+    {
+        $this->annotation = $annotation;
+    }
+
     public static function isSafeMode(): bool
     {
         return self::$safeMode;
