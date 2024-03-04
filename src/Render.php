@@ -79,7 +79,7 @@ class Render
             '   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>',
             '<script type="module">',
             "        import mermaid from '{$scriptUrl}';",
-            "        window.mermaid = mermaid;",
+            '        window.mermaid = mermaid;',
             "        document.dispatchEvent(new Event('MermaidLoaded'));",
             '</script>',
             '</head>',
