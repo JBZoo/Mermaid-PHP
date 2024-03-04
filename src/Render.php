@@ -94,7 +94,7 @@ class Render
             $showZoom ?
                 "<input type=\"button\" class=\"btn btn-primary\" id=\"zoom\" value=\"Zoom In\">
                 <script>
-                    document.addEventListener('MermaidLoaded', fn () => mermaid.initialize({$mermaidParams}));
+                    document.addEventListener('MermaidLoaded', fn () => mermaid.initialize({$mermaidParams}), {once: true});
                     $(function () {
                         $('#zoom').click(() => {
                             $('.mermaid').removeAttr('data-processed');
