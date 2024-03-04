@@ -79,6 +79,8 @@ class Render
             '   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>',
             '<script type="module">',
             "        import mermaid from '{$scriptUrl}';",
+            '        window.mermaid = mermaid;',
+            "        document.dispatchEvent(new Event('MermaidLoaded'));",
             '</script>',
             '</head>',
             '<body>',
@@ -92,13 +94,15 @@ class Render
             $showZoom ?
                 "<input type=\"button\" class=\"btn btn-primary\" id=\"zoom\" value=\"Zoom In\">
                 <script>
-                     mermaid.initialize({$mermaidParams});
-                     $(function () {
+                    document.addEventListener('MermaidLoaded', function () {
+                        mermaid.initialize({$mermaidParams});
+                    }, {once: true});
+                    $(function () {
                         $('#zoom').click(() => {
                             $('.mermaid').removeAttr('data-processed');
                             $('.mermaid').width($('.mermaid svg').css('max-width'));
                         });
-                     });
+                    });
                 </script>"
                 : '',
             '<script>
