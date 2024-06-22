@@ -166,7 +166,7 @@ final class FlowchartTest extends PHPUnit
             ->addLink(new Link($nodeB, $nodeC))
             ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
             ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥'))
-            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\\!@#$%^&*()_+><\' " '));
+            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\!@#$%^&*()_+><\' " '));
 
         $subGraph2
             ->addNode($alone = new Node('alone', 'Alone'))
@@ -218,7 +218,7 @@ final class FlowchartTest extends PHPUnit
             ->addLink(new Link($nodeB, $nodeC))
             ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
             ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥'))
-            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\\!@#$%^&*()_+><\' " '));
+            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\!@#$%^&*()_+><\' " '));
 
         $subGraph2
             ->addNode($alone = new Node('alone', 'Alone'))
@@ -502,7 +502,7 @@ final class FlowchartTest extends PHPUnit
             ->addLink(new Link($nodeB, $nodeC))
             ->addLink(new Link($nodeC, $nodeD, 'A double quote:"'))
             ->addLink(new Link($nodeC, $nodeE, 'A dec char:♥'))
-            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\\!@#$%^&*()_+><\' " '));
+            ->addLink(new Link($nodeA, $nodeB, ' Link text<br>/\!@#$%^&*()_+><\' " '));
 
         $subGraph2
             ->addNode($alone = new Node('alone', 'Alone'))
