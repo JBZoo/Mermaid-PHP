@@ -279,7 +279,7 @@ timeline
 
 ### Class Diagrams
 
-Generate UML class diagrams with relationships:
+Generate UML class diagrams with relationships, namespaces, and cardinality:
 
 ```php
 <?php
@@ -289,8 +289,11 @@ use JBZoo\MermaidPHP\ClassDiagram\Concept\Concept;
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Attribute;
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Visibility;
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Method;
+use JBZoo\MermaidPHP\ClassDiagram\ConceptNamespace\ConceptNamespace;
 use JBZoo\MermaidPHP\ClassDiagram\Relationship\Relationship;
 use JBZoo\MermaidPHP\ClassDiagram\Relationship\RelationType;
+use JBZoo\MermaidPHP\ClassDiagram\Relationship\Cardinality;
+use JBZoo\MermaidPHP\ClassDiagram\Relationship\Link;
 use JBZoo\MermaidPHP\Render;
 
 $diagram = (new ClassDiagram())
