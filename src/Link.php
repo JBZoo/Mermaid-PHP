@@ -16,24 +16,24 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-class Link
+final class Link
 {
     public const ARROW  = 1;
     public const LINE   = 2;
     public const DOTTED = 3;
     public const THICK  = 4;
 
-    protected const TEMPLATES = [
+    private const TEMPLATES = [
         self::ARROW  => ['-->', '-->|%s|'],
         self::LINE   => [' --- ', '---|%s|'],
         self::DOTTED => ['-.->', '-. %s .-> '],
         self::THICK  => [' ==> ', ' == %s ==> '],
     ];
 
-    protected int    $style = self::ARROW;
-    protected string $text  = '';
-    protected Node   $sourceNode;
-    protected Node   $targetNode;
+    private int    $style = self::ARROW;
+    private string $text  = '';
+    private Node   $sourceNode;
+    private Node   $targetNode;
 
     public function __construct(Node $sourceNode, Node $targetNode, string $text = '', int $style = self::ARROW)
     {

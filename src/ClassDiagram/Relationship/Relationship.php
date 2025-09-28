@@ -18,17 +18,17 @@ namespace JBZoo\MermaidPHP\ClassDiagram\Relationship;
 
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Concept;
 
-class Relationship
+final class Relationship
 {
     public function __construct(
-        protected Concept $classA,
-        protected Concept $classB,
-        protected RelationType $relationType,
-        protected ?string $label = null,
-        protected null|Cardinality|string $cardinalityA = null,
-        protected null|Cardinality|string $cardinalityB = null,
-        protected ?Link $link = null,
-        protected ?RelationType $inverseRelationType = null,
+        private Concept $classA,
+        private Concept $classB,
+        private RelationType $relationType,
+        private ?string $label = null,
+        private Cardinality|string|null $cardinalityA = null,
+        private Cardinality|string|null $cardinalityB = null,
+        private ?Link $link = null,
+        private ?RelationType $inverseRelationType = null,
     ) {
         if ($this->link === null) {
             $this->link = $this->relationType->getDefaultLink();
@@ -62,7 +62,7 @@ class Relationship
         return $this->relationType->renderRelation($this->link, $this->inverseRelationType);
     }
 
-    private static function renderCardinality(null|Cardinality|string $cardinality): string
+    private static function renderCardinality(Cardinality|string|null $cardinality): string
     {
         if ($cardinality === null) {
             return '';

@@ -20,18 +20,18 @@ use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;
 use JBZoo\MermaidPHP\Timeline\Exception\SectionHasNoTitleException;
 
-class Timeline
+final class Timeline
 {
     private const RENDER_SHIFT = 4;
 
     /** @var Timeline[] */
-    protected array $sections = [];
+    private array $sections = [];
 
     /** @var Marker[] */
-    protected array $markers = [];
+    private array $markers = [];
 
     /** @var mixed[] */
-    protected array $params = [
+    private array $params = [
         'title' => '',
     ];
 
@@ -110,10 +110,10 @@ class Timeline
 
             foreach ($this->markers as $marker) {
                 $tmpMarker   = [];
-                $tmpMarker[] = $spacesSub . $marker;
+                $tmpMarker[] = $spacesSub . $marker->__toString();
 
                 $events = $marker->getEvents();
-                if ([] != $events) {
+                if ($events !== []) {
                     foreach ($events as $event) {
                         $tmpMarker[] = $event;
                     }

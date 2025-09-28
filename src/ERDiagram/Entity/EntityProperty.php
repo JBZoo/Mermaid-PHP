@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ERDiagram\Entity;
 
-class EntityProperty implements \Stringable
+final class EntityProperty implements \Stringable
 {
     public const PRIMARY_KEY = 'PK';
     public const FOREIGN_KEY = 'FK';
@@ -26,10 +26,10 @@ class EntityProperty implements \Stringable
      * @param string[] $keys
      */
     public function __construct(
-        protected string $name,
-        protected string $type,
-        protected array $keys = [],
-        protected string $comment = '',
+        private string $name,
+        private string $type,
+        private array $keys = [],
+        private string $comment = '',
     ) {
     }
 

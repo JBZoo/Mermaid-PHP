@@ -18,18 +18,18 @@ namespace JBZoo\MermaidPHP\ClassDiagram\Concept;
 
 use JBZoo\MermaidPHP\Helper;
 
-class Concept
+final class Concept
 {
     private static bool $safeMode = false;
-    protected string    $identifier;
+    private string    $identifier;
 
     /** @var Attribute[] */
-    protected array     $attributes;
+    private array     $attributes;
 
     /** @var Method[] */
-    protected array     $methods;
+    private array     $methods;
 
-    protected ?string   $annotation;
+    private ?string   $annotation;
 
     /**
      * @param Attribute[] $attributes
@@ -41,7 +41,7 @@ class Concept
         array $methods = [],
         ?string $annotation = null,
     ) {
-        $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
+        $this->identifier = self::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->attributes = $attributes;
         $this->methods    = $methods;
         $this->annotation = $annotation;
@@ -67,11 +67,11 @@ class Concept
         }
 
         foreach ($this->attributes as $attribute) {
-            $result[] = $spaces . $attribute;
+            $result[] = $spaces . $attribute->__toString();
         }
 
         foreach ($this->methods as $method) {
-            $result[] = $spaces . $method;
+            $result[] = $spaces . $method->__toString();
         }
 
         $result[] = '}';

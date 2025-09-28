@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-class Node
+final class Node
 {
     public const SQUARE            = '[%s]';
     public const ROUND             = '(%s)';
@@ -32,14 +32,14 @@ class Node
     public const SUBROUTINE        = '[[%s]]';
     public const STADIUM           = '([%s])';
 
-    private static bool $safeMode   = false;
-    protected string    $identifier = '';
-    protected string    $title      = '';
-    protected string    $form       = self::ROUND;
+    private static bool $safeMode = false;
+    private string    $identifier = '';
+    private string    $title      = '';
+    private string    $form       = self::ROUND;
 
     public function __construct(string $identifier, string $title = '', string $form = self::ROUND)
     {
-        $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
+        $this->identifier = self::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->setTitle($title === '' ? $identifier : $title);
         $this->setForm($form);
     }

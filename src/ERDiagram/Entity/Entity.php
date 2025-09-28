@@ -18,21 +18,21 @@ namespace JBZoo\MermaidPHP\ERDiagram\Entity;
 
 use JBZoo\MermaidPHP\Helper;
 
-class Entity
+final class Entity
 {
-    private static bool $safeMode   = false;
-    protected string    $identifier = '';
-    protected string    $title      = '';
+    private static bool $safeMode = false;
+    private string    $identifier = '';
+    private string    $title      = '';
 
     /** @var EntityProperty[] */
-    protected array      $props = [];
+    private array      $props = [];
 
     /**
      * @param EntityProperty[] $props
      */
     public function __construct(string $identifier, string $title = '', array $props = [])
     {
-        $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
+        $this->identifier = self::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->setTitle($title === '' ? $identifier : $title);
         $this->setProps($props);
     }
@@ -80,11 +80,10 @@ class Entity
 
         $props = $this->getProps();
         if ($props !== []) {
-            $output = $this . ' {' . \PHP_EOL;
+            $output = $this->__toString() . ' {' . \PHP_EOL;
 
             foreach ($props as $prop) {
-                /** @var EntityProperty $prop */
-                $output .= $spaces . $spaces . $prop . \PHP_EOL;
+                $output .= $spaces . $spaces . $prop->__toString() . \PHP_EOL;
             }
 
             return $output . $spaces . '}';

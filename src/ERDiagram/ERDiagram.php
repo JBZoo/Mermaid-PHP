@@ -21,18 +21,18 @@ use JBZoo\MermaidPHP\ERDiagram\Relation\Relation;
 use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;
 
-class ERDiagram
+final class ERDiagram
 {
     private const RENDER_SHIFT = 4;
 
     /** @var Entity[] */
-    protected array $entities = [];
+    private array $entities = [];
 
     /** @var Relation[] */
-    protected array $relations = [];
+    private array $relations = [];
 
     /** @var mixed[] */
-    protected array $params = [
+    private array $params = [
         'abc_order' => false,
         'title'     => '',
     ];
@@ -97,7 +97,7 @@ class ERDiagram
             $tmp = [];
 
             foreach ($this->relations as $relation) {
-                $tmp[] = $spacesSub . $relation;
+                $tmp[] = $spacesSub . $relation->__toString();
             }
 
             if ($this->params['abc_order'] === true) {

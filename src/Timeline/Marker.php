@@ -18,20 +18,20 @@ namespace JBZoo\MermaidPHP\Timeline;
 
 use JBZoo\MermaidPHP\Helper;
 
-class Marker
+final class Marker
 {
-    private static bool $safeMode   = false;
-    protected string    $identifier = '';
+    private static bool $safeMode = false;
+    private string    $identifier = '';
 
     /** @var Event[] */
-    protected array      $events = [];
+    private array      $events = [];
 
     /**
      * @param Event[] $events
      */
     public function __construct(string $identifier, array $events = [])
     {
-        $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
+        $this->identifier = self::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->setEvents($events);
     }
 

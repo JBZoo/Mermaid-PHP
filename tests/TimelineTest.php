@@ -162,7 +162,7 @@ final class TimelineTest extends PHPUnit
     {
         \file_put_contents(
             PROJECT_ROOT . '/build/index.html',
-            $timeline->renderHtml(['debug' => true, 'title' => $this->getName()]),
+            $timeline->renderHtml(['debug' => true, 'title' => $this->name()]),
         );
     }
 }
