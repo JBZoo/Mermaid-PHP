@@ -18,14 +18,14 @@ namespace JBZoo\MermaidPHP\Timeline;
 
 use JBZoo\MermaidPHP\Helper;
 
-class Event
+final class Event
 {
-    private static bool $safeMode   = false;
-    protected string    $identifier = '';
+    private static bool $safeMode = false;
+    private string    $identifier = '';
 
     public function __construct(string $identifier)
     {
-        $this->identifier = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
+        $this->identifier = self::isSafeMode() ? Helper::getId($identifier) : $identifier;
     }
 
     public function __toString(): string

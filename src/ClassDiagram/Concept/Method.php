@@ -18,16 +18,16 @@ namespace JBZoo\MermaidPHP\ClassDiagram\Concept;
 
 use JBZoo\MermaidPHP\Exception;
 
-class Method implements \Stringable
+final class Method implements \Stringable
 {
     public function __construct(
-        protected string $name,
+        private string $name,
         /** @var Argument[] */
-        protected array $arguments = [],
-        protected ?string $returnType = null,
-        protected ?Visibility $visibility = null,
-        protected bool $isAbstract = false,
-        protected bool $isStatic = false,
+        private array $arguments = [],
+        private ?string $returnType = null,
+        private ?Visibility $visibility = null,
+        private bool $isAbstract = false,
+        private bool $isStatic = false,
     ) {
         if ($this->isAbstract && $this->isStatic) {
             throw new Exception('A method could not be both abstract and static');

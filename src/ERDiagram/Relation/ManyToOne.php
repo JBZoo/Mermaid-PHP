@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ERDiagram\Relation;
 
-class ManyToOne extends Relation
+final class ManyToOne extends Relation
 {
     public function getLink(): string
     {

@@ -16,11 +16,11 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ClassDiagram\Concept;
 
-class Argument implements \Stringable
+final class Argument implements \Stringable
 {
     public function __construct(
-        protected string $name,
-        protected ?string $type = null,
+        private string $name,
+        private ?string $type = null,
     ) {
     }
 

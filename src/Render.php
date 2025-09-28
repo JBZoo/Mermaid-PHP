@@ -20,7 +20,7 @@ use JBZoo\MermaidPHP\ClassDiagram\ClassDiagram;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
 use JBZoo\MermaidPHP\Timeline\Timeline;
 
-class Render
+final class Render
 {
     public const THEME_DEFAULT = 'default';
     public const THEME_FOREST  = 'forest';
@@ -87,12 +87,12 @@ class Render
 
             $title !== '' ? "<h1>{$title}</h1><hr>" : '',
 
-            '    <div class="mermaid" style="margin-top:20px;">' . $graph . '</div>',
+            '    <div class="mermaid" style="margin-top:20px;">' . $graph->__toString() . '</div>',
 
             $debugCode,
 
-            $showZoom ?
-                "<input type=\"button\" class=\"btn btn-primary\" id=\"zoom\" value=\"Zoom In\">
+            $showZoom
+                ? "<input type=\"button\" class=\"btn btn-primary\" id=\"zoom\" value=\"Zoom In\">
                 <script>
                     document.addEventListener('MermaidLoaded', function () {
                         mermaid.initialize({$mermaidParams});

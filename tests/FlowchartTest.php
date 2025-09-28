@@ -238,8 +238,8 @@ final class FlowchartTest extends PHPUnit
             '        9d5ed678fe57bcca610140957afab571-->0d61f8370cad1d412f80b84d143e1257;',
             '        0d61f8370cad1d412f80b84d143e1257-->|"A double quote:#quot;"|f623e75af30e62bbd73d6df5b50bb7b5;',
             '        0d61f8370cad1d412f80b84d143e1257-->|"A dec char:#hearts;"|3a3ea00cfc35332cedf6e5e9a32e94da;',
-            '        7fc56270e7a70fa81a5935b72eacbe29-->' .
-            '|"Link text<br>/\!@#$%^#amp;*()_+><\' #quot;"|9d5ed678fe57bcca610140957afab571;',
+            '        7fc56270e7a70fa81a5935b72eacbe29-->'
+            . '|"Link text<br>/\!@#$%^#amp;*()_+><\' #quot;"|9d5ed678fe57bcca610140957afab571;',
             '    end',
             '    subgraph "Problematic workflow"',
             '        c42bbd90740264d115048a82c9a10214("Alone");',
@@ -518,7 +518,7 @@ final class FlowchartTest extends PHPUnit
     {
         \file_put_contents(
             PROJECT_ROOT . '/build/index.html',
-            $graph->renderHtml(['debug' => true, 'title' => $this->getName()]),
+            $graph->renderHtml(['debug' => true, 'title' => $this->name()]),
         );
     }
 }

@@ -18,13 +18,13 @@ namespace JBZoo\MermaidPHP\ClassDiagram\ConceptNamespace;
 
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Concept;
 
-class ConceptNamespace
+final class ConceptNamespace
 {
-    public function __construct(
-        protected string $identifier,
-        /** @var Concept[] */
-        protected array $classes,
-    ) {
+    /**
+     * @param Concept[] $classes
+     */
+    public function __construct(private string $identifier, private array $classes)
+    {
     }
 
     public function __toString(): string
@@ -35,7 +35,6 @@ class ConceptNamespace
 
         $result[] = \sprintf('namespace %s {', $this->identifier);
 
-        /** @var Concept $class */
         foreach ($this->classes as $class) {
             foreach ($class->getLinesToRender() as $line) {
                 $result[] = $spaces . $line;

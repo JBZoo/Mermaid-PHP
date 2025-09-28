@@ -20,7 +20,7 @@ use JBZoo\MermaidPHP\ClassDiagram\ClassDiagram;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
 use JBZoo\MermaidPHP\Timeline\Timeline;
 
-class Helper
+final class Helper
 {
     public static function escape(string $text): string
     {

@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-class Graph
+final class Graph
 {
     public const TOP_BOTTOM = 'TB';
     public const BOTTOM_TOP = 'BT';
@@ -26,23 +26,23 @@ class Graph
     private const RENDER_SHIFT = 4;
 
     /** @var Graph[] */
-    protected array $subGraphs = [];
+    private array $subGraphs = [];
 
     /** @var Node[] */
-    protected array $nodes = [];
+    private array $nodes = [];
 
     /** @var Link[] */
-    protected array $links = [];
+    private array $links = [];
 
     /** @var mixed[] */
-    protected array $params = [
+    private array $params = [
         'abc_order' => false,
         'title'     => 'Graph',
         'direction' => self::TOP_BOTTOM,
     ];
 
     /** @var string[] */
-    protected $styles = [];
+    private $styles = [];
 
     /**
      * @param mixed[] $params
@@ -76,7 +76,7 @@ class Graph
             $tmp = [];
 
             foreach ($this->nodes as $node) {
-                $tmp[] = $spacesSub . $node;
+                $tmp[] = $spacesSub . $node->__toString();
             }
 
             if ($this->params['abc_order'] === true) {
@@ -93,7 +93,7 @@ class Graph
             $tmp = [];
 
             foreach ($this->links as $link) {
-                $tmp[] = $spacesSub . $link;
+                $tmp[] = $spacesSub . $link->__toString();
             }
 
             if ($this->params['abc_order'] === true) {

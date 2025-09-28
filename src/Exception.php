@@ -16,6 +16,6 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-class Exception extends \RuntimeException
+final class Exception extends \RuntimeException
 {
 }

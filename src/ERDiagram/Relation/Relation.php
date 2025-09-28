@@ -26,22 +26,27 @@ abstract class Relation
     public const ONE_OR_MORE  = '+';
 
     protected static bool $safeMode = false;
-    protected Entity    $firstEntity;
-    protected Entity    $secondEntity;
-    protected string    $identifier   = '';
-    protected ?string    $action      = '';
-    protected ?string    $cardinality = null;
-    protected bool      $identifying  = true;
+    protected Entity      $firstEntity;
+    protected Entity      $secondEntity;
+    protected string      $identifier  = '';
+    protected ?string     $action      = '';
+    protected ?string     $cardinality = null;
+    protected bool        $identifying = true;
 
     abstract public function getLink(): string;
 
     /**
      * @codingStandardsIgnoreStart
      */
-    public function __construct(Entity $firstEntity, Entity $secondEntity, ?string $action = null, ?string $cardinality = null, bool $identifying = true)
-    {
-        /** @codingStandardsIgnoreEnd  */
-        $identifier         = $firstEntity . $secondEntity;
+    public function __construct(
+        Entity $firstEntity,
+        Entity $secondEntity,
+        ?string $action = null,
+        ?string $cardinality = null,
+        bool $identifying = true,
+    ) {
+        /** @codingStandardsIgnoreEnd */
+        $identifier         = $firstEntity->__toString() . $secondEntity->__toString();
         $this->identifier   = static::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->firstEntity  = $firstEntity;
         $this->secondEntity = $secondEntity;

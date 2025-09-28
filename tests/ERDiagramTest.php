@@ -476,7 +476,7 @@ final class ERDiagramTest extends PHPUnit
     {
         \file_put_contents(
             PROJECT_ROOT . '/build/index.html',
-            $diagram->renderHtml(['debug' => true, 'title' => $this->getName()]),
+            $diagram->renderHtml(['debug' => true, 'title' => $this->name()]),
         );
     }
 }

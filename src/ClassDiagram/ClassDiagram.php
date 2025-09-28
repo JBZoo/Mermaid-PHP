@@ -23,19 +23,19 @@ use JBZoo\MermaidPHP\Direction;
 use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;
 
-class ClassDiagram
+final class ClassDiagram
 {
-    protected ?string $title        = null;
-    protected ?Direction $direction = null;
+    private ?string $title        = null;
+    private ?Direction $direction = null;
 
     /** @var ConceptNamespace[] */
-    protected array $namespaces = [];
+    private array $namespaces = [];
 
     /** @var Concept[] */
-    protected array $classes = [];
+    private array $classes = [];
 
     /** @var Relationship[] */
-    protected array $relationships = [];
+    private array $relationships = [];
 
     public function __toString(): string
     {
