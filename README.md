@@ -11,10 +11,80 @@
 [![Dependents](https://poser.pugx.org/jbzoo/mermaid-php/dependents)](https://packagist.org/packages/jbzoo/mermaid-php/dependents?order_by=downloads)
 [![GitHub License](https://img.shields.io/github/license/jbzoo/mermaid-php)](https://github.com/JBZoo/Mermaid-PHP/blob/master/LICENSE)
 
-Generate diagrams and flowcharts as HTML which is based on [mermaid-js](https://mermaid.js.org/).
+A powerful PHP library for generating [Mermaid](https://mermaid.js.org/) diagrams programmatically. Create flowcharts, ER diagrams, class diagrams, and timelines with a fluent, object-oriented API.
 
+## Table of Contents
 
-### Usage
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Diagram Types](#diagram-types)
+  - [Flowcharts/Graphs](#flowchartsgraphs)
+  - [ER Diagrams](#er-diagrams)
+  - [Class Diagrams](#class-diagrams)
+  - [Timeline Diagrams](#timeline-diagrams)
+- [Output Formats](#output-formats)
+- [Development](#development)
+- [License](#license)
+- [Related Projects](#related-projects)
+
+## Installation
+
+Install via Composer:
+
+```bash
+composer require jbzoo/mermaid-php
+```
+
+## Requirements
+
+- PHP 8.2 or higher
+- ext-json
+
+## Features
+
+✅ **Multiple Diagram Types**: Flowcharts, ER diagrams, class diagrams, and timelines
+✅ **Fluent API**: Intuitive method chaining for building complex diagrams
+✅ **Multiple Output Formats**: Mermaid syntax, HTML with embedded viewer, live editor URLs
+✅ **Theme Support**: Default, forest, dark, and neutral themes
+✅ **Rich Customization**: Nodes, links, relationships, styling, and more
+✅ **Type Safety**: Full PHP type hints and strict typing
+✅ **Zero Dependencies**: Only requires PHP and ext-json
+
+## Quick Start
+
+```php
+<?php
+
+use JBZoo\MermaidPHP\Graph;
+use JBZoo\MermaidPHP\Node;
+use JBZoo\MermaidPHP\Link;
+
+// Create a simple flowchart
+$graph = new Graph(['title' => 'My Workflow']);
+$graph
+    ->addNode($start = new Node('start', 'Start', Node::ROUND))
+    ->addNode($process = new Node('process', 'Process Data', Node::SQUARE))
+    ->addNode($end = new Node('end', 'End', Node::ROUND))
+    ->addLink(new Link($start, $process))
+    ->addLink(new Link($process, $end));
+
+// Output Mermaid syntax
+echo $graph;
+
+// Generate HTML with embedded viewer
+echo $graph->renderHtml(['theme' => 'dark']);
+
+// Get live editor URL for debugging
+echo $graph->getLiveEditorUrl();
+```
+
+## Diagram Types
+
+### Flowcharts/Graphs
+
+Create complex flowcharts with nodes, links, and subgraphs:
 
 ```php
 <?php
@@ -60,7 +130,7 @@ echo $graph->getLiveEditorUrl(); // Get link to live editor
 ### Result
 [Open live editor](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVEI7XG4gICAgc3ViZ3JhcGggXCJNYWluIHdvcmtmbG93XCJcbiAgICAgICAgRVtcIlJlc3VsdCB0d29cIl07XG4gICAgICAgIEIoXCJSb3VuZCBlZGdlXCIpO1xuICAgICAgICBBW1wiSGFyZCBlZGdlXCJdO1xuICAgICAgICBDKChcIkRlY2lzaW9uXCIpKTtcbiAgICAgICAgRFtcIlJlc3VsdCBvbmVcIl07XG4gICAgICAgIEUtLT5EO1xuICAgICAgICBCLS0+QztcbiAgICAgICAgQy0tPnxcIkEgZG91YmxlIHF1b3RlOiNxdW90O1wifEQ7XG4gICAgICAgIEMtLT58XCJBIGRlYyBjaGFyOiNoZWFydHM7XCJ8RTtcbiAgICAgICAgQS0tPnxcIkxpbmsgdGV4dDxicj5cL1xcIUAjJCVeI2FtcDsqKClfKz48JyAjcXVvdDtcInxCO1xuICAgIGVuZFxuICAgIHN1YmdyYXBoIFwiUHJvYmxlbWF0aWMgd29ya2Zsb3dcIlxuICAgICAgICBhbG9uZShcIkFsb25lXCIpO1xuICAgICAgICBhbG9uZS0tPkM7XG4gICAgZW5kXG5saW5rU3R5bGUgZGVmYXVsdCBpbnRlcnBvbGF0ZSBiYXNpczsiLCJtZXJtYWlkIjp7InRoZW1lIjoiZm9yZXN0In19)
 
-```
+```mermaid
 graph TB;
     subgraph "Main workflow"
         E["Result two"];
@@ -82,12 +152,15 @@ linkStyle default interpolate basis;
 ```
 
 
-### Usage of an ERDiagram
+### ER Diagrams
+
+Build entity-relationship diagrams for database schemas:
 
 ```php
 <?php
 
 use JBZoo\MermaidPHP\ERDiagram\Entity\Entity;
+use JBZoo\MermaidPHP\ERDiagram\Entity\EntityProperty;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
 use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToMany;
 use JBZoo\MermaidPHP\ERDiagram\Relation\ManyToOne;
@@ -128,7 +201,7 @@ echo $diagram->getLiveEditorUrl(); // Get link to live editor
 ### Result
 [Open live editor](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNp1kE1qxDAMha9itB5fILuSdDG00EK33qixMjH4J9hK6ZDk7qM4U0phqpV4-vSe0AJ9sgQNaK1NZMeeGvWWLWX1_I1h8mRiHVHuHF4yBhOVlIF2LpwCZQNqXbVeF9HqogiNmjz2VH7YVxdJn5mCzLYk8PoH_iSf4qU8cK7w7tyRd1-Ur_rJ2kyl1L25UPnvnD2hzWQd6xazrfyIj_Dl0PZykZWz6v1FiHOn0rBHCPNLDD4hqx7LeGibiXACMQrorLyxmhngkQIZaKQdktzLu8cmJM6cPq6xh4bzTCeYJ4tM99ce4nYDIeuBCQ)
 
-```
+```mermaid
 ---
 title: Order Example
 ---
@@ -144,7 +217,9 @@ erDiagram
 ```
 
 
-### Usage of an Timeline
+### Timeline Diagrams
+
+Create timeline visualizations for chronological data:
 
 ```php
 <?php
@@ -190,7 +265,7 @@ echo $diagram->getLiveEditorUrl(); // Get link to live editor
 ### Result
 [Open live editor](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoidGltZWxpbmVcbiAgICB0aXRsZSBIaXN0b3J5IG9mIFNvY2lhbCBNZWRpYSBQbGF0Zm9ybVxuICAgIHNlY3Rpb24gXCJTdWJzZWN0aW9uIDFcIlxuICAgICAgICAyMDAyIDogTGlua2VkaW5cbiAgICBzZWN0aW9uIFwiU3Vic2VjdGlvbiAyXCJcbiAgICAgICAgMjAwNCA6IEZhY2Vib29rIDogR29vZ2xlXG4gICAgICAgIDIwMDUgOiBZb3V0dWJlXG4gICAgICAgIDIwMDYgOiBUd2l0dGVyXG4iLCJtZXJtYWlkIjp7InRoZW1lIjoiZm9yZXN0In19)
 
-```
+```mermaid
 timeline
     title History of Social Media Platform
     section "Subsection 1"
@@ -202,7 +277,9 @@ timeline
 
 ```
 
-### Usage of a Class Diagram
+### Class Diagrams
+
+Generate UML class diagrams with relationships, namespaces, and cardinality:
 
 ```php
 <?php
@@ -212,8 +289,11 @@ use JBZoo\MermaidPHP\ClassDiagram\Concept\Concept;
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Attribute;
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Visibility;
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Method;
+use JBZoo\MermaidPHP\ClassDiagram\ConceptNamespace\ConceptNamespace;
 use JBZoo\MermaidPHP\ClassDiagram\Relationship\Relationship;
 use JBZoo\MermaidPHP\ClassDiagram\Relationship\RelationType;
+use JBZoo\MermaidPHP\ClassDiagram\Relationship\Cardinality;
+use JBZoo\MermaidPHP\ClassDiagram\Relationship\Link;
 use JBZoo\MermaidPHP\Render;
 
 $diagram = (new ClassDiagram())
@@ -258,7 +338,7 @@ echo $diagram->getLiveEditorUrl(); // Get link to live editor
 ### Result
 [Open live editor](https://mermaid-js.github.io/mermaid-live-editor/edit#pako:eNo1kMFugzAMhl8l8mnTEIIS0IoqpG297tSdplzcxGVRSVKFoK1jvPtSCr7E_vz7T-IRpFMENcgO-36vsfVohFXakwzaWfbxKuzcYy9WG-zYKCyLsdvhsQ8eZWiaO3nSNjBsaakOwWvbspasIi_stNrsB3leTVbRkfD85jrn77j_1ubhcZ6Z1Wn61yzXCwsJGPIGtYqvnn0EhC8yJKCO6cl56oOAOB2VOAR3uFoJdfADJTBcFAZavgn1Cbs-0gvaT-fMKool1CP8QJ1znj7zbV5URbkpi21WJXCNOCtTzivO86rMbnQzJfA7O2RpmQApHZx_XxZ7O6Z_kFxzOQ)
 
-```
+```mermaid
 ---
 title: Animal example
 ---
@@ -276,24 +356,68 @@ class Duck {
 Duck ..|> Animal
 ```
 
-### See also
- - [Mermaid on GitHub](https://github.com/mermaid-js/mermaid)
- - [Mermaid Documentation](https://mermaid.js.org/)
+## Output Formats
 
+All diagram types support multiple output formats:
 
-## Unit tests and check code style
-```sh
-make update
-make test-all
+### Mermaid Syntax
+```php
+// Get raw Mermaid syntax
+$mermaidCode = (string) $diagram;
+echo $diagram; // or use __toString()
 ```
 
+### HTML with Embedded Viewer
+```php
+// Generate complete HTML page with Mermaid viewer
+$htmlCode = $diagram->renderHtml([
+    'theme'       => Render::THEME_DARK,    // dark, forest, default, neutral
+    'title'       => 'My Diagram',
+    'show-zoom'   => true,
+    'debug'       => false,
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'
+]);
+```
+
+### Live Editor URL
+```php
+// Get URL to Mermaid live editor for debugging
+$url = $diagram->getLiveEditorUrl();
+```
+
+## Development
+
+### Setup
+```bash
+# Install dependencies
+make update
+
+# Run tests
+make test
+
+# Run all tests and code quality checks
+make test-all
+
+# Run code style checks
+make codestyle
+```
+
+### Testing
+- **Unit Tests**: PHPUnit tests in `tests/` directory
+- **Code Coverage**: Available via `make report-all`
+- **Static Analysis**: Psalm integration for type safety
+
+## Useful Links
+
+- [Mermaid Documentation](https://mermaid.js.org/) - Official Mermaid.js documentation
+- [Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor/) - Online editor for testing diagrams
+- [Mermaid on GitHub](https://github.com/mermaid-js/mermaid) - Source code and issues
 
 ## License
 
 MIT
 
-
-## See Also
+## Related Projects
 
 - [CI-Report-Converter](https://github.com/JBZoo/CI-Report-Converter) - Converting different error reports for deep compatibility with popular CI systems.
 - [Composer-Diff](https://github.com/JBZoo/Composer-Diff) - See what packages have changed after `composer update`.
