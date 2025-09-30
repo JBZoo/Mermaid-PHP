@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-final class Link
+class Link
 {
     public const ARROW  = 1;
     public const LINE   = 2;

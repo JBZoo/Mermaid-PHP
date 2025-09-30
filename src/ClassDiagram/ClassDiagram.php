@@ -23,7 +23,7 @@ use JBZoo\MermaidPHP\Direction;
 use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;
 
-final class ClassDiagram
+class ClassDiagram
 {
     private ?string $title        = null;
     private ?Direction $direction = null;

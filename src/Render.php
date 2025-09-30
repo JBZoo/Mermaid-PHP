@@ -20,7 +20,7 @@ use JBZoo\MermaidPHP\ClassDiagram\ClassDiagram;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
 use JBZoo\MermaidPHP\Timeline\Timeline;
 
-final class Render
+class Render
 {
     public const THEME_DEFAULT = 'default';
     public const THEME_FOREST  = 'forest';

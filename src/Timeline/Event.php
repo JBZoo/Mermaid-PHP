@@ -18,7 +18,7 @@ namespace JBZoo\MermaidPHP\Timeline;
 
 use JBZoo\MermaidPHP\Helper;
 
-final class Event
+class Event
 {
     private static bool $safeMode = false;
     private string    $identifier = '';

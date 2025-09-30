@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-final class Graph
+class Graph
 {
     public const TOP_BOTTOM = 'TB';
     public const BOTTOM_TOP = 'BT';

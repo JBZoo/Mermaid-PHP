@@ -18,7 +18,7 @@ namespace JBZoo\MermaidPHP\ClassDiagram\ConceptNamespace;
 
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Concept;
 
-final class ConceptNamespace
+class ConceptNamespace
 {
     /**
      * @param Concept[] $classes

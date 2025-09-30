@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-final class Node
+class Node
 {
     public const SQUARE            = '[%s]';
     public const ROUND             = '(%s)';

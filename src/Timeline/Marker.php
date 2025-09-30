@@ -18,7 +18,7 @@ namespace JBZoo\MermaidPHP\Timeline;
 
 use JBZoo\MermaidPHP\Helper;
 
-final class Marker
+class Marker
 {
     private static bool $safeMode = false;
     private string    $identifier = '';
