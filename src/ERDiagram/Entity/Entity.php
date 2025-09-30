@@ -18,6 +18,9 @@ namespace JBZoo\MermaidPHP\ERDiagram\Entity;
 
 use JBZoo\MermaidPHP\Helper;
 
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
 class Entity
 {
     private static bool $safeMode = false;

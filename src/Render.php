@@ -20,6 +20,9 @@ use JBZoo\MermaidPHP\ClassDiagram\ClassDiagram;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
 use JBZoo\MermaidPHP\Timeline\Timeline;
 
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
 class Render
 {
     public const THEME_DEFAULT = 'default';

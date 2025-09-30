@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
 class Node
 {
     public const SQUARE            = '[%s]';

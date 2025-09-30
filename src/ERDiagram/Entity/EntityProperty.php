@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ERDiagram\Entity;
 
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
 class EntityProperty implements \Stringable
 {
     public const PRIMARY_KEY = 'PK';

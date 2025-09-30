@@ -23,6 +23,9 @@ use JBZoo\MermaidPHP\Direction;
 use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;
 
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
 class ClassDiagram
 {
     private ?string $title        = null;

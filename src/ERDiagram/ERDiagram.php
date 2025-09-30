@@ -21,6 +21,9 @@ use JBZoo\MermaidPHP\ERDiagram\Relation\Relation;
 use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;
 
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
 class ERDiagram
 {
     private const RENDER_SHIFT = 4;

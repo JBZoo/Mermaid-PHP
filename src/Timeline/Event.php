@@ -18,6 +18,9 @@ namespace JBZoo\MermaidPHP\Timeline;
 
 use JBZoo\MermaidPHP\Helper;
 
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
 class Event
 {
     private static bool $safeMode = false;

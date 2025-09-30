@@ -18,6 +18,9 @@ namespace JBZoo\MermaidPHP\ClassDiagram\Relationship;
 
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Concept;
 
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
 class Relationship
 {
     public function __construct(
