@@ -16,7 +16,10 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP;
 
-final class Link
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
+class Link
 {
     public const ARROW  = 1;
     public const LINE   = 2;

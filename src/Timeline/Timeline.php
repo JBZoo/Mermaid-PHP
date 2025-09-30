@@ -20,7 +20,10 @@ use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Render;
 use JBZoo\MermaidPHP\Timeline\Exception\SectionHasNoTitleException;
 
-final class Timeline
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
+class Timeline
 {
     private const RENDER_SHIFT = 4;
 

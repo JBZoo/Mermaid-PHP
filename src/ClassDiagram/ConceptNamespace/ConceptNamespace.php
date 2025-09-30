@@ -18,7 +18,10 @@ namespace JBZoo\MermaidPHP\ClassDiagram\ConceptNamespace;
 
 use JBZoo\MermaidPHP\ClassDiagram\Concept\Concept;
 
-final class ConceptNamespace
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
+class ConceptNamespace
 {
     /**
      * @param Concept[] $classes

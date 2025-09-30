@@ -16,7 +16,10 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ClassDiagram\Concept;
 
-final class Attribute implements \Stringable
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
+class Attribute implements \Stringable
 {
     public function __construct(
         private string $name,

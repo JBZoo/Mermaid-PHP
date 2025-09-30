@@ -18,7 +18,10 @@ namespace JBZoo\MermaidPHP\ClassDiagram\Concept;
 
 use JBZoo\MermaidPHP\Exception;
 
-final class Method implements \Stringable
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
+class Method implements \Stringable
 {
     public function __construct(
         private string $name,

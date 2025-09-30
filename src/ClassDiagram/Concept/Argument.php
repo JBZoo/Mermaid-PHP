@@ -16,7 +16,10 @@ declare(strict_types=1);
 
 namespace JBZoo\MermaidPHP\ClassDiagram\Concept;
 
-final class Argument implements \Stringable
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
+class Argument implements \Stringable
 {
     public function __construct(
         private string $name,

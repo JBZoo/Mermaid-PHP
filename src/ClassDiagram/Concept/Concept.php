@@ -18,7 +18,10 @@ namespace JBZoo\MermaidPHP\ClassDiagram\Concept;
 
 use JBZoo\MermaidPHP\Helper;
 
-final class Concept
+/**
+ * @psalm-suppress ClassMustBeFinal
+ */
+class Concept
 {
     private static bool $safeMode = false;
     private string    $identifier;
