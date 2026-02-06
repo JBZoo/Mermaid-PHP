@@ -26,17 +26,17 @@ class Link
     public const DOTTED = 3;
     public const THICK  = 4;
 
-    private const TEMPLATES = [
+    protected const TEMPLATES = [
         self::ARROW  => ['-->', '-->|%s|'],
         self::LINE   => [' --- ', '---|%s|'],
         self::DOTTED => ['-.->', '-. %s .-> '],
         self::THICK  => [' ==> ', ' == %s ==> '],
     ];
 
-    private int    $style = self::ARROW;
-    private string $text  = '';
-    private Node   $sourceNode;
-    private Node   $targetNode;
+    protected int    $style = self::ARROW;
+    protected string $text  = '';
+    protected Node   $sourceNode;
+    protected Node   $targetNode;
 
     public function __construct(Node $sourceNode, Node $targetNode, string $text = '', int $style = self::ARROW)
     {
