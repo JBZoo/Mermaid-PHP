@@ -21,12 +21,12 @@ namespace JBZoo\MermaidPHP;
  */
 class Graph
 {
-    public const TOP_BOTTOM = 'TB';
-    public const BOTTOM_TOP = 'BT';
-    public const LEFT_RIGHT = 'LR';
-    public const RIGHT_LEFT = 'RL';
+    public const string TOP_BOTTOM = 'TB';
+    public const string BOTTOM_TOP = 'BT';
+    public const string LEFT_RIGHT = 'LR';
+    public const string RIGHT_LEFT = 'RL';
 
-    private const RENDER_SHIFT = 4;
+    private const int RENDER_SHIFT = 4;
 
     /** @var Graph[] */
     private array $subGraphs = [];

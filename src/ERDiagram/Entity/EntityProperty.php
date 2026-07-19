@@ -21,9 +21,9 @@ namespace JBZoo\MermaidPHP\ERDiagram\Entity;
  */
 class EntityProperty implements \Stringable
 {
-    public const PRIMARY_KEY = 'PK';
-    public const FOREIGN_KEY = 'FK';
-    public const UNIQUE_KEY  = 'UK';
+    public const string PRIMARY_KEY = 'PK';
+    public const string FOREIGN_KEY = 'FK';
+    public const string UNIQUE_KEY  = 'UK';
 
     /**
      * @param string[] $keys

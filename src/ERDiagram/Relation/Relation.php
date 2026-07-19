@@ -21,9 +21,9 @@ use JBZoo\MermaidPHP\Helper;
 
 abstract class Relation
 {
-    public const ZERO_OR_ONE  = '?';
-    public const ZERO_OR_MORE = '*';
-    public const ONE_OR_MORE  = '+';
+    public const string ZERO_OR_ONE  = '?';
+    public const string ZERO_OR_MORE = '*';
+    public const string ONE_OR_MORE  = '+';
 
     protected static bool $safeMode = false;
     protected Entity      $firstEntity;

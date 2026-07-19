@@ -111,9 +111,6 @@ class ClassDiagram
         return \implode(\PHP_EOL, $result);
     }
 
-    /**
-     * @suppress PhanPossiblyUndeclaredProperty
-     */
     public function getParams(): array
     {
         return \array_filter([

@@ -21,12 +21,12 @@ namespace JBZoo\MermaidPHP;
  */
 class Link
 {
-    public const ARROW  = 1;
-    public const LINE   = 2;
-    public const DOTTED = 3;
-    public const THICK  = 4;
+    public const int ARROW  = 1;
+    public const int LINE   = 2;
+    public const int DOTTED = 3;
+    public const int THICK  = 4;
 
-    protected const TEMPLATES = [
+    protected const array TEMPLATES = [
         self::ARROW  => ['-->', '-->|%s|'],
         self::LINE   => [' --- ', '---|%s|'],
         self::DOTTED => ['-.->', '-. %s .-> '],
