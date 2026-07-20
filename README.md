@@ -39,7 +39,7 @@ composer require jbzoo/mermaid-php
 
 ## Requirements
 
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - ext-json
 
 ## Features

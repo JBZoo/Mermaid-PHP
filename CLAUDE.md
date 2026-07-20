@@ -107,6 +107,6 @@ All diagram types support:
 - Tests include HTML output generation for visual verification
 
 ### Dependencies
-- **Runtime**: PHP 8.2+, ext-json
+- **Runtime**: PHP 8.3+, ext-json
 - **Development**: jbzoo/toolbox-dev (includes PHPUnit, code style tools, etc.)
 - Uses JBZoo ecosystem tools for consistent development experience
