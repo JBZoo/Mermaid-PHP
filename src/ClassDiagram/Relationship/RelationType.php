@@ -31,7 +31,7 @@ enum RelationType
     {
         return match ($this) {
             self::DEPENDENCY, self::REALIZATION => Link::DASHED,
-            default => Link::SOLID,
+            default                             => Link::SOLID,
         };
     }
 
@@ -42,7 +42,7 @@ enum RelationType
     {
         return match ($this) {
             self::AGGREGATION, self::COMPOSITION => $this->renderDirect() . $link->value . $inverse?->renderInverse(),
-            default => $inverse?->renderInverse() . $link->value . $this->renderDirect(),
+            default                              => $inverse?->renderInverse() . $link->value . $this->renderDirect(),
         };
     }
 
@@ -50,10 +50,10 @@ enum RelationType
     {
         return match ($this) {
             self::INHERITANCE, self::REALIZATION => '|>',
-            self::COMPOSITION => '*',
-            self::AGGREGATION => 'o',
-            self::ASSOCIATION, self::DEPENDENCY => '>',
-            self::LOLLILOP => '(),'
+            self::COMPOSITION                    => '*',
+            self::AGGREGATION                    => 'o',
+            self::ASSOCIATION, self::DEPENDENCY  => '>',
+            self::LOLLILOP                       => '(),'
         };
     }
 
@@ -61,8 +61,8 @@ enum RelationType
     {
         return match ($this) {
             self::INHERITANCE, self::REALIZATION => '<|',
-            self::ASSOCIATION, self::DEPENDENCY => '<',
-            default => $this->renderDirect(),
+            self::ASSOCIATION, self::DEPENDENCY  => '<',
+            default                              => $this->renderDirect(),
         };
     }
 }

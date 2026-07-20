@@ -25,12 +25,12 @@ use JBZoo\MermaidPHP\Timeline\Timeline;
  */
 class Render
 {
-    public const THEME_DEFAULT = 'default';
-    public const THEME_FOREST  = 'forest';
-    public const THEME_DARK    = 'dark';
-    public const THEME_NEUTRAL = 'neutral';
+    public const string THEME_DEFAULT = 'default';
+    public const string THEME_FOREST  = 'forest';
+    public const string THEME_DARK    = 'dark';
+    public const string THEME_NEUTRAL = 'neutral';
 
-    public const DEFAULT_MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    public const string DEFAULT_MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
     public static function html(ClassDiagram|ERDiagram|Graph|Timeline $graph, array $params = []): string
     {

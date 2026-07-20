@@ -25,7 +25,7 @@ use JBZoo\MermaidPHP\Timeline\Exception\SectionHasNoTitleException;
  */
 class Timeline
 {
-    private const RENDER_SHIFT = 4;
+    private const int RENDER_SHIFT = 4;
 
     /** @var Timeline[] */
     private array $sections = [];

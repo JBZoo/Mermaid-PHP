@@ -21,19 +21,19 @@ namespace JBZoo\MermaidPHP;
  */
 class Node
 {
-    public const SQUARE            = '[%s]';
-    public const ROUND             = '(%s)';
-    public const CIRCLE            = '((%s))';
-    public const ASYMMETRIC_SHAPE  = '>%s]';
-    public const RHOMBUS           = '{%s}';
-    public const HEXAGON           = '{{%s}}';
-    public const PARALLELOGRAM     = '[/%s/]';
-    public const PARALLELOGRAM_ALT = '[\%s\]';
-    public const TRAPEZOID         = '[/%s\]';
-    public const TRAPEZOID_ALT     = '[\%s/]';
-    public const DATABASE          = '[(%s)]';
-    public const SUBROUTINE        = '[[%s]]';
-    public const STADIUM           = '([%s])';
+    public const string SQUARE            = '[%s]';
+    public const string ROUND             = '(%s)';
+    public const string CIRCLE            = '((%s))';
+    public const string ASYMMETRIC_SHAPE  = '>%s]';
+    public const string RHOMBUS           = '{%s}';
+    public const string HEXAGON           = '{{%s}}';
+    public const string PARALLELOGRAM     = '[/%s/]';
+    public const string PARALLELOGRAM_ALT = '[\%s\]';
+    public const string TRAPEZOID         = '[/%s\]';
+    public const string TRAPEZOID_ALT     = '[\%s/]';
+    public const string DATABASE          = '[(%s)]';
+    public const string SUBROUTINE        = '[[%s]]';
+    public const string STADIUM           = '([%s])';
 
     private static bool $safeMode = false;
     private string    $identifier = '';

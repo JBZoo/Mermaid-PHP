@@ -26,7 +26,7 @@ use JBZoo\MermaidPHP\Render;
  */
 class ERDiagram
 {
-    private const RENDER_SHIFT = 4;
+    private const int RENDER_SHIFT = 4;
 
     /** @var Entity[] */
     private array $entities = [];
