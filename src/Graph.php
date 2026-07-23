@@ -119,11 +119,79 @@ class Graph
             }
         }
 
+        if ($isMainGraph) {
+            foreach ($this->renderInteractions() as $line) {
+                $result[] = $spaces . $line;
+            }
+        }
+
         if (!$isMainGraph) {
             $result[] = "{$spaces}end";
         }
 
         return \implode(\PHP_EOL, $result);
+    }
+
+    /**
+     * Global click/linkStyle directives for the whole graph tree.
+     *
+     * @return string[]
+     */
+    private function renderInteractions(): array
+    {
+        $lines = [];
+
+        foreach ($this->flattenLinks() as $index => $link) {
+            $css = $link->getCss();
+            if ($css !== null) {
+                $lines[] = "linkStyle {$index} {$css};";
+            }
+        }
+
+        foreach ($this->flattenNodes() as $node) {
+            $clickStatement = $node->getClickStatement();
+            if ($clickStatement !== null) {
+                $lines[] = $clickStatement;
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Links across the whole graph tree, in render order (own links first, then
+     * sub-graphs depth-first). Mirrors render()'s per-graph ordering incl. abc_order,
+     * so a link's array position equals its 0-based Mermaid linkStyle index.
+     *
+     * @return Link[]
+     */
+    private function flattenLinks(): array
+    {
+        $links = $this->links;
+        if ($this->params['abc_order'] === true) {
+            \usort($links, static fn (Link $a, Link $b): int => (string)$a <=> (string)$b);
+        }
+
+        foreach ($this->subGraphs as $subGraph) {
+            $links = \array_merge($links, $subGraph->flattenLinks());
+        }
+
+        return $links;
+    }
+
+    /**
+     * Nodes across the whole graph tree, in render order.
+     *
+     * @return Node[]
+     */
+    private function flattenNodes(): array
+    {
+        $nodes = \array_values($this->nodes);
+        foreach ($this->subGraphs as $subGraph) {
+            $nodes = \array_merge($nodes, $subGraph->flattenNodes());
+        }
+
+        return $nodes;
     }
 
     public function addNode(Node $node): self
