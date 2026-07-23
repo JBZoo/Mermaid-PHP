@@ -35,16 +35,29 @@ class Node
     public const string SUBROUTINE        = '[[%s]]';
     public const string STADIUM           = '([%s])';
 
+    public const string TARGET_BLANK  = '_blank';
+    public const string TARGET_SELF   = '_self';
+    public const string TARGET_PARENT = '_parent';
+    public const string TARGET_TOP    = '_top';
+
     private static bool $safeMode = false;
     private string    $identifier = '';
     private string    $title      = '';
     private string    $form       = self::ROUND;
+    private ?string   $url        = null;
+    private ?string   $tooltip    = null;
+    private ?string   $target     = null;
 
-    public function __construct(string $identifier, string $title = '', string $form = self::ROUND)
-    {
+    public function __construct(
+        string $identifier,
+        string $title = '',
+        string $form = self::ROUND,
+        ?string $url = null,
+    ) {
         $this->identifier = self::isSafeMode() ? Helper::getId($identifier) : $identifier;
         $this->setTitle($title === '' ? $identifier : $title);
         $this->setForm($form);
+        $this->setUrl($url);
     }
 
     public function __toString(): string
@@ -84,6 +97,61 @@ class Node
     public function getForm(): string
     {
         return $this->form;
+    }
+
+    public function setUrl(?string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setTooltip(?string $tooltip): self
+    {
+        $this->tooltip = $tooltip;
+
+        return $this;
+    }
+
+    public function getTooltip(): ?string
+    {
+        return $this->tooltip;
+    }
+
+    public function setTarget(?string $target): self
+    {
+        $this->target = $target;
+
+        return $this;
+    }
+
+    public function getTarget(): ?string
+    {
+        return $this->target;
+    }
+
+    public function getClickStatement(): ?string
+    {
+        if ($this->url === null) {
+            return null;
+        }
+
+        $parts = ['click', $this->identifier, '"' . \str_replace('"', '#quot;', $this->url) . '"'];
+
+        if ($this->tooltip !== null) {
+            $parts[] = Helper::escape($this->tooltip);
+        }
+
+        if ($this->target !== null) {
+            $parts[] = $this->target;
+        }
+
+        return \implode(' ', $parts);
     }
 
     public static function safeMode(bool $safeMode): void

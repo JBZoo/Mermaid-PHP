@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace JBZoo\PHPUnit;
 
 use JBZoo\MermaidPHP\Graph;
+use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Link;
 use JBZoo\MermaidPHP\Node;
 
@@ -118,6 +119,53 @@ final class FlowchartTest extends PHPUnit
         isSame('A---|"This is the text"|B;', (string)$link->setStyle(Link::LINE));
         isSame('A == "This is the text" ==> B;', (string)$link->setStyle(Link::THICK));
         isSame('A-. "This is the text" .-> B;', (string)$link->setStyle(Link::DOTTED));
+    }
+
+    public function testNodeClickStatement(): void
+    {
+        // No url -> no click statement; __toString stays byte-identical (BC).
+        $node = new Node('A', 'Title', Node::SQUARE);
+        isSame(null, $node->getClickStatement());
+        isSame('A["Title"];', (string)$node);
+
+        // Url via constructor.
+        $node = new Node('A', 'Title', Node::SQUARE, 'https://example.com/');
+        isSame('https://example.com/', $node->getUrl());
+        isSame('click A "https://example.com/"', $node->getClickStatement());
+        isSame('A["Title"];', (string)$node);
+
+        // Url via fluent setter (returns $this).
+        $node = new Node('B');
+        isSame($node, $node->setUrl('https://jbzoo.com'));
+        isSame('click B "https://jbzoo.com"', $node->getClickStatement());
+
+        // Url + tooltip.
+        $node->setTooltip('Open docs');
+        isSame('Open docs', $node->getTooltip());
+        isSame('click B "https://jbzoo.com" "Open docs"', $node->getClickStatement());
+
+        // Url + tooltip + target.
+        $node->setTarget(Node::TARGET_BLANK);
+        isSame('_blank', $node->getTarget());
+        isSame('click B "https://jbzoo.com" "Open docs" _blank', $node->getClickStatement());
+
+        // Target without tooltip.
+        $node2 = (new Node('C'))->setUrl('https://x.io')->setTarget(Node::TARGET_SELF);
+        isSame('click C "https://x.io" _self', $node2->getClickStatement());
+
+        // Escaping: "&" preserved, '"' -> #quot;.
+        $node3 = (new Node('D'))->setUrl('https://x.io/?a=1&b=2');
+        isSame('click D "https://x.io/?a=1&b=2"', $node3->getClickStatement());
+        $node4 = (new Node('E'))->setUrl('https://x.io/"q"');
+        isSame('click E "https://x.io/#quot;q#quot;"', $node4->getClickStatement());
+    }
+
+    public function testNodeClickStatementSafeMode(): void
+    {
+        Node::safeMode(true);
+        $node = (new Node('A', 'Title', Node::SQUARE))->setUrl('https://x.io');
+        $id   = Helper::getId('A');
+        isSame("click {$id} \"https://x.io\"", $node->getClickStatement());
     }
 
     public function testNotFoundNode(): void
