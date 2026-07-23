@@ -151,6 +151,57 @@ graph TB;
 linkStyle default interpolate basis;
 ```
 
+#### Clickable nodes
+
+Attach a hyperlink (with an optional tooltip and target) to any node; it renders as a Mermaid `click` directive:
+
+```php
+use JBZoo\MermaidPHP\Graph;
+use JBZoo\MermaidPHP\Node;
+
+$graph = (new Graph())
+    ->addNode($docs = (new Node('D', 'Docs'))
+        ->setUrl('https://github.com/JBZoo/Mermaid-PHP')
+        ->setTooltip('Open the repository')
+        ->setTarget(Node::TARGET_BLANK));
+
+echo $graph;
+// graph TB;
+//     D("Docs");
+//
+// click D "https://github.com/JBZoo/Mermaid-PHP" "Open the repository" _blank
+```
+
+`setUrl()` alone is enough; `setTooltip()` and `setTarget()` (`Node::TARGET_BLANK`, `TARGET_SELF`,
+`TARGET_PARENT`, `TARGET_TOP`) are optional.
+
+#### Per-link styles
+
+Give an individual link its own CSS; it renders as a `linkStyle <index> ...` directive. The index is resolved
+automatically from the link's position in the whole graph (sub-graphs and `abc_order` included):
+
+```php
+use JBZoo\MermaidPHP\Graph;
+use JBZoo\MermaidPHP\Link;
+use JBZoo\MermaidPHP\Node;
+
+$graph = (new Graph())
+    ->addNode($a = new Node('A'))
+    ->addNode($b = new Node('B'))
+    ->addLink((new Link($a, $b))->setCss('stroke:blue,stroke-width:4px'));
+
+echo $graph;
+// graph TB;
+//     A("A");
+//     B("B");
+//
+//     A-->B;
+//
+// linkStyle 0 stroke:blue,stroke-width:4px;
+```
+
+The same CSS can be passed through the id-based helper: `$graph->addLinkByIds('A', 'B', '', Link::ARROW, 'stroke:blue');`.
+
 
 ### ER Diagrams
 

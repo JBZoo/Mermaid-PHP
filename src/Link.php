@@ -33,17 +33,24 @@ class Link
         self::THICK  => [' ==> ', ' == %s ==> '],
     ];
 
-    protected int    $style = self::ARROW;
-    protected string $text  = '';
-    protected Node   $sourceNode;
-    protected Node   $targetNode;
+    protected int     $style = self::ARROW;
+    protected string  $text  = '';
+    protected ?string $css   = null;
+    protected Node    $sourceNode;
+    protected Node    $targetNode;
 
-    public function __construct(Node $sourceNode, Node $targetNode, string $text = '', int $style = self::ARROW)
-    {
+    public function __construct(
+        Node $sourceNode,
+        Node $targetNode,
+        string $text = '',
+        int $style = self::ARROW,
+        ?string $css = null,
+    ) {
         $this->sourceNode = $sourceNode;
         $this->targetNode = $targetNode;
         $this->setText($text);
         $this->setStyle($style);
+        $this->setCss($css);
     }
 
     public function __toString(): string
@@ -68,5 +75,17 @@ class Link
         $this->style = $style;
 
         return $this;
+    }
+
+    public function setCss(?string $css): self
+    {
+        $this->css = $css;
+
+        return $this;
+    }
+
+    public function getCss(): ?string
+    {
+        return $this->css;
     }
 }

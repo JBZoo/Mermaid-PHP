@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace JBZoo\PHPUnit;
 
 use JBZoo\MermaidPHP\Graph;
+use JBZoo\MermaidPHP\Helper;
 use JBZoo\MermaidPHP\Link;
 use JBZoo\MermaidPHP\Node;
 
@@ -118,6 +119,194 @@ final class FlowchartTest extends PHPUnit
         isSame('A---|"This is the text"|B;', (string)$link->setStyle(Link::LINE));
         isSame('A == "This is the text" ==> B;', (string)$link->setStyle(Link::THICK));
         isSame('A-. "This is the text" .-> B;', (string)$link->setStyle(Link::DOTTED));
+    }
+
+    public function testNodeClickStatement(): void
+    {
+        // No url -> no click statement; __toString stays byte-identical (BC).
+        $node = new Node('A', 'Title', Node::SQUARE);
+        isSame(null, $node->getClickStatement());
+        isSame('A["Title"];', (string)$node);
+
+        // Url via constructor.
+        $node = new Node('A', 'Title', Node::SQUARE, 'https://example.com/');
+        isSame('https://example.com/', $node->getUrl());
+        isSame('click A "https://example.com/"', $node->getClickStatement());
+        isSame('A["Title"];', (string)$node);
+
+        // Url via fluent setter (returns $this).
+        $node = new Node('B');
+        isSame($node, $node->setUrl('https://jbzoo.com'));
+        isSame('click B "https://jbzoo.com"', $node->getClickStatement());
+
+        // Url + tooltip.
+        $node->setTooltip('Open docs');
+        isSame('Open docs', $node->getTooltip());
+        isSame('click B "https://jbzoo.com" "Open docs"', $node->getClickStatement());
+
+        // Url + tooltip + target.
+        $node->setTarget(Node::TARGET_BLANK);
+        isSame('_blank', $node->getTarget());
+        isSame('click B "https://jbzoo.com" "Open docs" _blank', $node->getClickStatement());
+
+        // Target without tooltip.
+        $node2 = (new Node('C'))->setUrl('https://x.io')->setTarget(Node::TARGET_SELF);
+        isSame('click C "https://x.io" _self', $node2->getClickStatement());
+
+        // Escaping: "&" preserved, '"' -> #quot;.
+        $node3 = (new Node('D'))->setUrl('https://x.io/?a=1&b=2');
+        isSame('click D "https://x.io/?a=1&b=2"', $node3->getClickStatement());
+        $node4 = (new Node('E'))->setUrl('https://x.io/"q"');
+        isSame('click E "https://x.io/#quot;q#quot;"', $node4->getClickStatement());
+    }
+
+    public function testNodeClickStatementSafeMode(): void
+    {
+        Node::safeMode(true);
+        $node = (new Node('A', 'Title', Node::SQUARE))->setUrl('https://x.io');
+        $id   = Helper::getId('A');
+        isSame("click {$id} \"https://x.io\"", $node->getClickStatement());
+    }
+
+    public function testLinkCssUnit(): void
+    {
+        $link = new Link(new Node('A'), new Node('B'));
+        isSame(null, $link->getCss());
+        isSame('A-->B;', (string)$link); // BC: __toString unaffected by css
+
+        isSame($link, $link->setCss('stroke:red,stroke-width:2px'));
+        isSame('stroke:red,stroke-width:2px', $link->getCss());
+        isSame('A-->B;', (string)$link);
+
+        // Via constructor 5th param.
+        $link2 = new Link(new Node('A'), new Node('B'), '', Link::ARROW, 'stroke:blue');
+        isSame('stroke:blue', $link2->getCss());
+
+        // Clear.
+        isSame(null, $link->setCss(null)->getCss());
+    }
+
+    public function testGraphNodeClickRendering(): void
+    {
+        $graph = new Graph(['abc_order' => false]);
+        $graph->addNode($a = (new Node('A', 'Alpha'))->setUrl('https://a.io'));
+        $graph->addNode($b = new Node('B', 'Beta')); // no url
+        $graph->addLink(new Link($a, $b));
+
+        is(\implode(\PHP_EOL, [
+            'graph TB;',
+            '    A("Alpha");',
+            '    B("Beta");',
+            '',
+            '    A-->B;',
+            '',
+            'click A "https://a.io"',
+        ]), (string)$graph);
+    }
+
+    public function testGraphLinkCssRendering(): void
+    {
+        $graph = new Graph(['abc_order' => false]);
+        $graph->addNode($a = new Node('A'));
+        $graph->addNode($b = new Node('B'));
+        $graph->addNode($c = new Node('C'));
+        $graph->addLink(new Link($a, $b));                                           // index 0, no css
+        $graph->addLink((new Link($b, $c))->setCss('stroke:blue,stroke-width:4px')); // index 1
+
+        is(\implode(\PHP_EOL, [
+            'graph TB;',
+            '    A("A");',
+            '    B("B");',
+            '    C("C");',
+            '',
+            '    A-->B;',
+            '    B-->C;',
+            '',
+            'linkStyle 1 stroke:blue,stroke-width:4px;',
+        ]), (string)$graph);
+    }
+
+    public function testGraphLinkCssGlobalIndexInSubGraph(): void
+    {
+        // A styled link INSIDE a subgraph must get the correct GLOBAL index.
+        $graph = new Graph(['abc_order' => false]);
+        $graph->addNode($a = new Node('A'));
+        $graph->addNode($b = new Node('B'));
+        $graph->addLink(new Link($a, $b)); // global index 0
+
+        $sub = new Graph(['title' => 'Sub', 'abc_order' => false]);
+        $sub->addNode($c = new Node('C'));
+        $sub->addNode($d = new Node('D'));
+        $sub->addLink((new Link($c, $d))->setCss('stroke:green')); // global index 1
+        $graph->addSubGraph($sub);
+
+        is(\implode(\PHP_EOL, [
+            'graph TB;',
+            '    A("A");',
+            '    B("B");',
+            '',
+            '    A-->B;',
+            '',
+            '    subgraph "Sub"',
+            '        C("C");',
+            '        D("D");',
+            '        C-->D;',
+            '    end',
+            'linkStyle 1 stroke:green;',
+        ]), (string)$graph);
+    }
+
+    public function testGraphLinkCssWithAbcOrder(): void
+    {
+        // abc_order sorts link output; the linkStyle index must follow the SORTED order.
+        $graph = new Graph(['abc_order' => true]);
+        $graph->addNode($a = new Node('A'));
+        $graph->addNode($b = new Node('B'));
+        $graph->addNode($c = new Node('C'));
+        $graph->addLink(new Link($b, $c));                        // 'B-->C;'
+        $graph->addLink((new Link($a, $b))->setCss('stroke:red')); // 'A-->B;' sorts FIRST -> index 0
+
+        is(\implode(\PHP_EOL, [
+            'graph TB;',
+            '    A("A");',
+            '    B("B");',
+            '    C("C");',
+            '',
+            '    A-->B;',
+            '    B-->C;',
+            '',
+            'linkStyle 0 stroke:red;',
+        ]), (string)$graph);
+    }
+
+    public function testBackwardCompatOutputUnchangedWithoutFeatures(): void
+    {
+        // No url/css anywhere -> byte-identical to pre-feature output.
+        $graph = new Graph(['abc_order' => false]);
+        $graph->addNode($a = new Node('A', 'Text', Node::CIRCLE));
+        $graph->addNode($b = new Node('B', 'Another text', Node::ROUND));
+        $graph->addLink(new Link($b, $a, '$150 000.00'));
+        $graph->addLink(new Link($a, $b, '$250 000.00'));
+
+        is(\implode(\PHP_EOL, [
+            'graph TB;',
+            '    A(("Text"));',
+            '    B("Another text");',
+            '',
+            '    B-->|"$150 000.00"|A;',
+            '    A-->|"$250 000.00"|B;',
+            '',
+        ]), (string)$graph);
+    }
+
+    public function testAddLinkByIdsWithCss(): void
+    {
+        $graph = new Graph(['abc_order' => false]);
+        $graph->addNode(new Node('A'));
+        $graph->addNode(new Node('B'));
+        isSame($graph, $graph->addLinkByIds('A', 'B', '', Link::ARROW, 'stroke:orange'));
+
+        isContain('linkStyle 0 stroke:orange;', (string)$graph);
     }
 
     public function testNotFoundNode(): void

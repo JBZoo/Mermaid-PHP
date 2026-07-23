@@ -60,10 +60,6 @@ class Graph
         return $this->render();
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
     public function render(bool $isMainGraph = true, int $shift = 0): string
     {
         $spaces    = \str_repeat(' ', $shift);
@@ -75,51 +71,22 @@ class Graph
             $result = ["{$spaces}subgraph " . Helper::escape((string)$this->params['title'])];
         }
 
-        if (\count($this->nodes) > 0) {
-            $tmp = [];
-
-            foreach ($this->nodes as $node) {
-                $tmp[] = $spacesSub . $node->__toString();
-            }
-
-            if ($this->params['abc_order'] === true) {
-                \sort($tmp);
-            }
-
-            $result = \array_merge($result, $tmp);
-            if ($isMainGraph) {
-                $result[] = '';
-            }
-        }
-
-        if (\count($this->links) > 0) {
-            $tmp = [];
-
-            foreach ($this->links as $link) {
-                $tmp[] = $spacesSub . $link->__toString();
-            }
-
-            if ($this->params['abc_order'] === true) {
-                \sort($tmp);
-            }
-
-            $result = \array_merge($result, $tmp);
-            if ($isMainGraph) {
-                $result[] = '';
-            }
-        }
+        $result = \array_merge($result, $this->renderItems($this->nodes, $spacesSub, $isMainGraph));
+        $result = \array_merge($result, $this->renderItems($this->links, $spacesSub, $isMainGraph));
 
         foreach ($this->subGraphs as $subGraph) {
             $result[] = $subGraph->render(false, $shift + 4);
         }
 
-        if ($isMainGraph && \count($this->styles) > 0) {
+        if ($isMainGraph) {
             foreach ($this->styles as $style) {
                 $result[] = $spaces . $style . ';';
             }
-        }
 
-        if (!$isMainGraph) {
+            foreach ($this->renderInteractions() as $line) {
+                $result[] = $spaces . $line;
+            }
+        } else {
             $result[] = "{$spaces}end";
         }
 
@@ -145,6 +112,7 @@ class Graph
         string $targetNodeId,
         string $text = '',
         int $style = Link::ARROW,
+        ?string $css = null,
     ): self {
         $source = $this->getNode($sourceNodeId);
         if ($source === null) {
@@ -156,7 +124,7 @@ class Graph
             throw new Exception("Target node id=\"{$targetNodeId}\" not found");
         }
 
-        return $this->addLink(new Link($source, $target, $text, $style));
+        return $this->addLink(new Link($source, $target, $text, $style, $css));
     }
 
     public function addStyle(string $style): self
@@ -213,5 +181,98 @@ class Graph
     public function getNodes(): array
     {
         return $this->nodes;
+    }
+
+    /**
+     * Render a block of nodes or links, applying the optional abc-order sort.
+     *
+     * @param array<Link|Node> $items
+     *
+     * @return string[]
+     */
+    private function renderItems(array $items, string $spacesSub, bool $isMainGraph): array
+    {
+        if (\count($items) === 0) {
+            return [];
+        }
+
+        $lines = [];
+
+        foreach ($items as $item) {
+            $lines[] = $spacesSub . $item->__toString();
+        }
+
+        if ($this->params['abc_order'] === true) {
+            \sort($lines);
+        }
+
+        if ($isMainGraph) {
+            $lines[] = '';
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Global click/linkStyle directives for the whole graph tree.
+     *
+     * @return string[]
+     */
+    private function renderInteractions(): array
+    {
+        $lines = [];
+
+        foreach ($this->flattenLinks() as $index => $link) {
+            $css = $link->getCss();
+            if ($css !== null) {
+                $lines[] = "linkStyle {$index} {$css};";
+            }
+        }
+
+        foreach ($this->flattenNodes() as $node) {
+            $clickStatement = $node->getClickStatement();
+            if ($clickStatement !== null) {
+                $lines[] = $clickStatement;
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Links across the whole graph tree, in render order (own links first, then
+     * sub-graphs depth-first). Mirrors render()'s per-graph ordering incl. abc_order,
+     * so a link's array position equals its 0-based Mermaid linkStyle index.
+     *
+     * @return Link[]
+     */
+    private function flattenLinks(): array
+    {
+        $links = $this->links;
+        if ($this->params['abc_order'] === true) {
+            \usort($links, static fn (Link $linkA, Link $linkB): int => (string)$linkA <=> (string)$linkB);
+        }
+
+        foreach ($this->subGraphs as $subGraph) {
+            $links = \array_merge($links, $subGraph->flattenLinks());
+        }
+
+        return $links;
+    }
+
+    /**
+     * Nodes across the whole graph tree, in render order.
+     *
+     * @return Node[]
+     */
+    private function flattenNodes(): array
+    {
+        $nodes = \array_values($this->nodes);
+
+        foreach ($this->subGraphs as $subGraph) {
+            $nodes = \array_merge($nodes, $subGraph->flattenNodes());
+        }
+
+        return $nodes;
     }
 }
