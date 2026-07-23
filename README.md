@@ -121,7 +121,7 @@ $htmlCode = $graph->renderHtml([
     'theme'       => Render::THEME_DARK,
     'title'       => 'Example',
     'show-zoom'   => false,
-    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs',
 ]); // Get result as HTML code for debugging
 
 echo $graph->getLiveEditorUrl(); // Get link to live editor
@@ -192,7 +192,7 @@ $htmlCode = $diagram->renderHtml([
     'theme'       => Render::THEME_DARK,
     'title'       => 'Example',
     'show-zoom'   => false,
-    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs',
 ]); // Get result as HTML code for debugging
 
 echo $diagram->getLiveEditorUrl(); // Get link to live editor
@@ -256,7 +256,7 @@ $htmlCode = $timeline->renderHtml([
     'theme'       => Render::THEME_DARK,
     'title'       => 'Example',
     'show-zoom'   => false,
-    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs',
 ]); // Get result as HTML code for debugging
 
 echo $diagram->getLiveEditorUrl(); // Get link to live editor
@@ -329,7 +329,7 @@ $htmlCode = $diagram->renderHtml([
     'theme'       => Render::THEME_DARK,
     'title'       => 'Example',
     'show-zoom'   => false,
-    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs',
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs',
 ]); // Get result as HTML code for debugging
 
 echo $diagram->getLiveEditorUrl(); // Get link to live editor
@@ -375,9 +375,49 @@ $htmlCode = $diagram->renderHtml([
     'title'       => 'My Diagram',
     'show-zoom'   => true,
     'debug'       => false,
-    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'
+    'mermaid_url' => 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
 ]);
 ```
+
+### Self-Hosting & Offline (GDPR)
+
+By default the generated page imports Mermaid from a public CDN. When the browser opens the page it
+sends the visitor's IP to that third party, which can be a GDPR concern and also prevents fully offline
+rendering. (The old builds also loaded jQuery from a CDN — that dependency has been removed entirely, the
+generated page is now jQuery-free.)
+
+Use the `mermaid` descriptor to control **how** Mermaid is loaded. It binds the build flavor to its source,
+so there is a single, unambiguous option instead of guessing ESM vs UMD from a URL:
+
+```php
+// 1) Default — ES module from a CDN (unchanged; equivalent to the legacy 'mermaid_url' option)
+$diagram->renderHtml(['mermaid' => [
+    'kind'   => 'esm-url',
+    'source' => 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs',
+]]);
+
+// 2) Self-hosted from your OWN domain — no third-party request, browser-cacheable (best for production)
+$diagram->renderHtml(['mermaid' => [
+    'kind'   => 'umd-url',
+    'source' => '/assets/js/mermaid.min.js',
+]]);
+
+// 3) Inlined into a single self-contained .html file — zero network requests (best for debug/review/CI artifacts)
+$diagram->renderHtml(['mermaid' => [
+    'kind'   => 'umd-inline',
+    'source' => __DIR__ . '/assets/mermaid.min.js',
+]]);
+```
+
+Notes:
+
+- `umd-url` and `umd-inline` require the **standalone UMD build** (`mermaid.min.js`), which is a single
+  self-contained file. The **ESM build** (`mermaid.esm.min.mjs`) is only a loader that fetches per-diagram
+  chunks over the network at render time, so it cannot be self-hosted as one file or inlined.
+- The library does **not** vendor Mermaid — download `mermaid.min.js` yourself (npm, or from the CDN) and
+  point `source` at it. Nothing is fetched over the network by PHP during rendering.
+- "Offline" caveats: inlining removes Mermaid's own requests, but `fa:` Font Awesome icons and custom web
+  fonts are **not** embedded by Mermaid; provide them locally too if you need a provably request-free page.
 
 ### Live Editor URL
 ```php
