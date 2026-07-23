@@ -213,6 +213,7 @@ class Graph
         string $targetNodeId,
         string $text = '',
         int $style = Link::ARROW,
+        ?string $css = null,
     ): self {
         $source = $this->getNode($sourceNodeId);
         if ($source === null) {
@@ -224,7 +225,7 @@ class Graph
             throw new Exception("Target node id=\"{$targetNodeId}\" not found");
         }
 
-        return $this->addLink(new Link($source, $target, $text, $style));
+        return $this->addLink(new Link($source, $target, $text, $style, $css));
     }
 
     public function addStyle(string $style): self

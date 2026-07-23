@@ -299,6 +299,16 @@ final class FlowchartTest extends PHPUnit
         ]), (string)$graph);
     }
 
+    public function testAddLinkByIdsWithCss(): void
+    {
+        $graph = new Graph(['abc_order' => false]);
+        $graph->addNode(new Node('A'));
+        $graph->addNode(new Node('B'));
+        isSame($graph, $graph->addLinkByIds('A', 'B', '', Link::ARROW, 'stroke:orange'));
+
+        isContain('linkStyle 0 stroke:orange;', (string)$graph);
+    }
+
     public function testNotFoundNode(): void
     {
         $graph = new Graph();
