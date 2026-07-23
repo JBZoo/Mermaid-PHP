@@ -24,6 +24,7 @@ A powerful PHP library for generating [Mermaid](https://mermaid.js.org/) diagram
   - [ER Diagrams](#er-diagrams)
   - [Class Diagrams](#class-diagrams)
   - [Timeline Diagrams](#timeline-diagrams)
+  - [Sequence Diagrams](#sequence-diagrams)
 - [Output Formats](#output-formats)
 - [Development](#development)
 - [License](#license)
@@ -44,7 +45,7 @@ composer require jbzoo/mermaid-php
 
 ## Features
 
-✅ **Multiple Diagram Types**: Flowcharts, ER diagrams, class diagrams, and timelines
+✅ **Multiple Diagram Types**: Flowcharts, ER diagrams, class diagrams, sequence diagrams, and timelines
 ✅ **Fluent API**: Intuitive method chaining for building complex diagrams
 ✅ **Multiple Output Formats**: Mermaid syntax, HTML with embedded viewer, live editor URLs
 ✅ **Theme Support**: Default, forest, dark, and neutral themes
@@ -405,6 +406,70 @@ class Duck {
     swim()
 }
 Duck ..|> Animal
+```
+
+### Sequence Diagrams
+
+```php
+<?php
+
+use JBZoo\MermaidPHP\SequenceDiagram\ArrowType;
+use JBZoo\MermaidPHP\SequenceDiagram\Message;
+use JBZoo\MermaidPHP\SequenceDiagram\Note;
+use JBZoo\MermaidPHP\SequenceDiagram\NotePosition;
+use JBZoo\MermaidPHP\SequenceDiagram\Participant;
+use JBZoo\MermaidPHP\SequenceDiagram\ParticipantType;
+use JBZoo\MermaidPHP\SequenceDiagram\SequenceDiagram;
+use JBZoo\MermaidPHP\SequenceDiagram\Block\Alt;
+use JBZoo\MermaidPHP\SequenceDiagram\Block\Loop;
+
+require_once './vendor/autoload.php';
+
+$alice = new Participant('alice', 'Alice');
+$john  = new Participant('john', 'John', ParticipantType::ACTOR);
+
+$diagram = (new SequenceDiagram(['title' => 'Greeting', 'autonumber' => true]))
+    ->addParticipant($alice)
+    ->addParticipant($john)
+    ->addMessage(new Message($alice, $john, 'Hello John', ArrowType::SOLID_ARROW, activateTarget: true))
+    ->addMessage(new Message($john, $alice, 'Great!', ArrowType::DOTTED_ARROW, deactivateSource: true))
+    ->addNote(new Note('a friendly hello', NotePosition::OVER, $alice, $john))
+    ->addStatement(
+        (new Alt('is well'))
+            ->add(new Message($john, $alice, 'All good'))
+            ->addElse('is sick')
+            ->add(new Message($john, $alice, 'Not so good')),
+    )
+    ->addStatement(
+        (new Loop('every minute'))
+            ->add(new Message($alice, $john, 'ping')),
+    );
+
+echo $diagram; // Mermaid syntax
+// echo $diagram->renderHtml(['theme' => 'dark']); // full HTML page
+```
+
+Produces:
+
+```mermaid
+---
+title: Greeting
+---
+sequenceDiagram
+    autonumber
+    participant alice as Alice
+    actor john as John
+    alice->>+john: Hello John
+    john-->>-alice: Great!
+    Note over alice,john: a friendly hello
+    alt is well
+        john->>alice: All good
+    else is sick
+        john->>alice: Not so good
+    end
+    loop every minute
+        alice->>john: ping
+    end
 ```
 
 ## Output Formats

@@ -18,6 +18,7 @@ namespace JBZoo\MermaidPHP;
 
 use JBZoo\MermaidPHP\ClassDiagram\ClassDiagram;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
+use JBZoo\MermaidPHP\SequenceDiagram\SequenceDiagram;
 use JBZoo\MermaidPHP\Timeline\Timeline;
 
 final class Helper
@@ -36,7 +37,7 @@ final class Helper
         return \md5($userFriendlyId);
     }
 
-    public static function getLiveEditorUrl(ClassDiagram|ERDiagram|Graph|Timeline $mermaid): string
+    public static function getLiveEditorUrl(ClassDiagram|ERDiagram|Graph|SequenceDiagram|Timeline $mermaid): string
     {
         $json = \json_encode([
             'code'    => (string)$mermaid,
