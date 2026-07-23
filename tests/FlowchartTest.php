@@ -168,6 +168,24 @@ final class FlowchartTest extends PHPUnit
         isSame("click {$id} \"https://x.io\"", $node->getClickStatement());
     }
 
+    public function testLinkCssUnit(): void
+    {
+        $link = new Link(new Node('A'), new Node('B'));
+        isSame(null, $link->getCss());
+        isSame('A-->B;', (string)$link); // BC: __toString unaffected by css
+
+        isSame($link, $link->setCss('stroke:red,stroke-width:2px'));
+        isSame('stroke:red,stroke-width:2px', $link->getCss());
+        isSame('A-->B;', (string)$link);
+
+        // Via constructor 5th param.
+        $link2 = new Link(new Node('A'), new Node('B'), '', Link::ARROW, 'stroke:blue');
+        isSame('stroke:blue', $link2->getCss());
+
+        // Clear.
+        isSame(null, $link->setCss(null)->getCss());
+    }
+
     public function testNotFoundNode(): void
     {
         $graph = new Graph();
