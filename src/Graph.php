@@ -60,10 +60,6 @@ class Graph
         return $this->render();
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
     public function render(bool $isMainGraph = true, int $shift = 0): string
     {
         $spaces    = \str_repeat(' ', $shift);
@@ -75,57 +71,22 @@ class Graph
             $result = ["{$spaces}subgraph " . Helper::escape((string)$this->params['title'])];
         }
 
-        if (\count($this->nodes) > 0) {
-            $tmp = [];
-
-            foreach ($this->nodes as $node) {
-                $tmp[] = $spacesSub . $node->__toString();
-            }
-
-            if ($this->params['abc_order'] === true) {
-                \sort($tmp);
-            }
-
-            $result = \array_merge($result, $tmp);
-            if ($isMainGraph) {
-                $result[] = '';
-            }
-        }
-
-        if (\count($this->links) > 0) {
-            $tmp = [];
-
-            foreach ($this->links as $link) {
-                $tmp[] = $spacesSub . $link->__toString();
-            }
-
-            if ($this->params['abc_order'] === true) {
-                \sort($tmp);
-            }
-
-            $result = \array_merge($result, $tmp);
-            if ($isMainGraph) {
-                $result[] = '';
-            }
-        }
+        $result = \array_merge($result, $this->renderItems($this->nodes, $spacesSub, $isMainGraph));
+        $result = \array_merge($result, $this->renderItems($this->links, $spacesSub, $isMainGraph));
 
         foreach ($this->subGraphs as $subGraph) {
             $result[] = $subGraph->render(false, $shift + 4);
         }
 
-        if ($isMainGraph && \count($this->styles) > 0) {
+        if ($isMainGraph) {
             foreach ($this->styles as $style) {
                 $result[] = $spaces . $style . ';';
             }
-        }
 
-        if ($isMainGraph) {
             foreach ($this->renderInteractions() as $line) {
                 $result[] = $spaces . $line;
             }
-        }
-
-        if (!$isMainGraph) {
+        } else {
             $result[] = "{$spaces}end";
         }
 
@@ -220,6 +181,36 @@ class Graph
     public function getNodes(): array
     {
         return $this->nodes;
+    }
+
+    /**
+     * Render a block of nodes or links, applying the optional abc-order sort.
+     *
+     * @param array<Link|Node> $items
+     *
+     * @return string[]
+     */
+    private function renderItems(array $items, string $spacesSub, bool $isMainGraph): array
+    {
+        if (\count($items) === 0) {
+            return [];
+        }
+
+        $lines = [];
+
+        foreach ($items as $item) {
+            $lines[] = $spacesSub . $item->__toString();
+        }
+
+        if ($this->params['abc_order'] === true) {
+            \sort($lines);
+        }
+
+        if ($isMainGraph) {
+            $lines[] = '';
+        }
+
+        return $lines;
     }
 
     /**
