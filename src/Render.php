@@ -18,6 +18,7 @@ namespace JBZoo\MermaidPHP;
 
 use JBZoo\MermaidPHP\ClassDiagram\ClassDiagram;
 use JBZoo\MermaidPHP\ERDiagram\ERDiagram;
+use JBZoo\MermaidPHP\SequenceDiagram\SequenceDiagram;
 use JBZoo\MermaidPHP\Timeline\Timeline;
 
 /**
@@ -46,8 +47,10 @@ class Render
     /**
      * @param array<string, mixed> $params
      */
-    public static function html(ClassDiagram|ERDiagram|Graph|Timeline $graph, array $params = []): string
-    {
+    public static function html(
+        ClassDiagram|ERDiagram|Graph|SequenceDiagram|Timeline $graph,
+        array $params = [],
+    ): string {
         $theme    = (string)($params['theme'] ?? self::THEME_FOREST);
         $showZoom = (bool)($params['show-zoom'] ?? true);
         $isDebug  = (bool)($params['debug'] ?? false);
